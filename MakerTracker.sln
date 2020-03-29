@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakerTracker", "MakerTracker\MakerTracker.csproj", "{5901FDDF-7E9F-4F39-8F1A-DEB94B81F627}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5901FDDF-7E9F-4F39-8F1A-DEB94B81F627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5901FDDF-7E9F-4F39-8F1A-DEB94B81F627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5901FDDF-7E9F-4F39-8F1A-DEB94B81F627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5901FDDF-7E9F-4F39-8F1A-DEB94B81F627}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A991BFF-D762-4751-BA9A-4842D38E9B1D}
+	EndGlobalSection
+EndGlobal
