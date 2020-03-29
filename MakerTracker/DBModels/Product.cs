@@ -9,6 +9,8 @@ namespace MakerTracker.DBModels
         public string Description { get; set; }
         public string InstructionUrl { get; set; }
 
-        public ICollection<MakerQueue> InMakerQueues { get; set; } = new List<MakerQueue>();
+        public ICollection<CustomerOrderDetail> OnOrders { get; set; } = new List<CustomerOrderDetail>();
+
+        public ICollection<MakerOrder> InMakerQueues { get; set; } = new List<MakerOrder>();
     }
 }
