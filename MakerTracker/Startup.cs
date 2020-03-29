@@ -63,7 +63,8 @@ namespace MakerTracker
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = "name"
+                    NameClaimType = "name",
+                    RoleClaimType = "https://makertracker.com/roles"
                 };
 
                 // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
