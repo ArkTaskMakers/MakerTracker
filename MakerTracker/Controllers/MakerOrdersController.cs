@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace MakerTracker.Controllers
 {
     [Authorize()]
-    public class MakerOrdersController : Controller
+    public class MakerOrdersController : BaseController
     {
         private readonly MakerTrackerContext _context;
 

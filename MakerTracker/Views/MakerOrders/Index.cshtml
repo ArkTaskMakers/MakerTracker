@@ -4,50 +4,70 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">My Production</h1>
+<p class="mb-4">Listed below is what you are currently working on.</p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderedOn)
-            </th>
-            <th>
-                Product
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpectedFinished)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PromisedCount)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpectedFinished)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PromisedCount)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Queue</h6>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="col pb-2">
+            <a asp-action="Create" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Add to Queue</span>
+            </a>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderedOn)
+                        </th>
+                        <th>
+                            Product
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExpectedFinished)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PromisedCount)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderedOn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExpectedFinished)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PromisedCount)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

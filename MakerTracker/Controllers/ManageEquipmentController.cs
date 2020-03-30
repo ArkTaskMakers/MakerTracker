@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace MakerTracker.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class ManageEquipmentController : Controller
+    public class ManageEquipmentController : BaseController
     {
         private readonly MakerTrackerContext _context;
 
