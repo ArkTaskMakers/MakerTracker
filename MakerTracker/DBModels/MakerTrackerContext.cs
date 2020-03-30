@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MakerTracker.DBModels;
 
 namespace MakerTracker.DBModels
 {
@@ -19,6 +20,9 @@ namespace MakerTracker.DBModels
         {
             base.OnModelCreating(modelBuilder);
         }
+
+
+        public DbSet<MakerTracker.DBModels.MakerOrder> MakerOrder { get; set; }
     }
      
 

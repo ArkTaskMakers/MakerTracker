@@ -5,8 +5,12 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <ul>
-        <li>@Html.ActionLink("Manage Equipment", "Index", "ManageEquipment")</li>
-        <li>@Html.ActionLink("Manage Materials", "Index", "ManageMaterial")</li>
-        <li>@Html.ActionLink("Manage Products", "Index", "ManageProduct")</li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li>@Html.ActionLink("Manage Equipment", "Index", "ManageEquipment")</li>
+            <li>@Html.ActionLink("Manage Materials", "Index", "ManageMaterial")</li>
+            <li>@Html.ActionLink("Manage Products", "Index", "ManageProduct")</li>
+        }
+        <li>@Html.ActionLink("What am I making?", "Index", "MakerOrders")</li>
     </ul>
 </div>

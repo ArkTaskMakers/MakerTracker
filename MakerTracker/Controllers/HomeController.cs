@@ -25,7 +25,6 @@ namespace MakerTracker.Controllers
         {
             var email = User.Identity.Name;
             var profile = _db.Profiles.FirstOrDefault(x => x.Email == email);
-
             return View();
         }
 
