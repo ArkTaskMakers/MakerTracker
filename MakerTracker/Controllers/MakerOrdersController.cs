@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
 {
+    [Authorize()]
     public class MakerOrdersController : Controller
     {
         private readonly MakerTrackerContext _context;
@@ -23,7 +25,10 @@ namespace MakerTracker.Controllers
         // GET: MakerOrders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MakerOrder.Include(x=>x.Product).ToListAsync());
+            var makerOrders = await _context.MakerOrder
+                .Include(x => x.Product)
+                .Where(p => p.Maker.OwnerProfile.Auth0Id == User.Identity.Name).ToListAsync();
+            return View(makerOrders);
         }
 
         // GET: MakerOrders/Details/5
@@ -56,11 +61,11 @@ namespace MakerTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateMakerOrder makerOrder)
+        public async Task<IActionResult> Create(CreateEditMakerOrder makerOrder)
         {
             if (ModelState.IsValid)
             {
-                var maker = GetMakerProfile();
+                var maker = GetMakerProfile(User.Identity.Name);
                 var newOrder = new MakerOrder()
                 {
                     ExpectedFinished = makerOrder.ExpectedFinished,
@@ -73,33 +78,40 @@ namespace MakerTracker.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.AvailableProducts = _context.Products.ToList();
             return View(makerOrder);
         }
 
         //TODO move to a service
-        private Maker GetMakerProfile()
+        private Maker GetMakerProfile(string auth0Id)
         {
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var profile = _context.Profiles.FirstOrDefault(p => p.Email == email);
+            var profile = _context.Profiles.FirstOrDefault(p => p.Auth0Id == auth0Id);
+
             if (profile == null)
             {
+                var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var firstName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+                var lastName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+
                 profile = new Profile()
                 {
                     Email = email,
                     CreatedDate = DateTime.Now,
-                    FirstName = User.Identity.Name,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Auth0Id = auth0Id
                 };
                 _context.Profiles.Add(profile);
                 _context.SaveChanges();
             }
 
-            var maker = _context.Makers.FirstOrDefault(m=> m.OwnerProfile == profile);
+            var maker = _context.Makers.FirstOrDefault(m => m.OwnerProfile == profile);
             if (maker == null)
             {
                 maker = new Maker()
                 {
                     OwnerProfile = profile,
-                    
+
                 };
                 _context.Makers.Add(maker);
                 _context.SaveChanges();
@@ -117,12 +129,22 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var makerOrder = await _context.MakerOrder.FindAsync(id);
+            var makerOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             if (makerOrder == null)
             {
                 return NotFound();
             }
-            return View(makerOrder);
+
+            ViewBag.AvailableProducts = _context.Products.ToList();
+
+            var model = new CreateEditMakerOrder()
+            {
+                MakerOrderId = makerOrder.Id,
+                ExpectedFinished = makerOrder.ExpectedFinished,
+                ProductId = makerOrder.ProductId,
+                PromisedCount = makerOrder.PromisedCount
+            };
+            return View(model);
         }
 
         // POST: MakerOrders/Edit/5
@@ -130,23 +152,28 @@ namespace MakerTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderedOn,ExpectedFinished,PromisedCount")] MakerOrder makerOrder)
+        public async Task<IActionResult> Edit(int id, CreateEditMakerOrder makerOrder)
         {
-            if (id != makerOrder.Id)
+            var existingOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
+            if (existingOrder == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+               existingOrder.ProductId = makerOrder.ProductId;
+               existingOrder.PromisedCount = makerOrder.PromisedCount;
+               existingOrder.ExpectedFinished = makerOrder.ExpectedFinished;
+
                 try
                 {
-                    _context.Update(makerOrder);
+                    _context.Update(existingOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MakerOrderExists(makerOrder.Id))
+                    if (!MakerOrderExists(id))
                     {
                         return NotFound();
                     }
@@ -157,6 +184,8 @@ namespace MakerTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.AvailableProducts = _context.Products.ToList();
             return View(makerOrder);
         }
 
@@ -169,7 +198,7 @@ namespace MakerTracker.Controllers
             }
 
             var makerOrder = await _context.MakerOrder
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             if (makerOrder == null)
             {
                 return NotFound();
@@ -183,7 +212,7 @@ namespace MakerTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var makerOrder = await _context.MakerOrder.FindAsync(id);
+            var makerOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             _context.MakerOrder.Remove(makerOrder);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

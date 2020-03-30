@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +64,8 @@ namespace MakerTracker
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = "name",
+                    
+                    NameClaimType = ClaimTypes.NameIdentifier,
                     RoleClaimType = "https://makertracker.com/roles"
                 };
 
