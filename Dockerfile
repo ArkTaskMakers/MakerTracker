@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MakerTracker.csproj", "MakerTracker/"]
+COPY ["MakerTracker/MakerTracker.csproj", "MakerTracker/"]
 RUN dotnet restore "MakerTracker/MakerTracker.csproj"
 COPY . .
 WORKDIR "/src/MakerTracker"
