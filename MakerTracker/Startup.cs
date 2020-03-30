@@ -106,6 +106,7 @@ namespace MakerTracker
                 };
             });
 
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
         }
 
