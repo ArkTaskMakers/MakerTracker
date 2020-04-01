@@ -12,5 +12,7 @@ namespace MakerTracker.DBModels
         public DateTime OrderedOn { get; set; }
         public DateTime ExpectedFinished { get; set; }
         public int PromisedCount { get; set; }
+
+        public bool Finished { get; set; }
     }
 }

@@ -72,6 +72,7 @@ namespace MakerTracker.Controllers
                     OrderedOn = DateTime.Now,
                     ProductId = makerOrder.ProductId,
                     PromisedCount = makerOrder.PromisedCount,
+                    Finished = makerOrder.Finished,
                     Maker = maker
                 };
                 maker.MakerQueue.Add(newOrder);
@@ -142,7 +143,8 @@ namespace MakerTracker.Controllers
                 MakerOrderId = makerOrder.Id,
                 ExpectedFinished = makerOrder.ExpectedFinished,
                 ProductId = makerOrder.ProductId,
-                PromisedCount = makerOrder.PromisedCount
+                PromisedCount = makerOrder.PromisedCount,
+                Finished = makerOrder.Finished,
             };
             return View(model);
         }
@@ -165,6 +167,7 @@ namespace MakerTracker.Controllers
                existingOrder.ProductId = makerOrder.ProductId;
                existingOrder.PromisedCount = makerOrder.PromisedCount;
                existingOrder.ExpectedFinished = makerOrder.ExpectedFinished;
+               existingOrder.Finished = makerOrder.Finished;
 
                 try
                 {

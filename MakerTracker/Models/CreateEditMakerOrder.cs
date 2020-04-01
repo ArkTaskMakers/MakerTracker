@@ -15,7 +15,9 @@ namespace MakerTracker.Models
         [Display(Name="Expected Finish Date")]
         [DataType(DataType.Date)]
         public DateTime ExpectedFinished { get; set; }
-        [Display(Name="# Promised")]
+        [Display(Name="Number Expected")]
         public int PromisedCount { get; set; }
+        [Display(Name="Already Finished?")]
+        public bool Finished { get; set; }
     }
 }
