@@ -19,5 +19,6 @@ namespace MakerTracker.DBModels
         public bool IsSelfQuarantined { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public string ZipCode { get; set; }
     }
 }
