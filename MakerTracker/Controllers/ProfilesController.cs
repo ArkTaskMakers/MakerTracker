@@ -36,7 +36,7 @@ namespace MakerTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int id, [Bind("Id,FirstName,LastName,Bio,Phone,Email,Address,City,State,IsSelfQuarantined")] Profile model)
+        public async Task<IActionResult> Index(int id, [Bind("Id,FirstName,LastName,Bio,Phone,Email,Address,City,State,IsSelfQuarantined,ZipCode")] Profile model)
         {
             var maker = GetMakerProfile(User.Identity.Name);
             var existingProfile = await _context.Profiles.FindAsync(maker.OwnerProfile.Id);

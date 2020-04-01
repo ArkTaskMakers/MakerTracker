@@ -9,13 +9,13 @@
     <a asp-controller="MakerOrders" asp-action="Index" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-people-carry fa-sm text-white-50"></i> Record Work</a>
 </div>
 <div class="row">
-    <div class="col mb-4">
+    <div class="col-md-8 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">My Profile Information</h6>
             </div>
             <div class="card-body">
-                <form asp-action="Edit">
+                <form asp-action="Index">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
