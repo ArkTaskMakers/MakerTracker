@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ReportMakerWork>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Maker Production</h1>
+<p class="mb-4">Listed below is what everybody is working on.</p>
+
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Maker Work</h6>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="col">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExpectedCount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsFinished)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExpectedFinished)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpectedCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsFinished)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpectedFinished)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
