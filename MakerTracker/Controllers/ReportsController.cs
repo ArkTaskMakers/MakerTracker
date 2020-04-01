@@ -38,6 +38,23 @@ namespace MakerTracker.Controllers
             return View(await makerTrackerContext.ToListAsync());
         }
 
+        public async Task<IActionResult> Makers()
+        {
+            var makers = _context.Makers.Select(m => new ReportMaker()
+            {
+                FirstName = m.OwnerProfile.FirstName,
+                LastName = m.OwnerProfile.LastName,
+                City = m.OwnerProfile.City,
+                State = m.OwnerProfile.State,
+                ZipCode = m.OwnerProfile.ZipCode,
+                ProductsFinished = m.MakerQueue.Count(mq => mq.Finished),
+                ProductsQueued = m.MakerQueue.Count(mq => mq.Finished == false),
+
+            }).OrderBy(x => x.LastName).ThenByDescending(x => x.FirstName);
+
+            return View(await makers.ToListAsync());
+        }
+
         
     }
 }
