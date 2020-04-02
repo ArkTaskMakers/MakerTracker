@@ -11,6 +11,7 @@ Built with ASP.NET Core 3.1, with a SQL Server Database
   1. Clone this repo 
   2. Update the 'DefaultConnection' in AppSettings.Json to point your sql database
   3. Build the project
-  4. Update your database - From the Package Manager Console - run `dotnet ef database update --project MakerTracker` 
-  5. Run it!
+  4. Install dotnet entity framework core tools if not previously installed - From the Package Manager Console - run `dotnet tool install --global dotnet-ef` 
+  5. Update your database - From the Package Manager Console - run `dotnet ef database update --project MakerTracker` 
+  6. Run it!
  
