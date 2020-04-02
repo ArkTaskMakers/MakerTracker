@@ -47,8 +47,8 @@ namespace MakerTracker.Controllers
                 City = m.OwnerProfile.City,
                 State = m.OwnerProfile.State,
                 ZipCode = m.OwnerProfile.ZipCode,
-                ProductsFinished = m.MakerQueue.Count(mq => mq.Finished),
-                ProductsQueued = m.MakerQueue.Count(mq => mq.Finished == false),
+                ProductsFinished = m.MakerQueue.Where(mq=>mq.Finished).Sum(x=>x.PromisedCount),
+                ProductsQueued = m.MakerQueue.Where(mq=>mq.Finished == false).Sum(x=>x.PromisedCount),
 
             }).OrderBy(x => x.LastName).ThenByDescending(x => x.FirstName);
 
