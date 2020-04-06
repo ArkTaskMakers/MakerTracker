@@ -1,0 +1,66 @@
+﻿@model MakerTracker.Models.TransactionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Transaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Product" class="control-label"></label>
+                <select asp-for="Product" class="form-control"
+                        asp-items="@(ViewBag.AvailableProducts)">
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="Product" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="From" class="control-label"></label>
+                <select asp-for="From" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.Profiles,"Id","DisplayName"))">
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="To" class="control-label"></label>
+                <select asp-for="To" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.Profiles,"Id","DisplayName"))">
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="To" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmationCode" class="control-label"></label>
+                <input asp-for="ConfirmationCode" class="form-control" />
+                <span asp-validation-for="ConfirmationCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

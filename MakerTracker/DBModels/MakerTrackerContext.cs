@@ -23,6 +23,9 @@ namespace MakerTracker.DBModels
 
 
         public DbSet<MakerTracker.DBModels.MakerOrder> MakerOrder { get; set; }
+
+
+        public DbSet<MakerTracker.DBModels.Transaction> Transaction { get; set; }
     }
      
 
