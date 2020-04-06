@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 
 namespace MakerTracker.Controllers
 {
@@ -53,8 +51,8 @@ namespace MakerTracker.Controllers
 
         // GET: Transactions/Create
         public IActionResult Create()
-        {
-            ViewBag.AvailableProducts = new SelectList(PopulateProductsDropDownList(), "Value", "Text");
+        {            
+            ViewBag.AvailableProducts = _context.Products.ToList();
             ViewBag.Profiles = _context.Profiles.ToList();
             return View(new TransactionViewModel());
         }
@@ -65,12 +63,10 @@ namespace MakerTracker.Controllers
         {
             var transaction = new Transaction();
             if (ModelState.IsValid)
-            {
-               
+            {               
                 transaction.Amount = transactionVM.Amount;
                 transaction.ConfirmationCode = transactionVM.ConfirmationCode;
-               
-
+                //TODO: Need error handling here, since theoretically someone else could've deleted a Product 
                 transaction.Product = _context.Products.Find(transactionVM.Product);
                 transaction.From = _context.Profiles.Find(transactionVM.From);
                 transaction.To = _context.Profiles.Find(transactionVM.To);
@@ -80,7 +76,7 @@ namespace MakerTracker.Controllers
                 return RedirectToAction(nameof(Index));
                 
             }
-            //Do some error stuff here later, as right now we'd just return an empty transaction
+            //TODO: Do some error stuff here later, as right now we'd just return an empty transaction
             
             return View(transaction);
         }
@@ -101,9 +97,6 @@ namespace MakerTracker.Controllers
             return View(transaction);
         }
 
-        // POST: Transactions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Amount,ConfirmationCode")] Transaction transaction)
@@ -168,18 +161,6 @@ namespace MakerTracker.Controllers
         private bool TransactionExists(int id)
         {
             return _context.Transaction.Any(e => e.Id == id);
-        }
-
-        private List<SelectListItem> PopulateProductsDropDownList()
-        {
-            return _context.Products
-                .Select(p => new SelectListItem
-                {
-                    Value = p.Id.ToString(),
-                    Text = p.Name,
-                })
-                .ToList();
-            
         }
     }
 }
