@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace MakerTracker.DBModels
@@ -8,6 +9,7 @@ namespace MakerTracker.DBModels
         public static void Initialize(MakerTrackerContext context)
         {
             context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             // Look for any students.
             if (context.Profiles.Any())
