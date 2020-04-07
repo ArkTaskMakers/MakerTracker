@@ -19,7 +19,7 @@ namespace MakerTracker.Controllers
         // GET: Transactions
         public async Task<IActionResult> Index()
         {
-            var transactions = await _context.Transaction
+            var transactions = await _context.Transactions
                    .Include(t => t.Product)
                    .Include(t => t.From)
                    .Include(t => t.To)
@@ -36,7 +36,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var transaction = await _context.Transaction
+            var transaction = await _context.Transactions
                 .Include(t => t.Product)
                 .Include(t => t.From)
                 .Include(t => t.To)
@@ -78,7 +78,7 @@ namespace MakerTracker.Controllers
             }
             //TODO: Do some error stuff here later, as right now we'd just return an empty transaction
             
-            return View(transaction);
+            return View(transactionVM);
         }
 
         // GET: Transactions/Edit/5
@@ -89,7 +89,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var transaction = await _context.Transaction.FindAsync(id);
+            var transaction = await _context.Transactions.FindAsync(id);
             if (transaction == null)
             {
                 return NotFound();
@@ -137,7 +137,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var transaction = await _context.Transaction
+            var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (transaction == null)
             {
@@ -152,15 +152,15 @@ namespace MakerTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var transaction = await _context.Transaction.FindAsync(id);
-            _context.Transaction.Remove(transaction);
+            var transaction = await _context.Transactions.FindAsync(id);
+            _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TransactionExists(int id)
         {
-            return _context.Transaction.Any(e => e.Id == id);
+            return _context.Transactions.Any(e => e.Id == id);
         }
     }
 }

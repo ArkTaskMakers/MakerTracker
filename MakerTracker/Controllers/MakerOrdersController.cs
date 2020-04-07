@@ -25,7 +25,7 @@ namespace MakerTracker.Controllers
         // GET: MakerOrders
         public async Task<IActionResult> Index()
         {
-            var makerOrders = await _context.MakerOrder
+            var makerOrders = await _context.MakerOrders
                 .Include(x => x.Product)
                 .Where(p => p.Maker.OwnerProfile.Auth0Id == User.Identity.Name).ToListAsync();
             return View(makerOrders);
@@ -39,7 +39,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var makerOrder = await _context.MakerOrder
+            var makerOrder = await _context.MakerOrders
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (makerOrder == null)
             {
@@ -130,7 +130,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var makerOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
+            var makerOrder = await _context.MakerOrders.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             if (makerOrder == null)
             {
                 return NotFound();
@@ -156,7 +156,7 @@ namespace MakerTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CreateEditMakerOrder makerOrder)
         {
-            var existingOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
+            var existingOrder = await _context.MakerOrders.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             if (existingOrder == null)
             {
                 return NotFound();
@@ -200,7 +200,7 @@ namespace MakerTracker.Controllers
                 return NotFound();
             }
 
-            var makerOrder = await _context.MakerOrder
+            var makerOrder = await _context.MakerOrders
                 .FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
             if (makerOrder == null)
             {
@@ -215,15 +215,15 @@ namespace MakerTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var makerOrder = await _context.MakerOrder.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
-            _context.MakerOrder.Remove(makerOrder);
+            var makerOrder = await _context.MakerOrders.FirstOrDefaultAsync(x=>x.Id == id && x.Maker.OwnerProfile.Auth0Id == User.Identity.Name);
+            _context.MakerOrders.Remove(makerOrder);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MakerOrderExists(int id)
         {
-            return _context.MakerOrder.Any(e => e.Id == id);
+            return _context.MakerOrders.Any(e => e.Id == id);
         }
     }
 }

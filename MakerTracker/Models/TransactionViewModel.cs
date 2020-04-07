@@ -13,7 +13,7 @@ namespace MakerTracker.Models
         public int From { get;set;}
         public int To { get;set;}
         public int Amount { get;set; }
-        public int ConfirmationCode { get;set;}
+        public string ConfirmationCode { get;set;}
 
        
     }

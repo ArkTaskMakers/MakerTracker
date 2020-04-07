@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MakerTracker.DBModels
 {
@@ -20,6 +22,11 @@ namespace MakerTracker.DBModels
 
         public DateTime CreatedDate { get; set; }
         public string ZipCode { get; set; }
+
+        
+        public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
+        
+        public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
 
         public string DisplayName
         {

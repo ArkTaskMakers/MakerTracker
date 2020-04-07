@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200401202756_QueueFinished.cs" />
     <Compile Remove="Migrations\20200401202756_QueueFinished.Designer.cs" />
+    <Compile Remove="Migrations\20200406160108_Transactions.cs" />
+    <Compile Remove="Migrations\20200406160108_Transactions.Designer.cs" />
+    <Compile Remove="Migrations\20200407005301_Test.cs" />
+    <Compile Remove="Migrations\20200407005301_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200407010058_Test.cs" />
+    <Compile Remove="Migrations\20200407010058_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
