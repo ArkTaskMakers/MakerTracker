@@ -24,7 +24,7 @@ namespace MakerTracker.Controllers
         // GET: Reports
         public async Task<IActionResult> Index()
         {
-            var makerTrackerContext = _context.MakerOrder.Select(mo => new ReportMakerWork
+            var makerTrackerContext = _context.MakerOrders.Select(mo => new ReportMakerWork
             {
                 FirstName = mo.Maker.OwnerProfile.FirstName,
                 LastName = mo.Maker.OwnerProfile.LastName,

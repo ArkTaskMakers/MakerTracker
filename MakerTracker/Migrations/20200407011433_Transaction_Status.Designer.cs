@@ -4,14 +4,16 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200407011433_Transaction_Status")]
+    partial class Transaction_Status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,6 +183,28 @@ namespace MakerTracker.Migrations
                     b.ToTable("MakerEquipment");
                 });
 
+            modelBuilder.Entity("MakerTracker.DBModels.MakerMaterial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MakerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MakerId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("MakerMaterial");
+                });
+
             modelBuilder.Entity("MakerTracker.DBModels.MakerOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -212,7 +236,53 @@ namespace MakerTracker.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("MakerOrders");
+                    b.ToTable("MakerOrder");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.MakerStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MakerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MakerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("MakerStock");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.Material", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Materials");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Product", b =>
@@ -225,14 +295,8 @@ namespace MakerTracker.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("InstructionUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeprecated")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -240,31 +304,6 @@ namespace MakerTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("MakerTracker.DBModels.ProductRequirement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ChildId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChildQuantityRequired")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChildId");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("ProductRequirement");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Profile", b =>
@@ -357,7 +396,7 @@ namespace MakerTracker.Migrations
 
                     b.HasIndex("ToId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Customer", b =>
@@ -414,6 +453,17 @@ namespace MakerTracker.Migrations
                         .HasForeignKey("MakerId");
                 });
 
+            modelBuilder.Entity("MakerTracker.DBModels.MakerMaterial", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.Maker", "Maker")
+                        .WithMany("Materials")
+                        .HasForeignKey("MakerId");
+
+                    b.HasOne("MakerTracker.DBModels.Material", "Material")
+                        .WithMany("UsedBy")
+                        .HasForeignKey("MaterialId");
+                });
+
             modelBuilder.Entity("MakerTracker.DBModels.MakerOrder", b =>
                 {
                     b.HasOne("MakerTracker.DBModels.Maker", "Maker")
@@ -427,15 +477,15 @@ namespace MakerTracker.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MakerTracker.DBModels.ProductRequirement", b =>
+            modelBuilder.Entity("MakerTracker.DBModels.MakerStock", b =>
                 {
-                    b.HasOne("MakerTracker.DBModels.Product", "Child")
-                        .WithMany("UsedInProducts")
-                        .HasForeignKey("ChildId");
+                    b.HasOne("MakerTracker.DBModels.Maker", "Maker")
+                        .WithMany("Stocks")
+                        .HasForeignKey("MakerId");
 
-                    b.HasOne("MakerTracker.DBModels.Product", "Parent")
-                        .WithMany("PrecursorsRequired")
-                        .HasForeignKey("ParentId");
+                    b.HasOne("MakerTracker.DBModels.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Transaction", b =>
