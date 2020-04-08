@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewData["Title"] - MakerTracker</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/lib/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/landing-page.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Arkansas Makers Task Force</a>
+            <ul class="navbar-nav">
+                <li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-primary" asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-fw fa-tachometer-alt"></i> Dashboard
+                        </a>
+                        <a class="btn btn-secondary" asp-controller="Account" asp-action="Logout">
+                            Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Login
+                        </a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @RenderBody()
+    <!-- Masthead -->
+    <header class="masthead text-white text-center">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <h1 class="mb-5">Arkanas Hospitals and Clinics need PPE. We need Makers to source and create.</h1>
+                    <h6 class="mb-2">Registering an account is simple and free.</h6>
+                </div>
+                <div class="col-md-10 col-lg-8 col-xl-7 mx-auto align-self-center">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-block btn-lg btn-primary" asp-controller="Dashboard" asp-action="Index">
+                            Go to Dashboard
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-block btn-lg btn-primary" asp-controller="Account" asp-action="Login">
+                            Register
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto">
+                    <h3 class="mb-5">There are many ways to provide support:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-8 mx-auto mb-3 mb-lg-0 mb-lg-3">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">Requesting Donations on behalf of a Hospital or Clinic</li>
+                        <li class="list-group-item">Giving Donations of PPE or materials to make PPE. </li>
+                        <li class="list-group-item list-group-item-dark">Making PPE from sourced materials</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Icons Grid -->
+    <section class=" bg-light text-center">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto">
+                    <h3 class="mb-5">Here's some of the things we need:</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div>
+                            <img class="img-thumbnail" src="~/img/n95mask.jpg" height="100" />
+                            @*<i class="icon-screen-desktop m-auto text-primary"></i>*@
+                        </div>
+                        <h3>N95 Respirators</h3>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="">
+                            @*<i class="icon-layers m-auto text-primary"></i>*@
+                            <img class="img-thumbnail" src="~/img/surgicalmasks.jpg" />
+                        </div>
+                        <h3>Surgical Masks</h3>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="">
+                            @*<i class="icon-check m-auto text-primary"></i>*@
+                            <img class="img-thumbnail" src="~/img/faceshield.jpg" />
+                        </div>
+                        <h3>Face Shields</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                    <ul class="list-inline mb-2">
+                        @*<li class="list-inline-item">
+                                <a href="#">About</a>
+                            </li>
+                            <li class="list-inline-item">&sdot;</li>
+                            <li class="list-inline-item">
+                                <a href="#">Contact</a>
+                            </li>*@
+                        @*<li class="list-inline-item">&sdot;</li>
+                            <li class="list-inline-item">
+                                <a href="#">Terms of Use</a>
+                            </li>
+                            <li class="list-inline-item">&sdot;</li>
+                            <li class="list-inline-item">
+                                <a href="#">Privacy Policy</a>
+                            </li>*@
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; Arkansas Makers Task Force @DateTime.Now.Year. All Rights Reserved.</p>
+                </div>
+                @*<div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item mr-3">
+                                <a href="#">
+                                    <i class="fab fa-facebook fa-2x fa-fw"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item mr-3">
+                                <a href="#">
+                                    <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <i class="fab fa-instagram fa-2x fa-fw"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>*@
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/lib/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>
