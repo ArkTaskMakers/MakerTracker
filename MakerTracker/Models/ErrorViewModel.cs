@@ -1,5 +1,3 @@
-using System;
-
 namespace MakerTracker.Models
 {
     public class ErrorViewModel

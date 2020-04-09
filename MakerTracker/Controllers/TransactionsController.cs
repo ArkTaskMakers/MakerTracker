@@ -7,7 +7,7 @@ using MakerTracker.Models;
 
 namespace MakerTracker.Controllers
 {
-    public class TransactionsController : Controller
+    public class TransactionsController : BaseController
     {
         private readonly MakerTrackerContext _context;
 
@@ -51,7 +51,7 @@ namespace MakerTracker.Controllers
 
         // GET: Transactions/Create
         public IActionResult Create()
-        {            
+        {
             ViewBag.AvailableProducts = _context.Products.ToList();
             ViewBag.Profiles = _context.Profiles.ToList();
             return View(new TransactionViewModel());
@@ -63,10 +63,10 @@ namespace MakerTracker.Controllers
         {
             var transaction = new Transaction();
             if (ModelState.IsValid)
-            {               
+            {
                 transaction.Amount = transactionVM.Amount;
                 transaction.ConfirmationCode = transactionVM.ConfirmationCode;
-                //TODO: Need error handling here, since theoretically someone else could've deleted a Product 
+                //TODO: Need error handling here, since theoretically someone else could've deleted a Product
                 transaction.Product = _context.Products.Find(transactionVM.Product);
                 transaction.From = _context.Profiles.Find(transactionVM.From);
                 transaction.To = _context.Profiles.Find(transactionVM.To);
@@ -74,10 +74,10 @@ namespace MakerTracker.Controllers
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-                
+
             }
             //TODO: Do some error stuff here later, as right now we'd just return an empty transaction
-            
+
             return View(transactionVM);
         }
 

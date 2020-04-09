@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace MakerTracker.Controllers
 {
     [Authorize()]
-    public class DashboardController : Controller
+    public class DashboardController : BaseController
     {
         private readonly ILogger<DashboardController> _logger;
         private readonly MakerTrackerContext _db;

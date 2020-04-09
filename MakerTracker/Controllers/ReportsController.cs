@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace MakerTracker.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class ReportsController : Controller
+    public class ReportsController : BaseController
     {
         private readonly MakerTrackerContext _context;
 
@@ -55,6 +55,6 @@ namespace MakerTracker.Controllers
             return View(await makers.ToListAsync());
         }
 
-        
+
     }
 }
