@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class InventoryController : ControllerBase
