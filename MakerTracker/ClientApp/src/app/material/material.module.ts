@@ -6,7 +6,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -20,7 +19,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatTableModule,
     MatCardModule,
-    FlexLayoutModule
   ],
   exports: [
     MatInputModule,
@@ -29,7 +27,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatTableModule,
     MatCardModule,
-    FlexLayoutModule
   ]
 })
 export class MaterialModule { }
