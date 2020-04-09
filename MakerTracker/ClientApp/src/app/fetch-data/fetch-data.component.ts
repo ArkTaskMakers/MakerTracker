@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './fetch-data.component.html'
 })
 export class FetchDataComponent {
+  public displayedColumns: string[] = ['productId', 'productName', 'productImageUrl', 'amount'];
   public inventory: InventoryProductSummaryDto[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
