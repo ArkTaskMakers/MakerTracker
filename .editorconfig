@@ -1,0 +1,22 @@
+# http://editorconfig.org
+root = true
+
+# C# files
+[*]
+indent_size = 4
+indent_style = space
+tab_width = 4
+trim_trailing_whitespace = true
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = false
+
+[*.cs]
+#### .NET Coding Conventions ####
+# Organize usings
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = true
+
+[*.{js,ts}]
+indent_size = 2

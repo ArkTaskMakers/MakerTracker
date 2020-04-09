@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MakerTracker.DBModels
 {
@@ -7,6 +8,8 @@ namespace MakerTracker.DBModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        [Display(Name = "Instruction URL")]
         public string InstructionUrl { get; set; }
 
         public bool IsDeprecated { get; set; }

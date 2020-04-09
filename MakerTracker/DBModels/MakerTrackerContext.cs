@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MakerTracker.DBModels;
 
 namespace MakerTracker.DBModels
 {
@@ -15,7 +14,6 @@ namespace MakerTracker.DBModels
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<MakerOrder> MakerOrders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
