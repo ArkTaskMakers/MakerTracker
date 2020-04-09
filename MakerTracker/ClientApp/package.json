@@ -26,7 +26,6 @@
     "@auth0/auth0-spa-js": "^1.6.5",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "aspnet-prerendering": "^3.0.1",
-    "bootstrap": "^4.3.1",
     "core-js": "^3.3.3",
     "jquery": "3.4.1",
     "oidc-client": "^1.9.1",
