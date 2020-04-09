@@ -52,7 +52,8 @@ namespace MakerTracker
                 options.Audience = Configuration["Auth0:ApiIdentifier"];
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = ClaimTypes.NameIdentifier
+                    NameClaimType = ClaimTypes.NameIdentifier,
+                    RoleClaimType = "https://makertracker.com/roles"
                 };
             });
         }
