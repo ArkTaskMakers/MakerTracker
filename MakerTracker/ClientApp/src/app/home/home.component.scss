@@ -1,0 +1,61 @@
+:host {
+  text-align: center;
+}
+
+section {
+  margin: 0 20px;
+}
+
+
+header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url(/img/bg-masthead.jpg) no-repeat center center;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .overlay {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #FFFFFF55;
+    padding: 20px;
+    border-radius: 10px;
+  }
+}
+
+.mat-card-title {
+  margin-bottom: 16px;
+}
+
+.support {
+  max-width: 40%;
+  margin: 100px auto;
+}
+
+.highlight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background: #FFFFFF55;
+  padding: 20px;
+  border-radius: 10px;
+
+  mat-card {
+    max-width: 25%;
+  }
+}
+
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+  }
+}

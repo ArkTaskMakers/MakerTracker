@@ -21,7 +21,7 @@ import { MatListModule } from '@angular/material/list';
     MatTableModule,
     MatCardModule,
     MatSidenavModule,
-    MatListModule,
+    MatListModule
   ],
   exports: [
     MatInputModule,
@@ -31,7 +31,7 @@ import { MatListModule } from '@angular/material/list';
     MatTableModule,
     MatCardModule,
     MatSidenavModule,
-    MatListModule,
+    MatListModule
   ]
 })
 export class MaterialModule { }

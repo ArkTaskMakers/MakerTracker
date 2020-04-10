@@ -11,6 +11,7 @@ import { JWTInterceptorInterceptor } from './jwtinterceptor.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { FooterNavComponent } from './footer-nav/footer-nav.component';
 import { MenuComponent } from './menu/menu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -27,6 +28,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    FooterNavComponent,
     DashboardComponent
   ],
   imports: [
