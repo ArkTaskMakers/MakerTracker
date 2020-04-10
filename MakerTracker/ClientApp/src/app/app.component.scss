@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+app-menu {
+  flex: 0 1;
+}
+
+main {
+  display: block;
+  position: relative;
+  overflow-y: auto;
+  flex: 1 0;
+  flex-direction: column;
+
+  .main-inner {
+    min-height: 100%;
+    flex: 1 0 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    router-outlet {
+      position: absolute;
+    }
+
+    & > :nth-last-child(2) {
+      flex: 1 0;
+    }
+
+    & > :last-child {
+      flex: 0 1;
+    }
+  }
+}
