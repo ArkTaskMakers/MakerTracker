@@ -6,7 +6,7 @@
     </h1>
     <div class="mat-subheading-2">
       Registering an account is simple and free.
-      <a mat-raised-button *ngIf="auth.loggedIn" [routerLink]="['/fetch-data']">
+      <a mat-raised-button *ngIf="auth.loggedIn" [routerLink]="['/dashboard']">
         Go to Dashboard
       </a>
       <button mat-raised-button (click)="auth.login()" *ngIf="!auth.loggedIn">

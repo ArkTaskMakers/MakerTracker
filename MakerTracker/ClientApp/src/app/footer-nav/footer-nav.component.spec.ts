@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FooterNavComponent } from './footer-nav.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 describe('FooterNavComponent', () => {
   let component: FooterNavComponent;
@@ -8,7 +10,8 @@ describe('FooterNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterNavComponent ]
+      declarations: [ FooterNavComponent ],
+      imports: [ MatButtonModule, MatToolbarModule]
     })
     .compileComponents();
   }));
@@ -19,7 +22,17 @@ describe('FooterNavComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should get origin copyright year', () => {
     expect(component).toBeTruthy();
+    const currentYear = new Date().getFullYear();
+    component.originYear = currentYear;
+    expect(component.copyrightYear).toBe(`${currentYear}`);
+  });
+
+  it('should get future copyright year', () => {
+    expect(component).toBeTruthy();
+    const currentYear = new Date().getFullYear();
+    component.originYear = 2015;
+    expect(component.copyrightYear).toBe(`2015-${currentYear}`);
   });
 });

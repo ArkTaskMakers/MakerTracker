@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
+/**
+ * Displays a nav toolbar at the bottom to global pages along with copyright info.
+ */
 @Component({
   selector: 'app-footer-nav',
   templateUrl: './footer-nav.component.html',
   styleUrls: ['./footer-nav.component.css']
 })
-export class FooterNavComponent implements OnInit {
+export class FooterNavComponent {
+  public originYear = 2020;
 
-  copyrightYear: string;
-
-  constructor() {
+  /** gets the formatted copyright year from origin to present. */
+  get copyrightYear(): string {
     const currentYear = new Date().getFullYear();
-    this.copyrightYear = currentYear === 2020 ? '2020' : `2020-${currentYear}`;
-  }
-
-  ngOnInit(): void {
+    return currentYear === this.originYear ? `${this.originYear}` : `${this.originYear}-${currentYear}`;
   }
 }
