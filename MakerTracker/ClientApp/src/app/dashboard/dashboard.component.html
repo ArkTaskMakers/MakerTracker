@@ -1,24 +1,30 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="350px"> 
+  <mat-grid-list cols="2" rowHeight="350px">
 
 
-    <mat-grid-tile  [colspan]="1" [rowspan]="1">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            My Inventory: 
+            My Inventory:
           </mat-card-title>
           <mat-card-subtitle>
             This is what products you already have or have made.
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
+          <mat-list>
+            <mat-list-item *ngFor="let i of inventorySummary">
+              <img matListAvatar src="/img/surgicalmasks.jpg" alt="N95 Mask">
+              <h3 matLine> {{i.productName}} </h3>
+              <div matLine>Current Count: {{i.amount}}</div>
+            </mat-list-item>
+          </mat-list>
         </mat-card-content>
-        <mat-card-actions align="start" >
+        <mat-card-actions align="start">
           <button mat-raised-button color="primary" (click)="openAddInventoryDialog()">Add Product</button>
-       </mat-card-actions>
+        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
 
