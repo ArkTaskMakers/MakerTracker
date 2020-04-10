@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { BackendService } from '../backend/backend.service';
+import { BackendService } from '../services/backend/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddInventoryComponent } from './dialogs/add-inventory/add-inventory.component';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
+import { EditInventoryDto } from 'autogen/EditInventoryDto';
+import { EditInventoryComponent } from './dialogs/edit-inventory/edit-inventory.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,6 +52,19 @@ export class DashboardComponent implements OnInit {
   openAddInventoryDialog(): void {
     const dialogRef = this.dialog.open(AddInventoryComponent, {
       data: <AddInventoryDto>{}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshDashBoard();
+    });
+  }
+
+  openEditInventoryDialog(product: InventoryProductSummaryDto): void {
+    const dialogRef = this.dialog.open(EditInventoryComponent, {
+      data: <EditInventoryDto>{
+        productId: product.productId,
+        newAmount: product.amount
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

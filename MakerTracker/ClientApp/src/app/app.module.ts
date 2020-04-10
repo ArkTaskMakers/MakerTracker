@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inventory.component';
+import { ProductModule } from './product/product.module';
+import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-inventory.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inv
     DashboardComponent,
     AddInventoryComponent,
     FooterNavComponent,
-    DashboardComponent
+    DashboardComponent,
+    EditInventoryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -51,7 +54,8 @@ import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inv
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    LayoutModule
+    LayoutModule,
+    ProductModule
   ],
   providers: [
     {

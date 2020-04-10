@@ -1,0 +1,46 @@
+<mat-card class="dashboard-card" *ngIf="product">
+  <mat-card-header>
+    <mat-card-title>
+      {{ product.id ? 'Editing ' + product.name : 'Add new Product' }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+    <div *ngIf="feedback" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+    <form *ngIf="product" #editForm="ngForm" (ngSubmit)="save()">
+
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="product.name" id="name" name="name" class="form-control"
+          placeholder="Product Name">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="product.description" id="description" name="description" class="form-control"
+          placeholder="Product Description">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Link to Instructions</mat-label>
+        <input matInput [(ngModel)]="product.instructionUrl" id="instructionUrl" name="instructionUrl"
+          class="form-control" placeholder="Link to Instructions">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Image URL</mat-label>
+        <input matInput [(ngModel)]="product.imageUrl" id="imageUrl" name="imageUrl" class="form-control"
+          placeholder="Image URL">
+      </mat-form-field>
+      <br>
+      <mat-slide-toggle [checked]="product.isDeprecated">
+        Is Deprecated
+      </mat-slide-toggle>
+      <br>
+      <br>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.form.valid">Save</button>
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="start">
+  </mat-card-actions>
+</mat-card>

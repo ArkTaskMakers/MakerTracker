@@ -1,20 +1,21 @@
 <h1 mat-dialog-title>Added to My Inventory</h1>
 <div mat-dialog-content>
     <mat-form-field>
-        <mat-label>Product</mat-label>
+        <mat-label>Which Product?</mat-label>
         <select matNativeControl [(ngModel)]="data.productId" name="productId">
             <option *ngFor="let p of products" [ngValue]="p.id">
                 {{p.name}}
             </option>
         </select>
     </mat-form-field>
+    <br>
     <mat-form-field>
-        <mat-label>How many</mat-label>
+        <mat-label>How many do you want to add?</mat-label>
         <input matInput type="number" [(ngModel)]="data.amount" name="amount">
     </mat-form-field>
 
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button (click)="onOkClick()" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onOkClick()" cdkFocusInitial>Add</button>
 </div>

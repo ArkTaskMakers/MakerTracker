@@ -41,6 +41,9 @@
     <None Update="ClientApp\autogen\AddInventoryDto.ts">
       <CustomToolNamespace>Models\AddInventoryDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\EditInventoryDto.ts">
+      <CustomToolNamespace>Models\EditInventoryDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\InventoryProductSummaryDto.ts">
       <CustomToolNamespace>Models\InventoryProductSummaryDto.cs</CustomToolNamespace>
     </None>

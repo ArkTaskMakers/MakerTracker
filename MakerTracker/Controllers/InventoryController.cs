@@ -66,32 +66,45 @@ namespace MakerTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
+        public async Task<IActionResult> PutTransaction(int id, EditInventoryDto model)
         {
-            if (id != transaction.Id)
+            if (id != model.ProductId)
             {
-                return BadRequest();
+                return BadRequest("Product ID's don't match");
             }
 
-            _context.Entry(transaction).State = EntityState.Modified;
+            var profile = this.GetProfile();
+            var product = _context.Products.Find(model.ProductId);
+            var currentAmount = _context.Transactions.Where(x => x.To == profile || x.From == profile)
+                .Where(x => x.Product == product)
+                .Select(t => new
+                {
+                    Amount = t.To == profile ? t.Amount : -1 * t.Amount,
+                })
+                .Sum(x => x.Amount);
 
-            try
+            //positive amount means they are increasing the amount
+            var difference = model.NewAmount - currentAmount;
+
+            if (difference != 0)
             {
+                var transaction = new Transaction()
+                {
+                    Amount = difference,
+                    From = null,
+                    To = profile,
+                    TransactionDate = DateTime.Now,
+                    TransactionType = TransactionType.Stock,
+                    Status = TransactionStatus.Confirmed,
+                    Product = product,
+                    ConfirmationDate = DateTime.Now,
+                };
+
+                _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TransactionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+            return Ok(true);
         }
 
         // POST: api/Inventory
