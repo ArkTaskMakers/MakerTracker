@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { Observable } from 'rxjs';
+import { ProductDto } from 'autogen/ProductDto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class BackendService {
     return this._http.get<InventoryProductSummaryDto[]>(this.baseUrl + 'api/inventory');
   }
 
-  getProductList(): Observable<InventoryProductSummaryDto[]> {
-    return this._http.get<InventoryProductSummaryDto[]>(this.baseUrl + 'api/products');
+  getProductList(): Observable<ProductDto[]> {
+    return this._http.get<ProductDto[]>(this.baseUrl + 'api/products');
   }
 
 }

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
+using MakerTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
@@ -15,17 +18,19 @@ namespace MakerTracker.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly MakerTrackerContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsController(MakerTrackerContext context)
+        public ProductsController(MakerTrackerContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         // GET: api/Products/5

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using AutoMapper;
 using MakerTracker.DBModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,8 +26,9 @@ namespace MakerTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             ConfigureAuth0(services);
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<MakerTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
