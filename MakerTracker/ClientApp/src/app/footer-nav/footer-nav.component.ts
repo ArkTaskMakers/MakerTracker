@@ -20,11 +20,16 @@ export class FooterNavComponent {
     return currentYear === this.originYear ? `${this.originYear}` : `${this.originYear}-${currentYear}`;
   }
 
+  /** Notifies the UI of layout changes */
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay(1)
     );
 
+    /**
+     * Initializes a new instance of the FooterNavComponent class.
+     * @param breakpointObserver observes for reactive breakpoints to notify of layout changes
+     */
   constructor(private breakpointObserver: BreakpointObserver) {}
 }
