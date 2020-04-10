@@ -29,13 +29,10 @@ import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inv
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-<<<<<<< HEAD
     DashboardComponent,
     AddInventoryComponent
-=======
     FooterNavComponent,
     DashboardComponent
->>>>>>> 4bca230830acb2d68d246426a3c64f8d30d88211
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
