@@ -15,11 +15,5 @@ html {
   padding: 0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
-
-main {
-  overflow-y: auto;
-  flex: 1 0;
-  display: block;
-}
-
