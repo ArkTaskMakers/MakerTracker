@@ -14,21 +14,17 @@ namespace MakerTracker.Controllers
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
-    public class InventoryController : ControllerBase
+    public class InventoryController : ApiBaseController
     {
-        private readonly MakerTrackerContext _context;
-
-        public InventoryController(MakerTrackerContext context)
+        public InventoryController(MakerTrackerContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: api/Inventory
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetTransactions()
         {
-            //TODO grab who's auth'ed
-            var profile = new Profile() {Id = 3};
+            var profile = this.GetProfile();
             var transactions = _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Select(t => new
                 {
@@ -102,12 +98,27 @@ namespace MakerTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
+        public async Task<ActionResult<Transaction>> PostTransaction(AddInventoryDto model)
         {
+            var profile = this.GetProfile();
+            var product = _context.Products.Find(model.ProductId);
+            var transaction = new Transaction()
+            {
+                Amount = model.Amount,
+                From = null,
+                To = profile,
+                TransactionDate = DateTime.Now,
+                TransactionType = TransactionType.Stock,
+                Status = TransactionStatus.Confirmed,
+                Product = product,
+                ConfirmationDate = DateTime.Now,
+            };
+
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+            return Ok(true);
+            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
 
         // DELETE: api/Inventory/5

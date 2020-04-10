@@ -11,13 +11,10 @@ namespace MakerTracker.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfilesController : ControllerBase
+    public class ProfilesController : ApiBaseController
     {
-        private readonly MakerTrackerContext _context;
-
-        public ProfilesController(MakerTrackerContext context)
+        public ProfilesController(MakerTrackerContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: api/Profiles

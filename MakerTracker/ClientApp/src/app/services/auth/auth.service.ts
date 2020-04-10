@@ -103,7 +103,7 @@ export class AuthService {
         // Have client, now call method to handle auth callback redirect
         tap(cbRes => {
           // Get and set target redirect route from callback results
-          targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/';
+          targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/dashboard';
         }),
         concatMap(() => {
           // Redirect callback complete; get user and login status

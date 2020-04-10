@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
+import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inventory.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    DashboardComponent
+    DashboardComponent,
+    AddInventoryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

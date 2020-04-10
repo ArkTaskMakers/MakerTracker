@@ -1,4 +1,8 @@
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using MakerTracker.DBModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,7 +61,50 @@ namespace MakerTracker
                     NameClaimType = ClaimTypes.NameIdentifier,
                     RoleClaimType = "https://makertracker.com/roles"
                 };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnTokenValidated = EnsureProfileExists
+                };
             });
+        }
+
+        private static async Task EnsureProfileExists(TokenValidatedContext context)
+        {
+            var db = context.HttpContext.RequestServices.GetRequiredService<MakerTrackerContext>();
+            if (context.SecurityToken is JwtSecurityToken accessToken)
+            {
+                var auth0Id = accessToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+                var profile = await db.Profiles.FirstOrDefaultAsync(p => p.Auth0Id == auth0Id);
+
+                if (profile == null)
+                {
+                    var email = accessToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                    var firstName = accessToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+                    var lastName = accessToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+
+                    profile = new DBModels.Profile()
+                    {
+                        Email = email,
+                        CreatedDate = DateTime.Now,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Auth0Id = auth0Id
+                    };
+                    await db.Profiles.AddAsync(profile);
+                    await db.SaveChangesAsync();
+                }
+
+                var maker = db.Makers.FirstOrDefault(m => m.OwnerProfile == profile);
+                if (maker == null)
+                {
+                    maker = new Maker()
+                    {
+                        OwnerProfile = profile,
+                    };
+                    await db.Makers.AddAsync(maker);
+                    await db.SaveChangesAsync();
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

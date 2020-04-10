@@ -15,14 +15,12 @@ namespace MakerTracker.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController : ApiBaseController
     {
-        private readonly MakerTrackerContext _context;
         private readonly IMapper _mapper;
 
-        public ProductsController(MakerTrackerContext context, IMapper mapper)
+        public ProductsController(MakerTrackerContext context, IMapper mapper) : base(context)
         {
-            _context = context;
             _mapper = mapper;
         }
 

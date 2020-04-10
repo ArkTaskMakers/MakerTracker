@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { BackendService } from '../backend/backend.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddInventoryComponent } from './dialogs/add-inventory/add-inventory.component';
+import { AddInventoryDto } from 'autogen/AddInventoryDto';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +33,20 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, private backend: BackendService) {
+  constructor(private breakpointObserver: BreakpointObserver, private backend: BackendService, public dialog: MatDialog) {
 
   }
+
+  openAddInventoryDialog(): void {
+    const dialogRef = this.dialog.open(AddInventoryComponent, {
+      // width: '250px',
+      data: <AddInventoryDto>{}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      // this.animal = result;
+    });
+  }
+
 }
