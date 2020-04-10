@@ -3,8 +3,7 @@
     <mat-form-field>
         <mat-label>Product</mat-label>
         <select matNativeControl [(ngModel)]="data.productId" name="productId">
-            <option value="" selected></option>
-            <option *ngFor="let p of products" [value]="p.id">
+            <option *ngFor="let p of products" [ngValue]="p.id">
                 {{p.name}}
             </option>
         </select>

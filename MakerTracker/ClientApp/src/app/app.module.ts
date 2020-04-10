@@ -30,7 +30,7 @@ import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inv
     CounterComponent,
     FetchDataComponent,
     DashboardComponent,
-    AddInventoryComponent
+    AddInventoryComponent,
     FooterNavComponent,
     DashboardComponent
   ],
