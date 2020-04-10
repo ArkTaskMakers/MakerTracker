@@ -11,6 +11,7 @@ import { JWTInterceptorInterceptor } from './jwtinterceptor.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { FooterNavComponent } from './footer-nav/footer-nav.component';
 import { MenuComponent } from './menu/menu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -28,8 +29,13 @@ import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inv
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+<<<<<<< HEAD
     DashboardComponent,
     AddInventoryComponent
+=======
+    FooterNavComponent,
+    DashboardComponent
+>>>>>>> 4bca230830acb2d68d246426a3c64f8d30d88211
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
