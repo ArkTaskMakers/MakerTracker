@@ -14,7 +14,7 @@ export class MenuComponent {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
-      shareReplay()
+      shareReplay(1)
     );
 
   constructor(public auth: AuthService, private breakpointObserver: BreakpointObserver) {}
