@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BackendService } from 'src/app/backend/backend.service';
+import { BackendService } from 'src/app/services/backend/backend.service';
 import { ProductDto } from 'autogen/ProductDto';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
 
