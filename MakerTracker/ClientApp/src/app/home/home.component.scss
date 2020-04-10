@@ -35,7 +35,7 @@ header.masthead {
 }
 
 .support {
-  max-width: 40%;
+  padding: 20px;
   margin: 100px auto;
 }
 
@@ -57,5 +57,16 @@ header.masthead {
   header.masthead {
     padding-top: 12rem;
     padding-bottom: 12rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .highlight {
+    flex-direction: column;
+
+    mat-card {
+      max-width: 100%;
+      margin: 10px;
+    }
   }
 }

@@ -1,9 +1,37 @@
-<mat-toolbar>
-  <div class="copyright">&copy; Arkansas Makers Task Force {{copyrightYear}}. All Rights
-          Reserved.</div>
-  <div class="spacer"></div>
-  <button mat-button>About</button>
-  <button mat-button>Contact</button>
-  <button mat-button>Terms of Use</button>
-  <button mat-button>Privacy Policy</button>
-</mat-toolbar>
+<div class="footer-wrapper" [class.handset]="isHandset$ | async">
+  <mat-toolbar>
+    <ng-container *ngIf="isHandset$ | async">
+      <ng-container *ngTemplateOutlet="copyright"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="!(isHandset$ | async); else collapsedMenu">
+      <div class="spacer"></div>
+      <button mat-button>About</button>
+      <button mat-button>Contact</button>
+      <button mat-button>Terms of Use</button>
+      <button mat-button>Privacy Policy</button>
+      <div class="spacer"></div>
+    </ng-container>
+  </mat-toolbar>
+  <ng-container *ngIf="!(isHandset$ | async)">
+    <ng-container *ngTemplateOutlet="copyright"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #copyright>
+  <div class="copyright">
+    &copy; Arkansas Makers Task Force {{ copyrightYear }}. All Rights Reserved.
+  </div>
+</ng-template>
+
+<ng-template #collapsedMenu>
+  <button mat-button [mat-menu-trigger-for]="footerMenu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
+   </button>
+</ng-template>
+
+<mat-menu x-position="before" #footerMenu="matMenu">
+  <button mat-menu-item>About</button>
+  <button mat-menu-item>Contact</button>
+  <button mat-menu-item>Terms of Use</button>
+  <button mat-menu-item>Privacy Policy</button>
+</mat-menu>
