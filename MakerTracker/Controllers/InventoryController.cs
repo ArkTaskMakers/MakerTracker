@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class InventoryController : ControllerBase
