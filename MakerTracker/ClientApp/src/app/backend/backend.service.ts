@@ -22,8 +22,7 @@ export class BackendService {
   }
 
   saveInventory(data: AddInventoryDto): Observable<boolean> {
-    console.log(data);
-    return this._http.post<boolean>(this.baseUrl + 'api/inventory', data).pipe(tap(x=>console.log(x)));
+    return this._http.post<boolean>(this.baseUrl + 'api/inventory', data);
   }
 
   getProductList(): Observable<ProductDto[]> {
