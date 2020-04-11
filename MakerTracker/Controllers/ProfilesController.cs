@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfilesController : ApiBaseController
@@ -19,15 +21,17 @@ namespace MakerTracker.Controllers
 
         // GET: api/Profiles
         [HttpGet]
+        [Authorize(Roles="Admin")]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
             return await _context.Profiles.ToListAsync();
         }
 
         // GET: api/Profiles/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
+        [HttpGet()]
+        public async Task<ActionResult<Profile>> GetProfile()
         {
+            var profile = this.GetProfile();
             var profile = await _context.Profiles.FindAsync(id);
 
             if (profile == null)

@@ -1,9 +1,9 @@
 ﻿namespace MakerTracker.DBModels
 {
-    public class CustomerOrderDetail
+    public class NeedDetail
     {
         public int Id { get; set; }
-        public CustomerOrder CustomerOrder { get; set; }
+        public Need Need{ get; set; }
 
         public Product Product { get; set; }
 

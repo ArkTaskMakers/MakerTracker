@@ -1,4 +1,4 @@
-﻿namespace MakerTracker.Models
+﻿namespace MakerTracker.Models.Inventory
 {
     [TypeScriptModel]
     public class EditInventoryDto

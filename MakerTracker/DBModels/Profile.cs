@@ -43,5 +43,7 @@ namespace MakerTracker.DBModels
                 return $"{FirstName} {LastName} ({Email})";
             }
         }
+
+        public bool IsDropOffPoint { get; set; }
     }
 }

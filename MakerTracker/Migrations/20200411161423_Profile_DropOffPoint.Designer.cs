@@ -4,20 +4,118 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200411161423_Profile_DropOffPoint")]
+    partial class Profile_DropOffPoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MakerTracker.DBModels.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OwnerProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerProfileId");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FulFillByDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RequestedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("CustomerOrder");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerOrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CustomerOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerOrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CustomerOrderDetail");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CustomerStock");
+                });
 
             modelBuilder.Entity("MakerTracker.DBModels.Equipment", b =>
                 {
@@ -117,54 +215,6 @@ namespace MakerTracker.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("MakerOrders");
-                });
-
-            modelBuilder.Entity("MakerTracker.DBModels.Need", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("FulFillByDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RequestedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
-
-                    b.ToTable("Need");
-                });
-
-            modelBuilder.Entity("MakerTracker.DBModels.NeedDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("NeedId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NeedId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("NeedDetail");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Product", b =>
@@ -315,6 +365,42 @@ namespace MakerTracker.Migrations
                     b.ToTable("Transactions");
                 });
 
+            modelBuilder.Entity("MakerTracker.DBModels.Customer", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.Profile", "OwnerProfile")
+                        .WithMany()
+                        .HasForeignKey("OwnerProfileId");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerOrder", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerOrderDetail", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.CustomerOrder", "CustomerOrder")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("CustomerOrderId");
+
+                    b.HasOne("MakerTracker.DBModels.Product", "Product")
+                        .WithMany("OnOrders")
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.CustomerStock", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.Customer", "Customer")
+                        .WithMany("Stocks")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("MakerTracker.DBModels.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("MakerTracker.DBModels.Maker", b =>
                 {
                     b.HasOne("MakerTracker.DBModels.Profile", "OwnerProfile")
@@ -344,24 +430,6 @@ namespace MakerTracker.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MakerTracker.DBModels.Need", b =>
-                {
-                    b.HasOne("MakerTracker.DBModels.Profile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
-                });
-
-            modelBuilder.Entity("MakerTracker.DBModels.NeedDetail", b =>
-                {
-                    b.HasOne("MakerTracker.DBModels.Need", "Need")
-                        .WithMany("NeedDetails")
-                        .HasForeignKey("NeedId");
-
-                    b.HasOne("MakerTracker.DBModels.Product", "Product")
-                        .WithMany("NeedRequests")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.ProductRequirement", b =>

@@ -1,4 +1,5 @@
 ﻿using MakerTracker.DBModels;
+using MakerTracker.Models.Products;
 using Profile = AutoMapper.Profile;
 
 namespace MakerTracker.Models
