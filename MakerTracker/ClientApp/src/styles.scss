@@ -18,6 +18,24 @@ html {
   overflow: hidden;
 }
 
+.mat-card-header {
+  &.title-with-button {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 12px;
+
+    .mat-card-header-text {
+      margin-bottom: 0;
+    }
+
+    .mat-card-title {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .product-preview {
   height: 60px !important;
   width: 60px !important;

@@ -2,15 +2,14 @@
   <mat-grid-list cols="1" rowHeight="350px">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="dashboard-card">
-        <mat-card-header>
+        <mat-card-header class="title-with-button">
           <mat-card-title>
-            Products List
+            <span>Products List</span>
           </mat-card-title>
+          <a mat-raised-button [routerLink]="['../products', 'new' ]"><mat-icon>add</mat-icon> New</a>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
           <mat-list *ngIf="productList.length > 0">
-            <a [routerLink]="['../products', 'new' ]" class="btn btn-default">New</a>
-
             <mat-list-item *ngFor="let item of productList">
               <img class="productImage" matListAvatar [src]="item.imageUrl" [alt]="item.name">
               <h3 matLine>{{item.name}}</h3>
