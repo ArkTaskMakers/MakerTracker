@@ -93,24 +93,9 @@
 
       <div class="row">
         <div class="col">
-          <mat-slide-toggle formControlName="isSelfQuarantined">
-            Are you in self quarantine?
-          </mat-slide-toggle>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mat-slide-toggle formControlName="isDropOffPoint">
-              Are you a drop-off point?
-            </mat-slide-toggle>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number"
-              formControlName="postalCode">
-            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+            <input matInput maxlength="5" placeholder="Zip Code" type="text"
+              formControlName="zipCode">
           </mat-form-field>
         </div>
       </div>
@@ -118,9 +103,25 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #postalCode placeholder="About me" type="text" formControlName="bio">
+            <textarea matInput placeholder="About Me" formControlName="bio" rows="3"></textarea>
             <mat-hint align="start">Tell us about yourself.</mat-hint>
           </mat-form-field>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle formControlName="isSelfQuarantined">
+            Are you in self quarantine?
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle formControlName="isDropOffPoint">
+            Are you a drop-off point?
+          </mat-slide-toggle>
         </div>
       </div>
 

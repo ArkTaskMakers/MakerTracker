@@ -10,7 +10,8 @@ namespace MakerTracker.Models
         public AutoMappingProfiles()
         {
             CreateMap<Product, ProductDto>();
-            CreateMap<Profile, ProfileDto>();
+            CreateMap<DBModels.Profile, ProfileDto>();
+            CreateMap<UpdateProfileDto, DBModels.Profile>();
         }
     }
 }

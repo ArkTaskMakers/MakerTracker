@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    [Migration("20200411194000_ProfileFields")]
+    [Migration("20200411200737_ProfileFields")]
     partial class ProfileFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -243,8 +243,8 @@ namespace MakerTracker.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("CompanyName")
-                        .HasColumnType("bit");
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -255,10 +255,10 @@ namespace MakerTracker.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDropOffPoint")
+                    b.Property<bool?>("IsDropOffPoint")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsSelfQuarantined")
+                    b.Property<bool?>("IsSelfQuarantined")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")

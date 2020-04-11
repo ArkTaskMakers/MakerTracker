@@ -27,14 +27,6 @@ namespace MakerTracker.Controllers
         }
 
         // GET: api/Profiles
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<ProfileDto>>> GetProfiles()
-        {
-            return await _context.Profiles.ProjectTo<ProfileDto>(_mapper.ConfigurationProvider).ToListAsync();
-        }
-
-        // GET: api/Profiles/5
         [HttpGet()]
         public async Task<ActionResult<ProfileDto>> GetProfile()
         {
