@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
+using MakerTracker.Models.Products;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers

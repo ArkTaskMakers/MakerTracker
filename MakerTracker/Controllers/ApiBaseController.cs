@@ -12,7 +12,7 @@ namespace MakerTracker.Controllers
         {
             _context = context;
         }
-        protected Profile GetProfile()
+        protected Profile GetLoggedInProfile()
         {
             var auth0Id = User.Identity.Name;
             if (!string.IsNullOrWhiteSpace(auth0Id))

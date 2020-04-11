@@ -1,5 +1,6 @@
 ﻿using MakerTracker.DBModels;
 using MakerTracker.Models.Products;
+using MakerTracker.Models.Profiles;
 using Profile = AutoMapper.Profile;
 
 namespace MakerTracker.Models
@@ -9,6 +10,7 @@ namespace MakerTracker.Models
         public AutoMappingProfiles()
         {
             CreateMap<Product, ProductDto>();
+            CreateMap<Profile, ProfileDto>();
         }
     }
 }
