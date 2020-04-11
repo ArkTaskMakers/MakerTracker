@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
 using MakerTracker.Models;
+using MakerTracker.Models.Inventory;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MakerTracker.Controllers
@@ -24,7 +25,7 @@ namespace MakerTracker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetTransactions()
         {
-            var profile = this.GetProfile();
+            var profile = this.GetLoggedInProfile();
             var transactions = _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Select(t => new
                 {
@@ -73,7 +74,7 @@ namespace MakerTracker.Controllers
                 return BadRequest("Product ID's don't match");
             }
 
-            var profile = this.GetProfile();
+            var profile = this.GetLoggedInProfile();
             var product = _context.Products.Find(model.ProductId);
             var currentAmount = _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Where(x => x.Product == product)
@@ -113,7 +114,7 @@ namespace MakerTracker.Controllers
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(AddInventoryDto model)
         {
-            var profile = this.GetProfile();
+            var profile = this.GetLoggedInProfile();
             var product = _context.Products.Find(model.ProductId);
             var transaction = new Transaction()
             {

@@ -16,7 +16,7 @@ namespace MakerTracker.DBModels
 
         public string ImageUrl { get; set; }
 
-        public ICollection<CustomerOrderDetail> OnOrders { get; set; } = new List<CustomerOrderDetail>();
+        public ICollection<NeedDetail> NeedRequests{ get; set; } = new List<NeedDetail>();
 
         public ICollection<MakerOrder> InMakerQueues { get; set; } = new List<MakerOrder>();
 

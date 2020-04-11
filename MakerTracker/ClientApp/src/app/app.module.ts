@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { JWTInterceptorInterceptor } from './jwtinterceptor.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,19 +21,22 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inventory.component';
 import { ProductModule } from './product/product.module';
 import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-inventory.component';
+import { UpdateProfileComponent } from './Profiles/update-profile/update-profile.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     DashboardComponent,
     AddInventoryComponent,
     FooterNavComponent,
     DashboardComponent,
-    EditInventoryComponent
+    EditInventoryComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -43,9 +44,8 @@ import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'profile', component: UpdateProfileComponent, canActivate: [AuthGuard] },
     ]),
     BrowserAnimationsModule,
     MaterialModule,
@@ -55,7 +55,11 @@ import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-
     MatIconModule,
     MatButtonModule,
     LayoutModule,
-    ProductModule
+    ProductModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

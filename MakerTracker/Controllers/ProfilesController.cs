@@ -2,33 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MakerTracker.DBModels;
+using MakerTracker.Models.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Profile = MakerTracker.DBModels.Profile;
 
 namespace MakerTracker.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfilesController : ApiBaseController
     {
-        public ProfilesController(MakerTrackerContext context) : base(context)
+        private readonly IMapper _mapper;
+
+        public ProfilesController(MakerTrackerContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         // GET: api/Profiles
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
+        [HttpGet()]
+        public async Task<ActionResult<ProfileDto>> GetProfile()
         {
-            return await _context.Profiles.ToListAsync();
-        }
-
-        // GET: api/Profiles/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
+            var profile = _mapper.Map<ProfileDto>(this.GetLoggedInProfile());
 
             if (profile == null)
             {
@@ -39,51 +41,23 @@ namespace MakerTracker.Controllers
         }
 
         // PUT: api/Profiles/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
+        [HttpPut()]
+        public async Task<IActionResult> PutProfile(UpdateProfileDto model)
         {
-            if (id != profile.Id)
-            {
-                return BadRequest();
-            }
+            var profile = this.GetLoggedInProfile();
 
-            _context.Entry(profile).State = EntityState.Modified;
+            var updatedProfile = _mapper.Map(model, profile);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.Entry(updatedProfile).State = EntityState.Modified;
 
-            return NoContent();
-        }
-
-        // POST: api/Profiles
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
-        {
-            _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+            return Ok(true);
         }
 
         // DELETE: api/Profiles/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Profile>> DeleteProfile(int id)
         {
             var profile = await _context.Profiles.FindAsync(id);
@@ -96,11 +70,6 @@ namespace MakerTracker.Controllers
             await _context.SaveChangesAsync();
 
             return profile;
-        }
-
-        private bool ProfileExists(int id)
-        {
-            return _context.Profiles.Any(e => e.Id == id);
         }
     }
 }

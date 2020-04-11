@@ -1,4 +1,4 @@
-﻿namespace MakerTracker.Models
+﻿namespace MakerTracker.Models.Products
 {
     [TypeScriptModel]
     public class ProductDto

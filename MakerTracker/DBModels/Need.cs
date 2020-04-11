@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace MakerTracker.DBModels
 {
-    public class CustomerOrder
+    public class Need   
     {
         public int Id { get; set; }
-        public Customer Customer { get; set; }
+        public Profile Profile{ get; set; }
 
         public DateTime RequestedOn { get; set; }
         public DateTime FulFillByDate  { get; set; }
 
-        public ICollection<CustomerOrderDetail> OrderDetails { get; set; } = new List<CustomerOrderDetail>();
+        public ICollection<NeedDetail> NeedDetails { get; set; } = new List<NeedDetail>();
     }
 }

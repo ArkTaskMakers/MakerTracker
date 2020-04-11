@@ -4,14 +4,16 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200411161954_NeedTables")]
+    partial class NeedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,9 +231,6 @@ namespace MakerTracker.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Address2")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Auth0Id")
                         .HasColumnType("nvarchar(max)");
 
@@ -239,9 +238,6 @@ namespace MakerTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -253,10 +249,10 @@ namespace MakerTracker.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsDropOffPoint")
+                    b.Property<bool>("IsDropOffPoint")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsSelfQuarantined")
+                    b.Property<bool>("IsSelfQuarantined")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")

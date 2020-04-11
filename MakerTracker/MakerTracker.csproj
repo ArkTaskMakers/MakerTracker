@@ -50,6 +50,16 @@
     <None Update="ClientApp\autogen\ProductDto.ts">
       <CustomToolNamespace>Models\ProductDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\ProfileDto.ts">
+      <CustomToolNamespace>Models\Profiles\ProfileDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\UpdateProfileDto.ts">
+      <CustomToolNamespace>Models\Profiles\UpdateProfileDto.cs</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Inventory\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -4,8 +4,9 @@ import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { Observable } from 'rxjs';
 import { ProductDto } from 'autogen/ProductDto';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
-import { tap } from 'rxjs/operators';
 import { EditInventoryDto } from 'autogen/EditInventoryDto';
+import { ProfileDto } from 'autogen/ProfileDto';
+import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,13 @@ export class BackendService {
 
   getProduct(id: number): Observable<ProductDto> {
     return this._http.get<ProductDto>(`${this.baseUrl}api/products/${id}`);
+  }
+
+  getProfile(): Observable<ProfileDto> {
+    return this._http.get<ProfileDto>(`${this.baseUrl}api/profiles`);
+  }
+
+  saveProfile(request: UpdateProfileDto): Observable<boolean> {
+    return this._http.put<boolean>(`${this.baseUrl}api/profiles`, request);
   }
 }
