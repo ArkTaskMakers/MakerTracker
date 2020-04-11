@@ -5,6 +5,8 @@ export class ProfileDto {
 
     id: number;
 
+    companyName: string;
+
     firstName: string;
 
     lastName: string;
@@ -16,6 +18,8 @@ export class ProfileDto {
     email: string;
 
     address: string;
+
+    address2: string;
 
     city: string;
 

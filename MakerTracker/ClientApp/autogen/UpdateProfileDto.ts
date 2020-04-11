@@ -5,6 +5,8 @@ export class UpdateProfileDto {
 
     id: number;
 
+    companyName: string;
+
     firstName: string;
 
     lastName: string;
@@ -16,6 +18,8 @@ export class UpdateProfileDto {
     email: string;
 
     address: string;
+
+    address2: string;
 
     city: string;
 

@@ -49,14 +49,10 @@ namespace MakerTracker.Controllers
         }
 
         // PUT: api/Profiles/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfile(int id, UpdateProfileDto model)
+        [HttpPut()]
+        public async Task<IActionResult> PutProfile(UpdateProfileDto model)
         {
             var profile = this.GetLoggedInProfile();
-            if (id != profile.Id)
-            {
-                return BadRequest();
-            }
 
             var updatedProfile = _mapper.Map(model, profile);
 

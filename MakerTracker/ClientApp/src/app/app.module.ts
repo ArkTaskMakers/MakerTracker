@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -21,6 +21,10 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inventory.component';
 import { ProductModule } from './product/product.module';
 import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-inventory.component';
+import { UpdateProfileComponent } from './Profiles/update-profile/update-profile.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-
     AddInventoryComponent,
     FooterNavComponent,
     DashboardComponent,
-    EditInventoryComponent
+    EditInventoryComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,6 +45,7 @@ import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'profile', component: UpdateProfileComponent, canActivate: [AuthGuard] },
     ]),
     BrowserAnimationsModule,
     MaterialModule,
@@ -49,7 +55,11 @@ import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-
     MatIconModule,
     MatButtonModule,
     LayoutModule,
-    ProductModule
+    ProductModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
