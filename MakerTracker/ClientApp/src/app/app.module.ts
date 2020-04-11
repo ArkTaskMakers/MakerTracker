@@ -25,6 +25,8 @@ import { UpdateProfileComponent } from './Profiles/update-profile/update-profile
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { EquipmentService } from './services/backend/crud/equipment.service';
+import { EquipmentModule } from './equipment/equipment.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { MatRadioModule } from '@angular/material/radio';
     FooterNavComponent,
     DashboardComponent,
     EditInventoryComponent,
-    UpdateProfileComponent
+    UpdateProfileComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -56,6 +58,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatButtonModule,
     LayoutModule,
     ProductModule,
+    EquipmentModule,
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
@@ -66,7 +69,8 @@ import { MatRadioModule } from '@angular/material/radio';
       provide: HTTP_INTERCEPTORS,
       useClass: JWTInterceptorInterceptor,
       multi: true
-    }
+    },
+    EquipmentService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,29 +1,29 @@
-﻿namespace MakerTracker.DBModels
+namespace MakerTracker.Models.Equipment
 {
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    ///     Model class representing the connection between a maker and equipment with metadata.
+    ///     Data transfer object for an equipment assignment to a maker
     /// </summary>
-    public class MakerEquipment
+    [TypeScriptModel]
+    public class MakerEquipmentDto
     {
         /// <summary>
         ///     Gets or sets the identifier.
         /// </summary>
-        [Key]
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the maker who owns the equipment.
+        ///     Gets or sets the maker identifier.
         /// </summary>
         [Required]
-        public Maker Maker { get; set; }
+        public int MakerId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the equipment the maker owns.
+        ///     Gets or sets the equipment identifier.
         /// </summary>
         [Required]
-        public Equipment Equipment { get; set; }
+        public int EquipmentId { get; set; }
 
         /// <summary>
         ///     Gets or sets the manufacturer of the equipment owned.
@@ -32,7 +32,7 @@
         public string Manufacturer { get; set; }
 
         /// <summary>
-        ///     Gets or sets the model number of the equipment owned.
+        /// Gets or sets the model number of the equipment owned.
         /// </summary>
         [MaxLength(100)]
         public string ModelNumber { get; set; }
