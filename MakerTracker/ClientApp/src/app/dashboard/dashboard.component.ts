@@ -72,4 +72,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  openDeliveryInventoryDialog(product: InventoryProductSummaryDto): void {
+    // const dialogRef = this.dialog.open(EditInventoryComponent, {
+    //   data: <EditInventoryDto>{
+    //     productId: product.productId,
+    //     newAmount: product.amount
+    //   }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.refreshDashBoard();
+    // });
+  }
+
 }

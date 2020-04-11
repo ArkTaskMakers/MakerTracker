@@ -11,6 +11,7 @@ import { AddInventoryDto } from 'autogen/AddInventoryDto';
 })
 export class AddInventoryComponent implements OnInit {
   products: ProductDto[];
+  public selectedProduct: ProductDto;
 
   constructor(
     private backend: BackendService,
@@ -36,5 +37,9 @@ export class AddInventoryComponent implements OnInit {
         // error!
       }
     });
+  }
+
+  onProductChange(productId: number) {
+    this.selectedProduct = this.products.filter(p => p.id === productId)[0];
   }
 }
