@@ -19,7 +19,6 @@ What things you need to install the software and how to install them
 A step by step series of examples that tell you how to get a development env running
 
 1. Clone this repo!
-Say what the step will be
 2. Setup up your local sql database
 ```
  // Run from the same folder as the .sln
