@@ -14,10 +14,11 @@
         <mat-card-content class="dashboard-card-content">
           <mat-list>
             <mat-list-item *ngFor="let i of inventorySummary">
-              <img matListAvatar src="/img/surgicalmasks.jpg" alt="N95 Mask">
+              <img matListAvatar class="product-preview" [src]="i.productImageUrl" [alt]="i.productName">
               <h3 matLine> {{i.productName}} </h3>
               <div matLine>You have: <span class="mat-body-2">{{i.amount}} </span></div>
-              <button mat-button color="accent" (click)="openEditInventoryDialog(i)">Update Count</button>
+              <button mat-button color="secondary" (click)="openDeliveryInventoryDialog(i)">Deliver</button>
+              <button mat-button color="primary" (click)="openEditInventoryDialog(i)">Update Count</button>
             </mat-list-item>
           </mat-list>
         </mat-card-content>

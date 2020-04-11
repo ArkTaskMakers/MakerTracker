@@ -23,3 +23,13 @@
     flex-grow: 1;
     overflow: auto;
   }
+
+  .productImage {
+    width:50px !important;
+    height:50px !important;
+    border-radius: 25% !important;
+  }
+
+  .mat-list-item:nth-child(2n){
+    background-color: #f5f5f5;
+}

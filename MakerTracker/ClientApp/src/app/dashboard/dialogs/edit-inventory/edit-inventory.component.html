@@ -3,11 +3,12 @@
 <div mat-dialog-content>
     <mat-list>
         <mat-list-item>
-            <img matListAvatar src="/img/surgicalmasks.jpg" alt="N95 Mask">
+            <img matListAvatar class="product-preview" [src]="product.imageUrl" [alt]="product.name">
             <h3 matLine> {{product.name}} </h3>
             <div matLine>{{product.description }} </div>
         </mat-list-item>
     </mat-list>
+    <br>
     <mat-form-field>
         <mat-label>New Amount</mat-label>
         <input matInput type="number" [(ngModel)]="data.newAmount" name="newAmount" min="0" max="10000">
