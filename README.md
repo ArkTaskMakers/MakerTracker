@@ -1,6 +1,8 @@
 # Maker Tracker
 
-This app is intended to allow Makers self-report on their progress creating PPE (Personal Protection Equipment)-related items. 
+This app is intended to give the ability for a community to monitor the supply and demand of PPE (Personal Protection Equipment). 
+
+"Makers"  are able self-report on their progress for sourcing and creating PPE related items. Hospitals/Clinics/etc are able to request PPE from their community. And finally these groups of people are able to see in real-time the logistical information of where items are going.
 
 ## Getting Started
 
