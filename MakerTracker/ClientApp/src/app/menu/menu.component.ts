@@ -22,6 +22,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   menuItemTypes = MenuItemTypes;
   menuItems: BaseMenuItem[] = [
     new RouteMenuItem({
+      text: "My Profile",
+      route: ["/profile"],
+      requiresAuth: true,
+    }),
+    new RouteMenuItem({
       text: "My Dashboard",
       route: ["/dashboard"],
       requiresAuth: true,
