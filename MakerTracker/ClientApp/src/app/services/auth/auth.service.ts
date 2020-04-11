@@ -28,8 +28,10 @@ export class AuthService {
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
-    tap(res => this.loggedIn = res)
+    tap(res => this.loggedIn = res),
+    tap(res => this.isLoggedIn$.next(res))
   );
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
   handleRedirectCallback$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
   );

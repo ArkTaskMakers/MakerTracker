@@ -1,16 +1,44 @@
 <mat-toolbar color="primary">
-  <!-- <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async">
-    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-  </button> -->
   <a mat-button [routerLink]="['/']">Maker Tracker</a>
   <div class="spacer"></div>
-  <button mat-button [matMenuTriggerFor]="appMenu">Pages</button>
-  <button mat-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</button>
-  <button mat-button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>
+  <ng-container *ngIf="!isCollapsed; else collapsedMenu">
+    <ng-container *ngFor="let item of filteredMenuItems | async">
+      <ng-container *ngIf="!item.isDivider; else verticalDivider">
+        <!-- TODO: Add support for dropdown menus -->
+        <ng-container *ngTemplateOutlet="item.route ? routeItem : actionItem; context: { $implicit: item }">
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
 </mat-toolbar>
 
-<mat-menu #appMenu="matMenu">
-  <button mat-menu-item [routerLink]="['/dashboard']">Dashboard</button>
-  <button mat-menu-item [routerLink]="['/products']">Manage Products</button>
+<ng-template #collapsedMenu>
+  <button mat-button [mat-menu-trigger-for]="headerMenu">
+    <mat-icon>menu</mat-icon>
+   </button>
+</ng-template>
+
+<mat-menu #headerMenu="matMenu">
+  <ng-container *ngFor="let item of filteredMenuItems | async">
+    <ng-container *ngIf="!item.isDivider; else divider">
+      <ng-container *ngTemplateOutlet="item.route ? routeItem : actionItem; context: { $implicit: item }">
+      </ng-container>
+    </ng-container>
+  </ng-container>
 </mat-menu>
+
+<ng-template #verticalDivider>
+  <mat-divider [vertical]="true"></mat-divider>
+</ng-template>
+
+<ng-template #divider>
+  <mat-divider></mat-divider>
+</ng-template>
+
+<ng-template #routeItem let-item>
+  <button mat-button [routerLink]="item.route">{{ item.text }}</button>
+</ng-template>
+
+<ng-template #actionItem let-item>
+  <button mat-button (click)="item.action()">{{ item.text }}</button>
+</ng-template>
