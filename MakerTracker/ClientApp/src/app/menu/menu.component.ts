@@ -1,14 +1,16 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import {
-  Observable,
-  BehaviorSubject,
-  Subject,
-  Subscription,
-  ReplaySubject,
-} from "rxjs";
+import { Observable, BehaviorSubject, Subscription } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { AuthService } from "../services/auth/auth.service";
+import {
+  RouteMenuItem,
+  ActionMenuItem,
+  DropdownMenuItem,
+  BaseMenuItem,
+  MenuItemTypes,
+  DividerMenuItem,
+} from "./model";
 
 @Component({
   selector: "app-menu",
@@ -17,44 +19,45 @@ import { AuthService } from "../services/auth/auth.service";
 })
 export class MenuComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[];
-
-  menuItems: (IActionMenuItem | IRouteMenuItem | IDividerMenuItem | IDropdownMenuItem)[] = [
-    {
+  menuItemTypes = MenuItemTypes;
+  menuItems: BaseMenuItem[] = [
+    new RouteMenuItem({
       text: "My Dashboard",
       route: ["/dashboard"],
       requiresAuth: true,
-    },
-    {
-      isDivider: true,
+    }),
+    new DividerMenuItem({
       requiresAuth: true,
       // TODO: requiresAdmin: true
-    },
-    {
-      text: "Manage Products",
-      route: ["/products"],
+    }),
+    new DropdownMenuItem({
+      text: "Admin",
       requiresAuth: true,
-      // TODO: requiresAdmin: true,
-    },
-    {
+      // TODO: requiresAdmin: true
+      items: [
+        new RouteMenuItem({
+          text: "Manage Products",
+          route: ["/products"],
+        }),
+      ],
+    }),
+    new DividerMenuItem({
       requiresAuth: true,
-      isDivider: true,
-    },
-    {
+    }),
+    new ActionMenuItem({
       text: "Log In",
       action: () => this.auth.login(),
       requiresAnon: true,
-    },
-    {
+    }),
+    new ActionMenuItem({
       text: "Log Out",
       action: () => this.auth.logout(),
       requiresAuth: true,
-    },
+    }),
   ];
 
-  filteredMenuItems: BehaviorSubject<
-    (IActionMenuItem | IRouteMenuItem | IDividerMenuItem | IDropdownMenuItem)[]
-  > = new BehaviorSubject<
-    (IActionMenuItem | IRouteMenuItem | IDividerMenuItem | IDropdownMenuItem)[]
+  filteredMenuItems: BehaviorSubject<BaseMenuItem[]> = new BehaviorSubject<
+    BaseMenuItem[]
   >(this.menuItems.filter((i) => !i.requiresAuth));
 
   isCollapsed: boolean = false;
@@ -69,8 +72,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   constructor(
     public auth: AuthService,
     private breakpointObserver: BreakpointObserver
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this._subscriptions = [
@@ -96,29 +98,4 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
     this._subscriptions = null;
   }
-}
-
-interface IActionMenuItem extends IBaseMenuItem {
-  text: string;
-  action: Function;
-}
-
-interface IDropdownMenuItem extends IBaseMenuItem {
-  text: string;
-  items: (IActionMenuItem | IRouteMenuItem | IDividerMenuItem)[];
-}
-
-interface IRouteMenuItem extends IBaseMenuItem {
-  text: string;
-  route: string[];
-}
-
-interface IDividerMenuItem extends IBaseMenuItem {
-  isDivider: boolean;
-}
-
-interface IBaseMenuItem {
-  requiresAuth?: boolean;
-  requiresAdmin?: boolean;
-  requiresAnon?: boolean;
 }
