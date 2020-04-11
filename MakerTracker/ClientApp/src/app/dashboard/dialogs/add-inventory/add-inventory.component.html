@@ -2,7 +2,8 @@
 <div mat-dialog-content>
     <mat-form-field>
         <mat-label>Which Product?</mat-label>
-        <select matNativeControl [(ngModel)]="data.productId" name="productId">
+        <select matNativeControl [(ngModel)]="data.productId" name="productId"
+            (ngModelChange)="onProductChange($event)">
             <option *ngFor="let p of products" [ngValue]="p.id">
                 {{p.name}}
             </option>
@@ -13,7 +14,12 @@
         <mat-label>How many do you want to add?</mat-label>
         <input matInput type="number" [(ngModel)]="data.amount" name="amount">
     </mat-form-field>
-
+    <br>
+    <div *ngIf="!!selectedProduct">
+        <img class="product-preview" [src]="selectedProduct.imageUrl" alt="">
+        <br>
+        <div class="mat-body">{{ selectedProduct.description }} </div>
+    </div>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
