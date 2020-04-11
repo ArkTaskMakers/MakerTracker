@@ -3,8 +3,6 @@
 
 export class UpdateProfileDto {
 
-    id: number;
-
     companyName: string;
 
     firstName: string;

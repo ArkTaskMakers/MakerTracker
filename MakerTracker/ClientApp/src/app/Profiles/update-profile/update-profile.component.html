@@ -54,14 +54,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row" *ngIf="!hasUnitNumber">
-        <div class="col">
-          <button mat-button type="button" (click)="hasUnitNumber = !hasUnitNumber">
-            + Add C/O, Apt, Suite, Unit
-          </button>
-        </div>
-      </div>
-      <div class="row" *ngIf="hasUnitNumber">
+      <div class="row" >
         <div class="col">
           <mat-form-field class="full-width">
             <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
@@ -99,7 +92,7 @@
           </mat-form-field>
         </div>
       </div>
-
+<br><br>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
@@ -108,7 +101,7 @@
           </mat-form-field>
         </div>
       </div>
-      <br>
+      <br><br>
       <div class="row">
         <div class="col">
           <mat-slide-toggle formControlName="isSelfQuarantined">
@@ -124,11 +117,11 @@
           </mat-slide-toggle>
         </div>
       </div>
-
+      <br><br>
 
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit" [disable]="loading">Submit</button>
     </mat-card-actions>
   </mat-card>
 </form>

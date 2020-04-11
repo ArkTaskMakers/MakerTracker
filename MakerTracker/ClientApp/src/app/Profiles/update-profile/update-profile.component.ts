@@ -22,15 +22,13 @@ export class UpdateProfileComponent implements OnInit {
     state: [null, Validators.required],
     bio: null,
     phone: null,
-    email: [null, [ Validators.required, Validators.email]],
+    email: [null, [Validators.required, Validators.email]],
     isSelfQuarantined: null,
     isDropOffPoint: null,
     zipCode: [null, Validators.compose([
       Validators.required, Validators.minLength(5), Validators.maxLength(5)])
     ],
   });
-
-  hasUnitNumber = false;
 
   states = [
     { name: 'Alabama', abbreviation: 'AL' },
@@ -93,6 +91,7 @@ export class UpdateProfileComponent implements OnInit {
     { name: 'Wisconsin', abbreviation: 'WI' },
     { name: 'Wyoming', abbreviation: 'WY' }
   ];
+  loading: boolean;
 
   constructor(private fb: FormBuilder, private backend: BackendService, private _snackBar: MatSnackBar) { }
 
@@ -101,10 +100,19 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    this.backend.saveProfile(this.profileForm.value as UpdateProfileDto).subscribe(x => {
-      this._snackBar.open('Updated your profile!', null, {
+    if (!this.profileForm.valid) {
+      this._snackBar.open('Please Validate your Profile', null, {
         duration: 2000,
       });
+      return;
+    }
+
+    this.loading = true;
+    this.backend.saveProfile(this.profileForm.value as UpdateProfileDto).subscribe(x => {
+      this._snackBar.open('Your profile is Updated!', null, {
+        duration: 2000,
+      });
+      this.loading = false;
     });
   }
 
