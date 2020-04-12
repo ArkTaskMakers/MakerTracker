@@ -69,7 +69,7 @@ $md-myaccent: (
 );
 
 
-$primary: mat-palette($md-myprimary, 900);
+$primary: mat-palette($md-myprimary, 700);
 $accent: mat-palette($md-myaccent, 500);
 
 $theme: mat-light-theme($primary, $accent);
