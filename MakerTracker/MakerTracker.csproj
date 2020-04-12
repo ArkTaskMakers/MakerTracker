@@ -62,6 +62,12 @@
     <Folder Include="Models\Inventory\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\bg-dashboard.jpg" />
+    <None Include="wwwroot\img\bg-landing.jpg" />
+    <None Include="wwwroot\img\bg-profile.jpg" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

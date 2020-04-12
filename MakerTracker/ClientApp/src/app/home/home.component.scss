@@ -8,9 +8,9 @@ section {
 
 
 header.masthead {
+  color: white;
   position: relative;
-  background-color: #343a40;
-  background: url(/img/bg-masthead.jpg) no-repeat center center;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1.0)), url("/img/bg-landing.jpg") no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -20,14 +20,7 @@ header.masthead {
   justify-content: center;
   flex-direction: column;
 
-  .overlay {
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background: #FFFFFF55;
-    padding: 20px;
-    border-radius: 10px;
-  }
+ 
 }
 
 .mat-card-title {
@@ -56,8 +49,8 @@ header.masthead {
 
 @media (min-width: 768px) {
   header.masthead {
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 }
 

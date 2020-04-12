@@ -1,8 +1,16 @@
+<header class="masthead text-center">
+  <div class="mat-display-1 overlay">
+    <h1>
+      Your Profile
+    </h1>
+    <div class="mat-subheading-2">
+      Tell us about yourself so we can help connect you to others.
+    </div>
+  </div>
+</header>
+
 <form [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="shipping-card">
-    <mat-card-header>
-      <mat-card-title>My Profile</mat-card-title>
-    </mat-card-header>
+  <mat-card>
     <mat-card-content>
       <div class="row">
         <div class="col">
@@ -54,7 +62,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row" >
+      <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
             <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
@@ -87,12 +95,11 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput maxlength="5" placeholder="Zip Code" type="text"
-              formControlName="zipCode">
+            <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode">
           </mat-form-field>
         </div>
       </div>
-<br><br>
+      <br><br>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">

@@ -26,6 +26,10 @@ export class MenuComponent implements OnInit, OnDestroy {
       route: ["/profile"],
       requiresAuth: true,
     }),
+    new DividerMenuItem({
+      requiresAuth: true,
+      // TODO: requiresAdmin: true
+    }),
     new RouteMenuItem({
       text: "My Dashboard",
       route: ["/dashboard"],
