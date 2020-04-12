@@ -1,12 +1,12 @@
-namespace MakerTracker.DBModels
+namespace MakerTracker.Models.Equipment
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    ///     Model class representing a type of equipment that can be owned and used by makers.
+    ///     Data transfer object for equipment
     /// </summary>
-    public class Equipment
+    [TypeScriptModel]
+    public class EquipmentDto
     {
         /// <summary>
         ///     Gets or sets the identifier.
@@ -16,8 +16,8 @@ namespace MakerTracker.DBModels
         /// <summary>
         ///     Gets or sets the name.
         /// </summary>
-        [MaxLength(100)]
         [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
 
         /// <summary>
@@ -25,10 +25,5 @@ namespace MakerTracker.DBModels
         /// </summary>
         [MaxLength(500)]
         public string Description { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the existing connections where this equipment is used by a maker.
-        /// </summary>
-        public ICollection<MakerEquipment> UsedBy { get; set; } = new List<MakerEquipment>();
     }
 }

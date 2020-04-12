@@ -44,6 +44,10 @@ export class MenuComponent implements OnInit, OnDestroy {
           text: "Manage Products",
           route: ["/products"],
         }),
+        new RouteMenuItem({
+          text: "Manage Equipment",
+          route: ["/equipment"],
+        }),
       ],
     }),
     new DividerMenuItem({
