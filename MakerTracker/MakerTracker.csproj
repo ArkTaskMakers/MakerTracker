@@ -44,8 +44,14 @@
     <None Update="ClientApp\autogen\EditInventoryDto.ts">
       <CustomToolNamespace>Models\EditInventoryDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\EquipmentDto.ts">
+      <CustomToolNamespace>Models\Equipment\EquipmentDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\InventoryProductSummaryDto.ts">
       <CustomToolNamespace>Models\InventoryProductSummaryDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\MakerEquipmentDto.ts">
+      <CustomToolNamespace>Models\Equipment\MakerEquipmentDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProductDto.ts">
       <CustomToolNamespace>Models\ProductDto.cs</CustomToolNamespace>
