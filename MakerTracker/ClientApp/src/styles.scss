@@ -52,5 +52,11 @@ header.masthead {
   display: flex;
   flex:1 1 auto;
   padding: 15px 40px;
-  
+}
+
+mat-toolbar.mat-toolbar {
+  .mat-menu-item {
+    flex: 0 1;
+    min-width: min-content;
+  }
 }
