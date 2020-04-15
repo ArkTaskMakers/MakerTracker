@@ -16,8 +16,8 @@
               <div matLine>{{item.description}}</div>
               <!-- <td>{{item.isDeprecated}}</td> -->
               <!-- mat-raised-button color="primary" -->
-              <a mat-button [routerLink]="['../products', item.id ]">Edit</a>&nbsp;
-              <button mat-button (click)="delete(item)">Delete</button>
+              <a mat-mini-fab [routerLink]="['../products', item.id ]" color="primary" matTooltip="Edit"><mat-icon>edit</mat-icon></a>&nbsp;
+              <button mat-mini-fab (click)="delete(item)" color="error" matTooltip="Delete"><mat-icon>delete_forever</mat-icon></button>
             </mat-list-item>
           </mat-list>
         </mat-card-content>

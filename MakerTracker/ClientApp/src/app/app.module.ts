@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { EquipmentService } from './services/backend/crud/equipment.service';
 import { EquipmentModule } from './equipment/equipment.module';
+import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -70,8 +71,13 @@ import { EquipmentModule } from './equipment/equipment.module';
       useClass: JWTInterceptorInterceptor,
       multi: true
     },
-    EquipmentService
+    EquipmentService,
+    { provide: APP_INITIALIZER, useFactory: initAuth, deps: [AuthService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function initAuth(auth: AuthService) {
+  return () => auth.isAuthenticated$.toPromise();
+}
