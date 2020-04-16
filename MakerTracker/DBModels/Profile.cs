@@ -22,6 +22,9 @@ namespace MakerTracker.DBModels
         public string ZipCode { get; set; }
         public bool? IsDropOffPoint { get; set; }
 
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
 
