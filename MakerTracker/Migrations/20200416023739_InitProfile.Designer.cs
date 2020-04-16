@@ -4,14 +4,16 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200416023739_InitProfile")]
+    partial class InitProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,12 +280,6 @@ namespace MakerTracker.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");

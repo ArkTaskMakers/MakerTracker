@@ -33,6 +33,10 @@ export class ProfileDto {
 
     isDropOffPoint: boolean;
 
+    isSupplier: boolean;
+
+    isRequestor: boolean;
+
     displayName: string;
 
     /** Initializes a new instance of the ProfileDto class **/

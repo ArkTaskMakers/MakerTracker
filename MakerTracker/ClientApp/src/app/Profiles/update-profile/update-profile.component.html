@@ -9,7 +9,7 @@
   </div>
 </header>
 
-<form [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
+<form class="dashboard-card" [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-content>
       <div class="row">
@@ -123,6 +123,20 @@
             Are you a drop-off point?
           </mat-slide-toggle>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle formControlName="isRequestor">
+            Are you a Requestor?
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <div class="row">
+          <mat-slide-toggle formControlName="isSupplier">
+            Are you a Supplier?
+          </mat-slide-toggle>
       </div>
       <br><br>
 

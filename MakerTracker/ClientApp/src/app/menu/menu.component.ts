@@ -11,11 +11,14 @@ import {
   MenuItemTypes,
   DividerMenuItem,
 } from "./model";
+import { MatDialog } from "@angular/material/dialog";
+import { InitProfileComponent } from "../Profiles/init-profile/init-profile.component";
+import { BackendService } from "../services/backend/backend.service";
 
 @Component({
   selector: "app-menu",
   templateUrl: "./menu.component.html",
-  styleUrls: ["./menu.component.css"],
+  styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[];
@@ -28,7 +31,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     }),
     new DividerMenuItem({
       requiresAuth: true,
-      // TODO: requiresAdmin: true
     }),
     new RouteMenuItem({
       text: "My Dashboard",
@@ -37,12 +39,12 @@ export class MenuComponent implements OnInit, OnDestroy {
     }),
     new DividerMenuItem({
       requiresAuth: true,
-      // TODO: requiresAdmin: true
+      requiresAdmin: true,
     }),
     new DropdownMenuItem({
       text: "Admin",
       requiresAuth: true,
-      // TODO: requiresAdmin: true
+      requiresAdmin: true,
       items: [
         new RouteMenuItem({
           text: "Manage Products",
@@ -84,7 +86,9 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   constructor(
     public auth: AuthService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private dialog: MatDialog,
+    private backend: BackendService
   ) {}
 
   ngOnInit() {
@@ -96,11 +100,28 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.filteredMenuItems.next(
           this.menuItems.filter(
             (i) =>
-              (!i.requiresAuth && !i.requiresAnon) ||
-              (i.requiresAuth && isLoggedIn) ||
-              (i.requiresAnon && !isLoggedIn)
+              (!i.requiresAdmin || this.auth.hasRole("Admin")) &&
+              (!i.requiresAuth || isLoggedIn) &&
+              (!i.requiresAnon || !isLoggedIn)
           )
         );
+      }),
+      this.auth.userProfile$.subscribe((user) => {
+        if (user) {
+          this.backend.getProfile().subscribe(
+            (profile) => true,
+            (error) => {
+              if (error.status === 404) {
+                const dialogRef = this.dialog.open(InitProfileComponent, {
+                  height: "600px",
+                  width: "400px",
+                  closeOnNavigation: false,
+                  disableClose: true
+                });
+              }
+            }
+          );
+        }
       }),
     ];
   }

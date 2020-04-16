@@ -4,6 +4,7 @@ import { BackendService } from 'src/app/services/backend/backend.service';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-update-profile',
@@ -28,6 +29,8 @@ export class UpdateProfileComponent implements OnInit {
     zipCode: [null, Validators.compose([
       Validators.required, Validators.minLength(5), Validators.maxLength(5)])
     ],
+    isRequestor: false,
+    isSupplier: false,
   });
 
   states = [
@@ -131,6 +134,8 @@ export class UpdateProfileComponent implements OnInit {
       email: data.email,
       isSelfQuarantined: data.isSelfQuarantined,
       isDropOffPoint: data.isDropOffPoint,
+      isRequestor: data.isRequestor,
+      isSupplier: data.isSupplier,
     });
   }
 }

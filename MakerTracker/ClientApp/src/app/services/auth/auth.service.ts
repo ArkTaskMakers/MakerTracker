@@ -40,6 +40,7 @@ export class AuthService {
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
   loggedIn: boolean = null;
+  private roleMap = new Map<string, boolean>();
 
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
@@ -47,6 +48,17 @@ export class AuthService {
     this.localAuthSetup();
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
+    this.userProfileSubject$.subscribe(profile => {
+      var roles = profile && profile["https://makertracker.com/roles"] || [];
+      this.roleMap.clear();
+      roles.forEach(role => {
+        this.roleMap.set(role, true);
+      });
+    })
+  }
+
+  hasRole(role: string) {
+    return this.roleMap.has(role);
   }
 
   // When calling, options can be passed if desired

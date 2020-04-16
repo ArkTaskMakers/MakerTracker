@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { EquipmentService } from './services/backend/crud/equipment.service';
 import { EquipmentModule } from './equipment/equipment.module';
+import { AuthService } from './services/auth/auth.service';
+import { InitProfileComponent } from './Profiles/init-profile/init-profile.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { EquipmentModule } from './equipment/equipment.module';
     DashboardComponent,
     EditInventoryComponent,
     UpdateProfileComponent,
+    InitProfileComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -51,17 +54,9 @@ import { EquipmentModule } from './equipment/equipment.module';
     ]),
     BrowserAnimationsModule,
     MaterialModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
     LayoutModule,
     ProductModule,
     EquipmentModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
     ReactiveFormsModule
   ],
   providers: [
@@ -70,8 +65,13 @@ import { EquipmentModule } from './equipment/equipment.module';
       useClass: JWTInterceptorInterceptor,
       multi: true
     },
-    EquipmentService
+    EquipmentService,
+    { provide: APP_INITIALIZER, useFactory: initAuth, deps: [AuthService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function initAuth(auth: AuthService) {
+  return () => auth.isAuthenticated$.toPromise();
+}

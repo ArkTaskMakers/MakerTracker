@@ -83,9 +83,9 @@
 </ng-template>
 
 <ng-template #routeItem let-item>
-  <button mat-button [routerLink]="item.route">{{ item.text }}</button>
+  <button mat-menu-item [routerLink]="item.route">{{ item.text }}</button>
 </ng-template>
 
 <ng-template #actionItem let-item>
-  <button mat-button (click)="item.action()">{{ item.text }}</button>
+  <button mat-menu-item (click)="item.action()">{{ item.text }}</button>
 </ng-template>

@@ -45,12 +45,44 @@ html {
 header.masthead {
   color: white;
   position: relative;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1.0)), url("/img/bg-profile.jpg") no-repeat;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)),
+    url("/img/bg-profile.jpg") no-repeat;
   background-size: cover;
   padding-top: 2rem;
   padding-bottom: 2rem;
   display: flex;
-  flex:1 1 auto;
+  flex: 1 1 auto;
   padding: 15px 40px;
-  
+}
+
+mat-toolbar.mat-toolbar {
+  .mat-menu-item {
+    flex: 0 1;
+    min-width: min-content;
+  }
+}
+
+.flex-grow {
+  flex: 1 0;
+}
+
+.flex-shrink {
+  flex: 0 1;
+}
+
+.init-button {
+  .mat-button-toggle-button {
+    .mat-button-toggle-label-content {
+      display: flex;
+      align-items: center;
+      line-height: auto;
+
+      .mat-icon {
+        font-size: 48px;
+        padding: 20px;
+        height: 48px;
+        width: 48px;
+      }
+    }
+  }
 }

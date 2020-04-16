@@ -29,6 +29,10 @@ export class UpdateProfileDto {
 
     isDropOffPoint: boolean;
 
+    isSupplier: boolean;
+
+    isRequestor: boolean;
+
     /** Initializes a new instance of the UpdateProfileDto class **/
     public constructor(init?: Partial<UpdateProfileDto>) {
         Object.assign(this, init);
