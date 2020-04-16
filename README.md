@@ -36,6 +36,17 @@ A step by step series of examples that tell you how to get a development env run
   goto https://localhost:5001
 ```
 
+5. Generate Test Data - This will insert randomized Profiles and Transactions.
+```
+  goto https://localhost:5001/api/gis/generateTestData
+```
+
+6. Generate a zipped GIS Shapefile
+```
+  goto https://localhost:5001/api/gis
+  
+```
+
 From there you can login/register an account. It's already configured to hit Auth0 that we have setup for development purposes.
 
 The Angular site is located in the `/ClientApp` folder
@@ -46,6 +57,7 @@ The Angular site is located in the `/ClientApp` folder
 * [Angular 9](https://maven.apache.org/) - Our frontend site!
 * [Yarn](https://yarnpkg.com/) - Package manager for the Angular
 * [Typewriter](https://marketplace.visualstudio.com/items?itemName=frhagn.Typewriter) - Used to sync c# models to typescript
+* [NetTopologySuite](https://github.com/nettopologysuite/nettopologysuite) - Generates GIS Shapefiles
 
 ## Contributing
 
