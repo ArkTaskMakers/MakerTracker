@@ -23,12 +23,19 @@ namespace MakerTracker.Controllers
     {
         private readonly IWebHostEnvironment _env;
 
+       
         public GISController(IWebHostEnvironment env, MakerTrackerContext context) : base(context)
         {
             _env = env;
         }
 
-        [HttpGet]
+        [HttpGet()]
+        public IActionResult DownloadFile()
+        {
+            return new PhysicalFileResult(GetZipFilePath(), "application/zip");
+        }
+
+        [HttpGet("generateShapeFile")]
         public async Task<IActionResult> GenerateFile()
         {
             var data = await _context.Profiles.Select(p => new
@@ -71,11 +78,11 @@ namespace MakerTracker.Controllers
                 features.Add(feat1);
             }
 
-            var savePath = Path.Combine(_env.WebRootPath, "gis");
-            var zipPath = Path.Combine(_env.WebRootPath, "giszip", "makertracker.zip");
-            var path = Path.Combine(savePath, "maker");
+            var shapeFileFolder = GetShapeFilePath();
+            var zipPath = GetZipFilePath();
+            var shapefileName = Path.Combine(shapeFileFolder, "maker");
 
-            var writer = new ShapefileDataWriter(path)
+            var writer = new ShapefileDataWriter(shapefileName)
             { Header = ShapefileDataWriter.GetHeader(features[0], features.Count) };
 
             writer.Write(features);
@@ -85,7 +92,7 @@ namespace MakerTracker.Controllers
                 System.IO.File.Delete(zipPath);
             }
 
-            ZipFile.CreateFromDirectory(savePath, zipPath, CompressionLevel.Fastest, false);
+            ZipFile.CreateFromDirectory(shapeFileFolder, zipPath, CompressionLevel.Fastest, false);
 
             return Ok($"Files created and zipped to {zipPath}");
         }
@@ -167,5 +174,16 @@ namespace MakerTracker.Controllers
 
             return Ok("Populated");
         }
+
+        private string GetZipFilePath()
+        {
+            return Path.Combine(_env.WebRootPath, "giszip", "makertracker.zip");
+        }
+
+        private string GetShapeFilePath()
+        {
+            return Path.Combine(_env.WebRootPath, "gis");
+        }
+
     }
 }
