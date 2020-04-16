@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
 using FizzWare.NBuilder;
 using MakerTracker.DBModels;
 using Microsoft.AspNetCore.Authorization;
@@ -29,8 +31,15 @@ namespace MakerTracker.Controllers
             _env = env;
         }
 
+        
+        [HttpGet("csv")]
+        public IActionResult DownloadCSVFile()
+        {
+            return new PhysicalFileResult(GetCSVFilePath(), "application/csv");
+        }
+
         [HttpGet()]
-        public IActionResult DownloadFile()
+        public IActionResult DownloadShapeFile()
         {
             return new PhysicalFileResult(GetZipFilePath(), "application/zip");
         }
@@ -93,6 +102,13 @@ namespace MakerTracker.Controllers
             }
 
             ZipFile.CreateFromDirectory(shapeFileFolder, zipPath, CompressionLevel.Fastest, false);
+
+            await using (var csvWriter = new StreamWriter(GetCSVFilePath()))
+            await using (var csv = new CsvWriter(csvWriter, CultureInfo.InvariantCulture))
+            {    
+                csv.WriteRecords(data);
+            }
+
 
             return Ok($"Files created and zipped to {zipPath}");
         }
@@ -178,6 +194,10 @@ namespace MakerTracker.Controllers
         private string GetZipFilePath()
         {
             return Path.Combine(_env.WebRootPath, "giszip", "makertracker.zip");
+        }
+        private string GetCSVFilePath()
+        {
+            return Path.Combine(_env.WebRootPath, "giszip", "makertracker.csv");
         }
 
         private string GetShapeFilePath()
