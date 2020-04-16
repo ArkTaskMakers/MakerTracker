@@ -2,12 +2,12 @@
 <div mat-dialog-content>
     <mat-form-field>
         <mat-label>Which Product?</mat-label>
-        <select matNativeControl [(ngModel)]="data.productId" name="productId"
+        <mat-select [(ngModel)]="data.productId" name="productId"
             (ngModelChange)="onProductChange($event)">
-            <option *ngFor="let p of products" [ngValue]="p.id">
+            <mat-option *ngFor="let p of products" [value]="p.id">
                 {{p.name}}
-            </option>
-        </select>
+            </mat-option>
+        </mat-select>
     </mat-form-field>
     <br>
     <mat-form-field>
