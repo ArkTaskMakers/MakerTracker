@@ -40,6 +40,8 @@ namespace MakerTracker.Controllers
                 p.CompanyName,
                 p.IsDropOffPoint,
                 p.Phone,
+                p.IsRequestor,
+                p.IsSupplier,
                 
             }).ToListAsync();
 
@@ -56,6 +58,8 @@ namespace MakerTracker.Controllers
                     {"lastName", d.LastName ?? ""},
                     {"companyName", d.CompanyName ?? ""},
                     {"dropOff", d.IsDropOffPoint.GetValueOrDefault().ToString()},
+                    {"requestor", d.IsRequestor.ToString()},
+                    {"supplier", d.IsSupplier.ToString()},
                     {"phoneNumber", d.Phone ?? ""},
                     {"amount1", faker.Random.Number(100,10000) },
                     {"product1", faker.Commerce.ProductName() }
