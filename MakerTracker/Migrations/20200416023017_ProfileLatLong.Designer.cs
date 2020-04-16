@@ -4,14 +4,16 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200416023017_ProfileLatLong")]
+    partial class ProfileLatLong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,13 +269,7 @@ namespace MakerTracker.Migrations
                     b.Property<bool?>("IsDropOffPoint")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsRequestor")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsSelfQuarantined")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSupplier")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
