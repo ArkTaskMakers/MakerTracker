@@ -21,6 +21,8 @@ namespace MakerTracker.DBModels
         public DateTime CreatedDate { get; set; }
         public string ZipCode { get; set; }
         public bool? IsDropOffPoint { get; set; }
+        public bool IsSupplier { get; set; }
+        public bool IsRequestor { get; set; }
 
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();

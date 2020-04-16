@@ -1,0 +1,49 @@
+<h2 class="flex-shrink">Welcome to Maker Tracker</h2>
+<p>
+  We're happy to have you! Before we get started, we need to know a little bit
+  more about you. Please select the most fitting role.
+</p>
+<mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
+  <mat-button-toggle
+    class="flex-grow init-button"
+    [checked]="isSupplier"
+    (click)="isSupplier = !isSupplier; refreshNeither()"
+  >
+    <mat-icon>local_shipping</mat-icon>
+    <div class="init-description">
+      <div class="mat-headline flex-grow">I am a supplier</div>
+      <p>I supply materials or I'm a part of the maker community.</p>
+    </div>
+  </mat-button-toggle>
+  <mat-button-toggle
+    class="flex-grow init-button"
+    [checked]="isRequestor"
+    (click)="isRequestor = !isRequestor; refreshNeither()"
+  >
+    <mat-icon>local_hospital</mat-icon>
+    <div class="init-description">
+      <div class="mat-headline flex-grow">I am a requestor</div>
+      <p>I'm requesting materials or PPE on behalf of the medical community.</p>
+    </div>
+  </mat-button-toggle>
+  <mat-button-toggle
+    class="flex-grow init-button"
+    [checked]="isNeither"
+    (click)="isNeither = !isNeither; refreshOthers()"
+  >
+    <mat-icon>account_circle</mat-icon>
+    <div class="init-description">
+      <div class="mat-headline flex-grow">Neither</div>
+      <p>I'm merely interested in the maker tracker.</p>
+    </div>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<button
+  mat-raised-button
+  class="flex-shrink continue"
+  color="primary"
+  [disabled]="!(isSupplier || isRequestor || isNeither)"
+  (click)="submit()"
+>
+  Continue <mat-icon>arrow_forward</mat-icon>
+</button>

@@ -16,5 +16,7 @@
         public bool IsSelfQuarantined { get; set; }
         public string ZipCode { get; set; }
         public bool IsDropOffPoint { get; set; }
+        public bool IsSupplier { get; set; }
+        public bool IsRequestor { get; set; }
     }
 }

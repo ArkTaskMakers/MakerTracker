@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.init-group {
+  align-items: center;
+}
+
+.init-button {
+  display: flex;
+}
+
+.init-description {
+  line-height: normal;
+  white-space: normal;
+  padding-right: 20px;
+}
+
+.continue {
+  margin-top: 15px;
+}

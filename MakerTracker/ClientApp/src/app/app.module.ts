@@ -28,6 +28,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { EquipmentService } from './services/backend/crud/equipment.service';
 import { EquipmentModule } from './equipment/equipment.module';
 import { AuthService } from './services/auth/auth.service';
+import { InitProfileComponent } from './Profiles/init-profile/init-profile.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AuthService } from './services/auth/auth.service';
     DashboardComponent,
     EditInventoryComponent,
     UpdateProfileComponent,
+    InitProfileComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -52,17 +54,9 @@ import { AuthService } from './services/auth/auth.service';
     ]),
     BrowserAnimationsModule,
     MaterialModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
     LayoutModule,
     ProductModule,
     EquipmentModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
     ReactiveFormsModule
   ],
   providers: [
