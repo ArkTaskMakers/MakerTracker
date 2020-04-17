@@ -48,7 +48,19 @@ namespace MakerTracker.Controllers
 
             var updatedProfile = _mapper.Map(model, profile);
 
-            _context.Entry(updatedProfile).State = EntityState.Modified;
+            if (updatedProfile.Id > 0)
+            {
+                _context.Entry(updatedProfile).State = EntityState.Modified;
+            }
+            else if (!string.IsNullOrWhiteSpace(User.Identity.Name))
+            {
+                updatedProfile.Auth0Id = User.Identity.Name;
+                _context.Profiles.Add(updatedProfile);
+            }
+            else
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             await _context.SaveChangesAsync();
 
