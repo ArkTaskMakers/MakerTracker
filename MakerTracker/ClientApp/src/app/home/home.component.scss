@@ -1,26 +1,46 @@
 :host {
-  text-align: center;
 }
 
 section {
   margin: 0 20px;
 }
 
+.rowstack {
+  display: flex;
+  flex-direction: row;
+}
+
+.landing-content {
+  max-width: 1024px;
+  &:not(.rowstack) {
+    margin: 0 auto;
+  }
+}
 
 header.masthead {
   color: white;
   position: relative;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1.0)), url("/img/bg-landing.jpg") no-repeat center center;
-  background-size: cover;
+  background: #005f99;
+  background-size: initial;
   padding-top: 8rem;
   padding-bottom: 8rem;
   display: flex;
-  padding: 10px 20px;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
+  text-align: left;
 
- 
+  > .landing-content > img {
+    max-width: 50%;
+    max-height: 400px;
+  }
+}
+
+.cta {
+  & > * {
+    display: block;
+    margin-bottom: 10px;
+  }
 }
 
 .mat-card-title {
@@ -30,20 +50,48 @@ header.masthead {
 .support {
   padding: 20px;
   margin: 100px auto;
+  align-items: center;
+
+  .supplier-header {
+    padding: 0 20px;
+  }
+
+  .supplier-content {
+    padding: 0 20px;
+  }
 }
 
-.highlight {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  background: #FFFFFF55;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: left;
+.requestor {
+  background: #EEE;
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 
-  mat-card {
-    max-width: 25%;
+  .requestor-header {
+    padding: 0 20px;
+  }
+
+  .requestor-content {
+    padding: 0 20px;
+  }
+  .highlight {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+    background: #ffffff55;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    margin-top: 40px;
+
+    mat-card {
+      max-width: 225px;
+      margin: 5px;
+      min-width: 75px;
+    }
   }
 }
 
@@ -54,6 +102,14 @@ header.masthead {
   }
 }
 
+.justify-between {
+  justify-content: space-between !important;
+}
+
+.justify-around {
+  justify-content: space-around !important;
+}
+
 @media (max-width: 768px) {
   .highlight {
     flex-direction: column;
@@ -62,5 +118,26 @@ header.masthead {
       max-width: 100%;
       margin: 10px;
     }
+  }
+
+  .requestor {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  header.masthead {
+    flex-direction: column;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+
+    > .landing-content > img {
+      max-width: 100%;
+      max-height: 200px;
+      align-self: flex-end;
+    }
+  }
+
+  .rowstack {
+    flex-direction: column;
   }
 }

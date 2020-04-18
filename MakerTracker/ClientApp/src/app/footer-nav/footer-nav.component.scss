@@ -2,20 +2,25 @@
   width: 100%;
   margin: 0;
   padding: 0;
+  background: #000 url(/img/footer-bg.png) repeat;
+  color: #FAFAFA;
 }
 
 .footer-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-  background: #f5f5f5;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   margin-top: 50px;
   padding-bottom: 15px;
 
   &.handset {
     padding-bottom: 0;
+  }
+
+  a {
+    color: white;
   }
 }
 
