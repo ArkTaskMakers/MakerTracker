@@ -15,6 +15,7 @@
 .row {
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
 }
 
 .col {
@@ -33,4 +34,11 @@ header.masthead {
 
 .dashboard-card {
   margin: 20px;
+}
+
+.toggle-section {
+  padding-top: 20px;
+  .row {
+    padding-top: 10px;
+  }
 }
