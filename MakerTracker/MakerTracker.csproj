@@ -17,6 +17,8 @@
     <PackageReference Include="Bogus" Version="29.0.2" />
     <PackageReference Include="CsvHelper" Version="15.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
@@ -61,7 +63,10 @@
       <CustomToolNamespace>Models\Equipment\MakerEquipmentDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProductDto.ts">
-      <CustomToolNamespace>Models\ProductDto.cs</CustomToolNamespace>
+      <CustomToolNamespace>Models\Products\ProductDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\ProductTypeDto.ts">
+      <CustomToolNamespace>Models\Products\ProductTypeDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProfileDto.ts">
       <CustomToolNamespace>Models\Profiles\ProfileDto.cs</CustomToolNamespace>

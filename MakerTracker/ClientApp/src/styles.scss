@@ -62,6 +62,34 @@ mat-toolbar.mat-toolbar {
   }
 }
 
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  @extend .d-flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  @extend .d-flex;
+  flex-direction: row;
+}
+
+.flex-column-reverse {
+  @extend .d-flex;
+  flex-direction: column-reverse;
+}
+
+.flex-row-reverse {
+  @extend .d-flex;
+  flex-direction: row-reverse;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
 .flex-grow {
   flex: 1 0;
 }

@@ -9,5 +9,7 @@
         public string InstructionUrl { get; set; }
         public bool IsDeprecated { get; set; }
         public string ImageUrl { get; set; }
+
+        public int ProductTypeId { get; set; }
     }
 }

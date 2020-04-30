@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace MakerTracker.Models.Profiles
+﻿namespace MakerTracker.Models.Profiles
 {
+    using System;
+
     [TypeScriptModel]
     public class ProfileDto
     {

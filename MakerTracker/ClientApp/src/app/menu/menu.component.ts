@@ -109,11 +109,14 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.auth.userProfile$.subscribe((user) => {
         if (user) {
           this.backend.getProfile().subscribe(
-            (profile) => true,
+            (profile) => this.dialog.open(InitProfileComponent, {
+              width: "640px",
+              closeOnNavigation: false,
+              disableClose: true
+            }),
             (error) => {
               if (error.status === 404) {
                 const dialogRef = this.dialog.open(InitProfileComponent, {
-                  height: "600px",
                   width: "400px",
                   closeOnNavigation: false,
                   disableClose: true

@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [],
@@ -38,7 +39,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatSnackBarModule,
     MatIconModule,
     MatTooltipModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatStepperModule
   ],
   exports: [
     MatInputModule,
@@ -57,7 +59,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatSnackBarModule,
     MatIconModule,
     MatTooltipModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatStepperModule
   ]
 })
 export class MaterialModule { }

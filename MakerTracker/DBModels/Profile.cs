@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace MakerTracker.DBModels
 {
@@ -30,5 +31,13 @@ namespace MakerTracker.DBModels
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
 
+        public static void ConfigureEntity(ModelBuilder builder)
+        {
+            builder.Entity<Profile>(entity =>
+            {
+                entity.HasMany(x => x.TransactionFrom).WithOne(x => x.From);
+                entity.HasMany(x => x.TransactionTo).WithOne(x => x.To);
+            });
+        }
     }
 }

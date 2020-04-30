@@ -9,7 +9,7 @@ export class GenericCrudService<T> {
    * @param _baseUrl The base url to hit for the controller
    * @param _http The http client for interacting with the REST API
    */
-  constructor(private _baseUrl: string, private _http: HttpClient) {
+  constructor(private _baseUrl: string, protected _http: HttpClient) {
   }
 
   /** Lists all entries */

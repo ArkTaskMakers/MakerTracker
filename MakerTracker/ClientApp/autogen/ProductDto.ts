@@ -15,6 +15,8 @@ export class ProductDto {
 
     imageUrl: string;
 
+    productTypeId: number;
+
     /** Initializes a new instance of the ProductDto class **/
     public constructor(init?: Partial<ProductDto>) {
         Object.assign(this, init);
