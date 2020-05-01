@@ -1,56 +1,131 @@
-<header class="masthead text-center">
-  <div class="mat-display-1 overlay">
-    <h1>
-      Arkanas Hospitals and Clinics need PPE. We need Makers to source and
-      create.
-    </h1>
-    <div class="mat-subheading-2">
-      Registering an account is simple and free.
-      <a mat-raised-button *ngIf="auth.loggedIn" [routerLink]="['/dashboard']">
-        Go to Dashboard
-      </a>
-      <button mat-raised-button (click)="auth.login()" *ngIf="!auth.loggedIn">
-        Register
-      </button>
+<header class="masthead">
+  <div class="landing-content rowstack justify-around">
+    <div class="mat-display-1 overlay">
+      <div>
+        <div class="mat-display-1">
+          We are making PPEs and other necessary medical devices for Arkansas
+          healthcare workers and frontline responders.
+        </div>
+        <div class="mat-subheading-2 cta">
+          <a mat-stroked-button href="#supplier"
+            >I can help. <mat-icon>arrow_right</mat-icon></a
+          >
+          <a mat-stroked-button href="#requestor"
+            >I need supplies. <mat-icon>arrow_right</mat-icon></a
+          >
+        </div>
+      </div>
     </div>
+    <img src="/img/task-force-mask.jpg" />
   </div>
 </header>
 
-<section class="support">
-  <div class="mat-title">There are many ways to provide support:</div>
-  <div class="mat-subheading-2">
-    Requesting Donations on behalf of a Hospital or Clinic
+<section class="support" id="supplier">
+  <div class="landing-content justify-around">
+    <div class="mat-display-1 supplier-header">You can help!</div>
+    <div class="rowstack">
+      <div class="supplier-content">
+        <!-- .et_pb_text -->
+        <div class="mat-subheading-2">
+          <p>
+            Arkansas, like many places around the globe, is facing a shortage of
+            masks and other personal protective equipment (PPE) as well other
+            much needed medical devices.
+          </p>
+          <p>
+            The Innovation Hub is working with hospitals, universities,
+            manufacturers, and local makers to innovate new solutions to these
+            supply gaps.
+          </p>
+          <p>
+            <strong>If you are a maker, you are needed. Please join us.</strong>
+          </p>
+        </div>
+      </div>
+      <div class="supplier-content">
+        <div class="cta">
+          <a (click)="auth.login()" mat-stroked-button>
+            Register with the Arkansas Maker Task Force.
+            <mat-icon>arrow_right</mat-icon>
+          </a>
+          <a mat-stroked-button href="https://bit.ly/ar-makers-task-force"
+            >Join the discussion on Slack. <mat-icon>arrow_right</mat-icon></a
+          >
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mat-subheading-2">
-    Giving Donations of PPE or materials to make PPE.
-  </div>
-  <div class="mat-subheading-2">Making PPE from sourced materials</div>
 </section>
 
 <!-- Icons Grid -->
-<section class="bg-light text-center">
-  <div class="mat-title">Here's some of the things we need:</div>
-  <div class="highlight">
-    <mat-card>
-      <img mat-card-image src="/img/n95mask.jpg" alt="N95 Mask" />
-      <mat-card-header>
-        <mat-card-title>N95 Respirators</mat-card-title>
-        <mat-card-subtitle>N95 yadda yadda</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-    <mat-card>
-      <img mat-card-image src="/img/surgicalmasks.jpg" alt="Surgical Mask" />
-      <mat-card-header>
-        <mat-card-title>Surgical Mask</mat-card-title>
-        <mat-card-subtitle>surgical masks are good</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-    <mat-card>
-      <img mat-card-image src="/img/faceshield.jpg" alt="Face Shield" />
-      <mat-card-header>
-        <mat-card-title>Face Shields</mat-card-title>
-        <mat-card-subtitle>shields are good too</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+<section class="requestor" id="requestor">
+  <div class="landing-content justify-around">
+    <div class="mat-display-1 requestor-header">
+      Need Supplies? We can help!
+    </div>
+    <div class="rowstack">
+      <div class="mat-subheading-2 requestor-content">
+        <p>
+          If your hospital, clinic, or organization needs supplies, register as
+          a requestor and you'll be able to request PPE from our community of
+          local makers!
+        </p>
+      </div>
+      <div class="requestor-content">
+        <div class="cta">
+          <a (click)="auth.login()" mat-stroked-button>
+            Register with the Arkansas Maker Task Force.
+            <mat-icon>arrow_right</mat-icon>
+          </a>
+          <a mat-stroked-button href="https://bit.ly/ar-makers-task-force"
+            >Join the discussion on Slack. <mat-icon>arrow_right</mat-icon></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="highlight">
+      <mat-card>
+        <img mat-card-image src="/img/faceshield.jpg" alt="Face Shield" />
+        <mat-card-header>
+          <mat-card-title>Face Shields</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      <mat-card>
+        <img mat-card-image src="/img/fabric-mask.jpg" alt="Fabric Mask" />
+        <mat-card-header>
+          <mat-card-title>Fabric Masks</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      <mat-card>
+        <img
+          mat-card-image
+          src="/img/n95-mask-cover.jpg"
+          alt="N95 Mask Covers"
+        />
+        <mat-card-header>
+          <mat-card-title>N95 Mask Covers</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      <mat-card>
+        <img
+          mat-card-image
+          src="/img/intubation-shield.jpg"
+          alt="Intubation Shields"
+        />
+        <mat-card-header>
+          <mat-card-title>Intubation Shields</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      <mat-card>
+        <img
+          mat-card-image
+          src="/img/cpap-scuba-mask.jpg"
+          alt="Other Devices"
+        />
+        <mat-card-header>
+          <mat-card-title>Other Devices</mat-card-title>
+        </mat-card-header>
+      </mat-card>
   </div>
 </section>
