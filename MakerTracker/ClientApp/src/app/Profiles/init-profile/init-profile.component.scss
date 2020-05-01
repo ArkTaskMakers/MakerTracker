@@ -5,7 +5,11 @@
 }
 
 .init-group {
-  align-items: center;
+  align-items: stretch;
+}
+
+.mat-icon.active {
+  color: #006400;
 }
 
 .init-button {

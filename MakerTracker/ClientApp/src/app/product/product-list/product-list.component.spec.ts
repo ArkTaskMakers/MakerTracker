@@ -1,9 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ProductListComponent } from './product-list.component';
 import { ProductService } from '../product.service';
+import { ProductListComponent } from './product-list.component';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -14,8 +14,7 @@ describe('ProductListComponent', () => {
       declarations: [ProductListComponent],
       imports: [FormsModule, HttpClientTestingModule, RouterTestingModule],
       providers: [ProductService]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

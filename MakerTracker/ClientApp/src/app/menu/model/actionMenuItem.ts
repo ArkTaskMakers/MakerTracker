@@ -1,5 +1,5 @@
-import { MenuItemTypes } from "./menuItemTypes.enum";
-import { BaseMenuItem } from "./baseMenuItem";
+import { BaseMenuItem } from './baseMenuItem';
+import { MenuItemTypes } from './menuItemTypes.enum';
 
 export class ActionMenuItem extends BaseMenuItem {
   text: string;

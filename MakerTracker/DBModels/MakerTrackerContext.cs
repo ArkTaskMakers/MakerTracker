@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace MakerTracker.DBModels
+﻿namespace MakerTracker.DBModels
 {
+    using Microsoft.EntityFrameworkCore;
+
     public class MakerTrackerContext : DbContext
     {
         public MakerTrackerContext(DbContextOptions<MakerTrackerContext> options) : base(options)
@@ -14,13 +14,14 @@ namespace MakerTracker.DBModels
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<MakerOrder> MakerOrders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Profile>().HasMany(x => x.TransactionFrom).WithOne(x => x.From);
             modelBuilder.Entity<Profile>().HasMany(x => x.TransactionTo).WithOne(x => x.To);
-            modelBuilder.Entity<Product>().HasMany(x => x.PrecursorsRequired).WithOne(x => x.Parent);
-            modelBuilder.Entity<Product>().HasMany(x => x.UsedInProducts).WithOne(x => x.Child);
+            Product.ConfigureEntity(modelBuilder);
+            ProductType.ConfigureEntity(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
     }

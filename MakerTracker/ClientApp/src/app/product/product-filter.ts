@@ -1,3 +1,3 @@
 export class ProductFilter {
-    name = '';
+  name = '';
 }

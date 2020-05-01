@@ -45,8 +45,7 @@ html {
 header.masthead {
   color: white;
   position: relative;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)),
-    url("/img/bg-profile.jpg") no-repeat;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)), url('/img/bg-profile.jpg') no-repeat;
   background-size: cover;
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -60,6 +59,34 @@ mat-toolbar.mat-toolbar {
     flex: 0 1;
     min-width: min-content;
   }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  @extend .d-flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  @extend .d-flex;
+  flex-direction: row;
+}
+
+.flex-column-reverse {
+  @extend .d-flex;
+  flex-direction: column-reverse;
+}
+
+.flex-row-reverse {
+  @extend .d-flex;
+  flex-direction: row-reverse;
+}
+
+.flex-between {
+  justify-content: space-between;
 }
 
 .flex-grow {

@@ -1,13 +1,12 @@
 import { Directive } from '@angular/core';
 import { Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { HasRoleContext } from './has-role-context';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { HasRoleContext } from './has-role-context';
 
 @Directive({
   selector: '[appHasRole]'
 })
 export class HasRoleDirective {
-
   private requiredRoles: any[] = [];
   constructor(
     private _templateRef: TemplateRef<HasRoleContext>,
@@ -26,7 +25,7 @@ export class HasRoleDirective {
 
   private evaluateRoles(roles: any[]): void {
     this._viewContainer.clear();
-    if(roles.some(role => this._authService.hasRole(role))) {
+    if (roles.some((role) => this._authService.hasRole(role))) {
       this._viewContainer.createEmbeddedView(this._templateRef);
     }
   }

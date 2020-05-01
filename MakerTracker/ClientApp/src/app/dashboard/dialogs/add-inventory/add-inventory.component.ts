@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BackendService } from 'src/app/services/backend/backend.service';
-import { ProductDto } from 'autogen/ProductDto';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
+import { ProductDto } from 'autogen/ProductDto';
+import { BackendService } from 'src/app/services/backend/backend.service';
 
 @Component({
   selector: 'app-add-inventory',
@@ -16,13 +16,13 @@ export class AddInventoryComponent implements OnInit {
   constructor(
     private backend: BackendService,
     public dialogRef: MatDialogRef<AddInventoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AddInventoryDto) { }
+    @Inject(MAT_DIALOG_DATA) public data: AddInventoryDto
+  ) {}
 
   ngOnInit() {
-    this.backend.getProductList().subscribe(p => {
-      return this.products = p;
+    this.backend.getProductList().subscribe((p) => {
+      return (this.products = p);
     });
-
   }
 
   onNoClick(): void {
@@ -30,7 +30,7 @@ export class AddInventoryComponent implements OnInit {
   }
 
   onOkClick(): void {
-    this.backend.saveInventory(this.data).subscribe(result => {
+    this.backend.saveInventory(this.data).subscribe((result) => {
       if (result) {
         this.dialogRef.close();
       } else {
@@ -40,6 +40,6 @@ export class AddInventoryComponent implements OnInit {
   }
 
   onProductChange(productId: number) {
-    this.selectedProduct = this.products.filter(p => p.id === productId)[0];
+    this.selectedProduct = this.products.filter((p) => p.id === productId)[0];
   }
 }

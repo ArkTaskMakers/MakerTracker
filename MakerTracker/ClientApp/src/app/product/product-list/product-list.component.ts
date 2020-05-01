@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Product } from '../product';
 import { ProductFilter } from '../product-filter';
 import { ProductService } from '../product.service';
-import { Product } from '../product';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product',
@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
-
   filter = new ProductFilter();
   selectedProduct: Product;
   feedback: any = {};
@@ -19,8 +18,7 @@ export class ProductListComponent implements OnInit {
     return this.productService.productList;
   }
 
-  constructor(private productService: ProductService, private _snackBar: MatSnackBar) {
-  }
+  constructor(private productService: ProductService, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.search();
@@ -36,15 +34,16 @@ export class ProductListComponent implements OnInit {
 
   delete(product: Product): void {
     if (confirm('Are you sure?')) {
-      this.productService.delete(product).subscribe(() => {
-        this.search();
-        this._snackBar.open('Delete was successful', null, {
-          duration: 2000,
-        });
-      },
-        err => {
+      this.productService.delete(product).subscribe(
+        () => {
+          this.search();
+          this._snackBar.open('Delete was successful', null, {
+            duration: 2000
+          });
+        },
+        (err) => {
           this._snackBar.open('Error Deleting', null, {
-            duration: 2000,
+            duration: 2000
           });
         }
       );

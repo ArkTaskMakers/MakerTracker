@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
-import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
-import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -16,11 +16,11 @@ export class AuthService {
       domain: environment.auth0_domain,
       client_id: environment.auth0_client_id,
       redirect_uri: `${window.location.origin}`,
-      audience: environment.auth0_audience,
+      audience: environment.auth0_audience
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
-    catchError(err => throwError(err))
+    catchError((err) => throwError(err))
   );
   // Define observables for SDK methods that return promises by default
   // For each Auth0 SDK method, first ensure the client instance is ready
@@ -28,8 +28,8 @@ export class AuthService {
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
-    tap(res => this.loggedIn = res),
-    tap(res => this.isLoggedIn$.next(res))
+    tap((res) => (this.loggedIn = res)),
+    tap((res) => this.isLoggedIn$.next(res))
   );
   isLoggedIn$ = new BehaviorSubject<boolean>(false);
   handleRedirectCallback$ = this.auth0Client$.pipe(
@@ -48,13 +48,13 @@ export class AuthService {
     this.localAuthSetup();
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
-    this.userProfileSubject$.subscribe(profile => {
-      var roles = profile && profile["https://makertracker.com/roles"] || [];
+    this.userProfileSubject$.subscribe((profile) => {
+      const roles = (profile && profile['https://makertracker.com/roles']) || [];
       this.roleMap.clear();
-      roles.forEach(role => {
+      roles.forEach((role) => {
         this.roleMap.set(role, true);
       });
-    })
+    });
   }
 
   hasRole(role: string) {
@@ -66,16 +66,14 @@ export class AuthService {
   getUser$(options?): Observable<any> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => from(client.getUser(options))),
-      tap(user => this.userProfileSubject$.next(user))
+      tap((user) => this.userProfileSubject$.next(user))
     );
   }
 
-   // When calling, options can be passed if desired
+  // When calling, options can be passed if desired
   // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#gettokensilently
   getTokenSilently$(options?): Observable<string> {
-    return this.auth0Client$.pipe(
-      concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
-    );
+    return this.auth0Client$.pipe(concatMap((client: Auth0Client) => from(client.getTokenSilently(options))));
   }
 
   private localAuthSetup() {
@@ -115,16 +113,13 @@ export class AuthService {
       let targetRoute: string; // Path to redirect to after login processsed
       const authComplete$ = this.handleRedirectCallback$.pipe(
         // Have client, now call method to handle auth callback redirect
-        tap(cbRes => {
+        tap((cbRes) => {
           // Get and set target redirect route from callback results
           targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/dashboard';
         }),
         concatMap(() => {
           // Redirect callback complete; get user and login status
-          return combineLatest([
-            this.getUser$(),
-            this.isAuthenticated$
-          ]);
+          return combineLatest([this.getUser$(), this.isAuthenticated$]);
         })
       );
       // Subscribe to authentication completion observable
@@ -146,5 +141,4 @@ export class AuthService {
       });
     });
   }
-
 }

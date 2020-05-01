@@ -1,30 +1,27 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace MakerTracker.DBModels
+﻿namespace MakerTracker.DBModels
 {
+    using System;
+
     public class Transaction
     {
         public int Id { get; set;}
+
         public Product Product { get; set; }
+
         public Profile From { get; set; }
 
         public Profile To { get; set; }
 
         public int Amount { get; set; }
 
-        [Display(Name = "Confirmation Code")]
         public string ConfirmationCode { get; set; }
 
         public DateTime TransactionDate { get; set; }
 
-        [Display(Name = "Confirmation Date")]
         public DateTime ConfirmationDate { get; set; }
 
         public TransactionStatus Status { get; set; }
 
-
-        [Display(Name = "Transaction Type")]
         public TransactionType TransactionType { get; set; }
     }
 

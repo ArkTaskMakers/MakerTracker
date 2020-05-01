@@ -1,25 +1,24 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EquipmentListComponent } from './equipment-list.component';
 import { EquipmentService } from 'src/app/services/backend/crud/equipment.service';
+import { EquipmentEditComponent } from './equipment-edit.component';
 
-describe('EquipmentListComponent', () => {
-  let component: EquipmentListComponent;
-  let fixture: ComponentFixture<EquipmentListComponent>;
+describe('EquipmentEditComponent', () => {
+  let component: EquipmentEditComponent;
+  let fixture: ComponentFixture<EquipmentEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EquipmentListComponent],
+      declarations: [EquipmentEditComponent],
       imports: [FormsModule, HttpClientTestingModule, RouterTestingModule],
       providers: [EquipmentService]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EquipmentListComponent);
+    fixture = TestBed.createComponent(EquipmentEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Geocoding.Google;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MakerTracker.DBModels;
-using MakerTracker.Models.Profiles;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
-using Profile = MakerTracker.DBModels.Profile;
-
-namespace MakerTracker.Controllers
+﻿namespace MakerTracker.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using Geocoding.Google;
+    using MakerTracker.DBModels;
+    using MakerTracker.Models.Profiles;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
@@ -34,7 +30,7 @@ namespace MakerTracker.Controllers
         [HttpGet()]
         public async Task<ActionResult<ProfileDto>> GetProfile()
         {
-            var profile = _mapper.Map<ProfileDto>(this.GetLoggedInProfile());
+            var profile = _mapper.Map<ProfileDto>(await GetLoggedInProfile());
 
             if (profile == null)
             {
@@ -48,7 +44,7 @@ namespace MakerTracker.Controllers
         [HttpPut()]
         public async Task<IActionResult> PutProfile(UpdateProfileDto model)
         {
-            var profile = this.GetLoggedInProfile();
+            var profile = await GetLoggedInProfile();
 
             var updatedProfile = _mapper.Map(model, profile);
             var googleAddress = await this.GeoCodeLocation(updatedProfile);
@@ -74,7 +70,7 @@ namespace MakerTracker.Controllers
             return Ok(true);
         }
 
-        private async Task<GoogleAddress> GeoCodeLocation(Profile p)
+        private async Task<GoogleAddress> GeoCodeLocation(DBModels.Profile p)
         {
             var geocoder = new GoogleGeocoder(_configuration["GoogleAPIKey"]);
             var addresses = await geocoder.GeocodeAsync(string.Join(' ', p.Address, p.Address2, p.City, p.State, p.ZipCode));
@@ -84,7 +80,7 @@ namespace MakerTracker.Controllers
         // DELETE: api/Profiles/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Profile>> DeleteProfile(int id)
+        public async Task<ActionResult<DBModels.Profile>> DeleteProfile(int id)
         {
             var profile = await _context.Profiles.FindAsync(id);
             if (profile == null)

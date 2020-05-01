@@ -1,49 +1,198 @@
 <h2 class="flex-shrink">Welcome to Maker Tracker</h2>
-<p>
-  We're happy to have you! Before we get started, we need to know a little bit
-  more about you. Please select the most fitting role.
-</p>
-<mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
-  <mat-button-toggle
-    class="flex-grow init-button"
-    [checked]="isSupplier"
-    (click)="isSupplier = !isSupplier; refreshNeither()"
-  >
-    <mat-icon>local_shipping</mat-icon>
-    <div class="init-description">
-      <div class="mat-headline flex-grow">I am a supplier</div>
-      <p>I supply materials or I'm a part of the maker community.</p>
+<mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup" #firstForm class="flex-column">
+      <ng-template matStepLabel>Your Role</ng-template>
+      <p>
+        We're happy to have you! Before we get started, we need to know a little
+        bit more about you. Please select the most fitting role(s).
+      </p>
+      <mat-button-toggle-group
+        multiple
+        [vertical]="true"
+        class="flex-grow init-group"
+      >
+        <mat-button-toggle
+          class="flex-grow init-button"
+          [checked]="isSupplier"
+          (click)="isSupplier = !isSupplier; refreshNeither()"
+        >
+          <mat-icon *ngIf="!isSupplier">local_shipping</mat-icon>
+          <mat-icon *ngIf="isSupplier" class="active">check</mat-icon>
+          <div class="init-description flex-grow">
+            <div class="mat-headline flex-grow">I am a supplier</div>
+            <p>I supply materials or I'm a part of the maker community.</p>
+          </div>
+        </mat-button-toggle>
+        <mat-button-toggle
+          class="flex-grow init-button"
+          [checked]="isRequestor"
+          (click)="isRequestor = !isRequestor; refreshNeither()"
+        >
+          <mat-icon *ngIf="!isRequestor">local_hospital</mat-icon>
+          <mat-icon *ngIf="isRequestor" class="active">check</mat-icon>
+          <div class="init-description flex-grow">
+            <div class="mat-headline flex-grow">I am a requestor</div>
+            <p>
+              I'm requesting materials or PPE on behalf of the medical
+              community.
+            </p>
+          </div>
+        </mat-button-toggle>
+        <mat-error *ngIf="firstFormGroup.hasError('lackingRole')">
+          Please select one or more roles.
+        </mat-error>
+        <mat-button-toggle
+          class="flex-grow init-button"
+          [checked]="isNeither"
+          (click)="isNeither = !isNeither; refreshOthers()"
+        >
+          <mat-icon *ngIf="!isNeither">account_circle</mat-icon>
+          <mat-icon *ngIf="isNeither" class="active">check</mat-icon>
+          <div class="init-description flex-grow">
+            <div class="mat-headline flex-grow">Neither</div>
+            <p>I'm merely interested in the maker tracker.</p>
+          </div>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div class="flex-row-reverse">
+        <button
+          mat-button
+          matStepperNext
+          mat-raised-button
+          class="flex-grow continue"
+          color="primary"
+          [disabled]="!(isSupplier || isRequestor || isNeither)"
+        >
+          Continue <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup" #secondForm class="flex-column">
+      <ng-template matStepLabel>Location</ng-template>
+      <p>
+        Where are you located?
+      </p>
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <input
+          matInput
+          formControlName="city"
+          placeholder="Ex. Little Rock"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-select placeholder="State" formControlName="state" required>
+          <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="secondFormGroup.controls['state'].hasError('required')"
+        >
+          State is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          maxlength="5"
+          placeholder="Zip Code"
+          type="text"
+          formControlName="zipCode"
+          required
+        />
+      </mat-form-field>
+      <div class="flex-row flex-between">
+        <button mat-button matStepperPrevious mat-raised-button color="primary">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="supplierFormGroup" *ngIf="isSupplier">
+    <form [formGroup]="supplierFormGroup" class="flex-column">
+      <ng-template matStepLabel>Supplying</ng-template>
+      <p>
+        DEV NOTE: THIS PART ISN'T DONE YET
+      </p>
+      <mat-form-field>
+        <mat-label>What are you able to supply?</mat-label>
+        <mat-select formControlName="products" multiple>
+          <mat-optgroup
+            *ngFor="let group of products"
+            [label]="group.name"
+            [disabled]="!group.products.length"
+          >
+            <mat-option
+              *ngFor="let product of group.products"
+              [value]="product.id"
+            >
+              {{ product.name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+      <div class="flex-row flex-between">
+        <button mat-button matStepperPrevious mat-raised-button color="primary">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="requestorFormGroup" *ngIf="isRequestor">
+    <form [formGroup]="requestorFormGroup">
+      <ng-template matStepLabel>Needs</ng-template>
+      <p>
+        What do you need help with?
+      </p>
+      <p>
+        DEV NOTE: THIS PART ISN'T DONE YET
+      </p>
+      <mat-form-field>
+        <mat-label>Needs</mat-label>
+        <input
+          matInput
+          formControlName="secondCtrl"
+          placeholder="NOT DONE YET"
+          required
+        />
+      </mat-form-field>
+      <div class="flex-row flex-between">
+        <button mat-button matStepperPrevious mat-raised-button color="primary">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-button matStepperNext mat-raised-button color="primary">
+          Next <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done!</ng-template>
+    <p>That's all we need!</p>
+    <p>You can explore more by proceeding to your dashboard.</p>
+    <div class="flex-row flex-between">
+      <button mat-button matStepperPrevious>Back</button>
+      <button
+        mat-raised-button
+        class="continue"
+        color="primary"
+        [disabled]="!(isSupplier || isRequestor || isNeither)"
+        (click)="submit()"
+      >
+        Let's go! <mat-icon>arrow_forward</mat-icon>
+      </button>
     </div>
-  </mat-button-toggle>
-  <mat-button-toggle
-    class="flex-grow init-button"
-    [checked]="isRequestor"
-    (click)="isRequestor = !isRequestor; refreshNeither()"
-  >
-    <mat-icon>local_hospital</mat-icon>
-    <div class="init-description">
-      <div class="mat-headline flex-grow">I am a requestor</div>
-      <p>I'm requesting materials or PPE on behalf of the medical community.</p>
-    </div>
-  </mat-button-toggle>
-  <mat-button-toggle
-    class="flex-grow init-button"
-    [checked]="isNeither"
-    (click)="isNeither = !isNeither; refreshOthers()"
-  >
-    <mat-icon>account_circle</mat-icon>
-    <div class="init-description">
-      <div class="mat-headline flex-grow">Neither</div>
-      <p>I'm merely interested in the maker tracker.</p>
-    </div>
-  </mat-button-toggle>
-</mat-button-toggle-group>
-<button
-  mat-raised-button
-  class="flex-shrink continue"
-  color="primary"
-  [disabled]="!(isSupplier || isRequestor || isNeither)"
-  (click)="submit()"
->
-  Continue <mat-icon>arrow_forward</mat-icon>
-</button>
+  </mat-step>
+</mat-vertical-stepper>

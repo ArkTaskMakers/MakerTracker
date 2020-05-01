@@ -1,12 +1,12 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { BackendService } from '../services/backend/backend.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddInventoryComponent } from './dialogs/add-inventory/add-inventory.component';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
-import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { EditInventoryDto } from 'autogen/EditInventoryDto';
+import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
+import { map } from 'rxjs/operators';
+import { BackendService } from '../services/backend/backend.service';
+import { AddInventoryComponent } from './dialogs/add-inventory/add-inventory.component';
 import { EditInventoryComponent } from './dialogs/edit-inventory/edit-inventory.component';
 
 @Component({
@@ -14,7 +14,6 @@ import { EditInventoryComponent } from './dialogs/edit-inventory/edit-inventory.
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-
 export class DashboardComponent implements OnInit {
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -38,15 +37,18 @@ export class DashboardComponent implements OnInit {
   );
   inventorySummary: InventoryProductSummaryDto[];
 
-  constructor(private breakpointObserver: BreakpointObserver, private backend: BackendService, public dialog: MatDialog) {
-  }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private backend: BackendService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.refreshDashBoard();
   }
 
   private refreshDashBoard() {
-    this.backend.getInventorySummary().subscribe(res => this.inventorySummary = res);
+    this.backend.getInventorySummary().subscribe((res) => (this.inventorySummary = res));
   }
 
   openAddInventoryDialog(): void {
@@ -54,7 +56,7 @@ export class DashboardComponent implements OnInit {
       data: <AddInventoryDto>{}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.refreshDashBoard();
     });
   }
@@ -67,7 +69,7 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.refreshDashBoard();
     });
   }
@@ -79,10 +81,8 @@ export class DashboardComponent implements OnInit {
     //     newAmount: product.amount
     //   }
     // });
-
     // dialogRef.afterClosed().subscribe(result => {
     //   this.refreshDashBoard();
     // });
   }
-
 }

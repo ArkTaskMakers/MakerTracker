@@ -1,0 +1,7 @@
+{
+  "files.trimTrailingWhitespace": true,
+  "editor.formatOnSave": true,
+  "tslint.packageManager": "yarn",
+  "tslint.run": "onSave",
+  "tslint.autoFixOnSave": true
+}

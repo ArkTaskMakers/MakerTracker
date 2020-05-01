@@ -1,22 +1,22 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Router } from "@angular/router";
-import { ProductService } from "../product.service";
-import { Product } from "../product";
-import { map, switchMap } from "rxjs/operators";
-import { of } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { Product } from '../product';
+import { ProductService } from '../product.service';
 
 @Component({
-  selector: "app-product-edit",
-  templateUrl: "./product-edit.component.html",
-  styleUrls: ["./product-edit.component.scss"],
+  selector: 'app-product-edit',
+  templateUrl: './product-edit.component.html',
+  styleUrls: ['./product-edit.component.scss']
 })
 export class ProductEditComponent implements OnInit {
   id: string;
   product: Product;
   feedback: any = {};
-  src: string = "";
+  src = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +31,7 @@ export class ProductEditComponent implements OnInit {
       .pipe(
         map((p) => p.id),
         switchMap((id) => {
-          if (id === "new") {
+          if (id === 'new') {
             return of(new Product());
           }
           return this.productService.findById(id);
@@ -43,8 +43,8 @@ export class ProductEditComponent implements OnInit {
           this.feedback = {};
         },
         (err) => {
-          this._snackBar.open("Error loading", null, {
-            duration: 2000,
+          this._snackBar.open('Error loading', null, {
+            duration: 2000
           });
         }
       );
@@ -54,25 +54,25 @@ export class ProductEditComponent implements OnInit {
     this.productService.save(this.product).subscribe(
       (product) => {
         this.product = product;
-        this._snackBar.open("Save was successful!", null, {
-          duration: 2000,
+        this._snackBar.open('Save was successful!', null, {
+          duration: 2000
         });
-        this.router.navigate(["/products"]);
+        this.router.navigate(['/products']);
       },
       (err) => {
-        this._snackBar.open("Error Saving", null, {
-          duration: 2000,
+        this._snackBar.open('Error Saving', null, {
+          duration: 2000
         });
       }
     );
   }
 
   cancel() {
-    this.router.navigate(["/products"]);
+    this.router.navigate(['/products']);
   }
 
   onFileChange(event) {
-    let reader = new FileReader();
+    const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
@@ -86,7 +86,7 @@ export class ProductEditComponent implements OnInit {
           },
           (err) => {
             this._snackBar.open('Invalid image', null, {
-              duration: 2000,
+              duration: 2000
             });
           }
         );
@@ -102,12 +102,12 @@ export class ProductEditComponent implements OnInit {
       const img = new Image();
       img.src = src;
       img.onload = () => {
-        const elem = document.createElement("canvas");
+        const elem = document.createElement('canvas');
         elem.width = newX;
         elem.height = newY;
-        const ctx = elem.getContext("2d");
+        const ctx = elem.getContext('2d');
         ctx.drawImage(img, 0, 0, newX, newY);
-        const data = ctx.canvas.toDataURL("image/jpeg", 0.75);
+        const data = ctx.canvas.toDataURL('image/jpeg', 0.75);
         res(data);
       };
       img.onerror = (error) => rej(error);

@@ -198,9 +198,18 @@ namespace MakerTracker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("ProductTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Products");
                 });
@@ -228,6 +237,34 @@ namespace MakerTracker.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("ProductRequirement");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Other",
+                            SortOrder = 9999
+                        });
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.Profile", b =>
@@ -395,6 +432,15 @@ namespace MakerTracker.Migrations
                     b.HasOne("MakerTracker.DBModels.Product", "Product")
                         .WithMany("NeedRequests")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("MakerTracker.DBModels.Product", b =>
+                {
+                    b.HasOne("MakerTracker.DBModels.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MakerTracker.DBModels.ProductRequirement", b =>

@@ -1,12 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { FooterNavComponent } from './footer-nav.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { of, BehaviorSubject } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatMenuModule } from '@angular/material/menu';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BehaviorSubject, of } from 'rxjs';
+import { FooterNavComponent } from './footer-nav.component';
 
 class MockBreakpointObserver {
   subject = new BehaviorSubject<any>({ matches: true });
@@ -19,11 +18,10 @@ describe('FooterNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterNavComponent ],
-      imports: [ MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule],
+      declarations: [FooterNavComponent],
+      imports: [MatButtonModule, MatToolbarModule, MatMenuModule, MatIconModule],
       providers: [{ provide: BreakpointObserver, useClass: MockBreakpointObserver }]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -47,18 +45,18 @@ describe('FooterNavComponent', () => {
   });
 
   it('should get handset layout', (done) => {
-    component.isHandset$.subscribe(res => {
+    component.isHandset$.subscribe((res) => {
       expect(res).toBe(true);
       done();
-    })
+    });
   });
 
   it('should get normal layout', (done) => {
     const obs: MockBreakpointObserver = TestBed.get(BreakpointObserver);
     obs.subject.next({ matches: false });
-    component.isHandset$.subscribe(res => {
+    component.isHandset$.subscribe((res) => {
       expect(res).toBe(false);
       done();
-    })
+    });
   });
 });

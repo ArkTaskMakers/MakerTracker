@@ -8,11 +8,9 @@ import { AuthService } from '../services/auth/auth.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-
   /**
    * Initializes a new instance of the HomeComponent class.
    * @param auth The authentication service, for displaying the register/go to dashboard button on the landing.
    */
-  constructor(public auth: AuthService) {
-  }
+  constructor(public auth: AuthService) {}
 }
