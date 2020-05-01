@@ -1,7 +1,7 @@
 export interface IProductTypeGroup {
   id: number;
   name: string;
-  products: IProductEntry[]
+  products: IProductEntry[];
 }
 
 export interface IProductEntry {

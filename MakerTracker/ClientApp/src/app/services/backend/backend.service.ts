@@ -1,22 +1,18 @@
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
-import { Observable } from 'rxjs';
-import { ProductDto } from 'autogen/ProductDto';
+import { Inject, Injectable } from '@angular/core';
 import { AddInventoryDto } from 'autogen/AddInventoryDto';
 import { EditInventoryDto } from 'autogen/EditInventoryDto';
+import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
+import { ProductDto } from 'autogen/ProductDto';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
-
-  constructor(
-    private _http: HttpClient, @Inject('BASE_URL') private baseUrl: string
-  ) { }
-
+  constructor(private _http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
 
   getInventorySummary(): Observable<InventoryProductSummaryDto[]> {
     return this._http.get<InventoryProductSummaryDto[]>(this.baseUrl + 'api/inventory');

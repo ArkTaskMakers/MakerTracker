@@ -1,14 +1,14 @@
-import { HasRoleDirective } from './has-role.directive';
 import { Component } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { HasRoleDirective } from './has-role.directive';
 
 @Component({
   template: `<div *appHasRole="[Admin]"><h1>test</h1></div>`
 })
-class TestComponent { }
+class TestComponent {}
 
 class AuthServiceSpy {
   shouldHaveRole = true;
@@ -22,10 +22,12 @@ describe('HasRoleDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HasRoleDirective, TestComponent],
-      providers: [{
-        provide: AuthService,
-        useClass: AuthServiceSpy
-      }]
+      providers: [
+        {
+          provide: AuthService,
+          useClass: AuthServiceSpy
+        }
+      ]
     }).compileComponents();
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();

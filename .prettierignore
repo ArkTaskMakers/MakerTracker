@@ -1,0 +1,4 @@
+autogen/**
+angular.json
+karma*
+tsconfig*json

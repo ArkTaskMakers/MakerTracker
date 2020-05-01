@@ -22,9 +22,10 @@
 
         // GET: api/ProductTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductTypeDto>>> GetProductTypes()
+        [EnableQuery]
+        public ActionResult<IQueryable<ProductTypeDto>> GetProductTypes()
         {
-            return await _context.ProductTypes.ProjectTo<ProductTypeDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return Ok(_context.ProductTypes.ProjectTo<ProductTypeDto>(_mapper.ConfigurationProvider));
         }
 
         // GET: api/ProductTypes

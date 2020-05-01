@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -21,15 +21,14 @@ export class FooterNavComponent {
   }
 
   /** Notifies the UI of layout changes */
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay(1)
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay(1)
+  );
 
-    /**
-     * Initializes a new instance of the FooterNavComponent class.
-     * @param breakpointObserver observes for reactive breakpoints to notify of layout changes
-     */
+  /**
+   * Initializes a new instance of the FooterNavComponent class.
+   * @param breakpointObserver observes for reactive breakpoints to notify of layout changes
+   */
   constructor(private breakpointObserver: BreakpointObserver) {}
 }

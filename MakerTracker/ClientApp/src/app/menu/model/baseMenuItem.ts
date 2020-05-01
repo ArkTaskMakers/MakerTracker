@@ -1,4 +1,4 @@
-import { MenuItemTypes } from "./menuItemTypes.enum";
+import { MenuItemTypes } from './menuItemTypes.enum';
 
 export class BaseMenuItem {
   requiresAuth?: boolean;

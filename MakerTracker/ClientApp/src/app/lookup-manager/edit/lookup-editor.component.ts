@@ -1,0 +1,91 @@
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { BaseLookupModel } from '../lookup-model';
+import { ModelProviderService } from '../lookup-model-provider.service';
+
+/** The component for editing equipment */
+@Component({
+  selector: 'app-lookup-editor',
+  templateUrl: './lookup-editor.component.html',
+  styleUrls: ['./lookup-editor.component.scss']
+})
+export class LookupEditorComponent implements OnInit {
+  /** The id passed by the routing. */
+  id: string;
+
+  /** The page title. */
+  title: string;
+
+  /** The entry currently being edited. */
+  entry: any;
+
+  /** The model for generating a lookup editor. */
+  model: BaseLookupModel;
+
+  /** feedback messages for alerting the user. */
+  feedback: any = {};
+
+  /**
+   * Initializes a new instance of the EquipmentListComponent class.
+   * @param route The activated route
+   * @param router The angular router for navigation
+   * @param _snackBar The snackbar for UI messaging
+   * @param _equipmentService The service for interacting with the REST API
+   */
+  constructor(
+    protected route: ActivatedRoute,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    modelProvider: ModelProviderService
+  ) {
+    router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.model = modelProvider.models.get(this.route.snapshot.paramMap.get('model'));
+    const id = <any>this.route.snapshot.paramMap.get('id');
+    (id === 'new' ? of((this.model.factory && this.model.factory()) || {}) : this.model.service.get(id)).subscribe(
+      (entry) => {
+        this.entry = entry;
+        this.feedback = {};
+        this.title = entry.id
+          ? `Editing '${this.model.entryDisplayNameFormatter(entry)}'`
+          : `Add new ${this.model.lookupDisplayName}`;
+      },
+      () => {
+        this._snackBar.open('Error loading', null, {
+          duration: 2000
+        });
+      }
+    );
+  }
+
+  /** Hooks into the OnInit lifetime event. */
+  ngOnInit() {}
+
+  /** Saves the changes to the current entry. */
+  save() {
+    const request = this.entry.id
+      ? this.model.service.update(this.entry.id, this.entry)
+      : this.model.service.create(this.entry);
+    request.subscribe(
+      (entry) => {
+        this.entry = entry;
+        this._snackBar.open('Save was successful!', null, {
+          duration: 2000
+        });
+        this.router.navigate(['admin', this.model.lookupName]);
+      },
+      () => {
+        this._snackBar.open('Error Saving', null, {
+          duration: 2000
+        });
+      }
+    );
+  }
+
+  /** Navigates back to the equipment list without applying any changes. */
+  cancel() {
+    this.router.navigate(['admin', this.model.lookupName]);
+  }
+}

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BackendService } from 'src/app/services/backend/backend.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { BackendService } from 'src/app/services/backend/backend.service';
 import { IState, StatesService } from 'src/app/services/states.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { IState, StatesService } from 'src/app/services/states.service';
   templateUrl: './update-profile.component.html',
   styleUrls: ['./update-profile.component.scss']
 })
-
 export class UpdateProfileComponent implements OnInit {
   profileForm = this.fb.group({
     companyName: null,
@@ -27,36 +25,39 @@ export class UpdateProfileComponent implements OnInit {
     email: [null, [Validators.required, Validators.email]],
     isSelfQuarantined: null,
     isDropOffPoint: null,
-    zipCode: [null, Validators.compose([
-      Validators.required, Validators.minLength(5), Validators.maxLength(5)])
-    ],
+    zipCode: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
     isRequestor: false,
-    isSupplier: false,
+    isSupplier: false
   });
 
-  states: IState[]
+  states: IState[];
   loading: boolean;
 
-  constructor(private fb: FormBuilder, private backend: BackendService, private _snackBar: MatSnackBar, stateSvc: StatesService) {
+  constructor(
+    private fb: FormBuilder,
+    private backend: BackendService,
+    private _snackBar: MatSnackBar,
+    stateSvc: StatesService
+  ) {
     this.states = stateSvc.states;
-   }
+  }
 
   ngOnInit(): void {
-    this.backend.getProfile().subscribe(x => this.patchValues(x));
+    this.backend.getProfile().subscribe((x) => this.patchValues(x));
   }
 
   onSubmit() {
     if (!this.profileForm.valid) {
       this._snackBar.open('Please Validate your Profile', null, {
-        duration: 2000,
+        duration: 2000
       });
       return;
     }
 
     this.loading = true;
-    this.backend.saveProfile(this.profileForm.value as UpdateProfileDto).subscribe(x => {
+    this.backend.saveProfile(this.profileForm.value as UpdateProfileDto).subscribe((x) => {
       this._snackBar.open('Your profile is Updated!', null, {
-        duration: 2000,
+        duration: 2000
       });
       this.loading = false;
     });
@@ -78,7 +79,7 @@ export class UpdateProfileComponent implements OnInit {
       isSelfQuarantined: data.isSelfQuarantined,
       isDropOffPoint: data.isDropOffPoint,
       isRequestor: data.isRequestor,
-      isSupplier: data.isSupplier,
+      isSupplier: data.isSupplier
     });
   }
 }

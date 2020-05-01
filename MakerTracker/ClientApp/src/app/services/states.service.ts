@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +66,7 @@ export class StatesService {
     { name: 'Wyoming', abbreviation: 'WY' }
   ];
 
-  get states(): { name: string; abbreviation: string}[] {
+  get states(): { name: string; abbreviation: string }[] {
     return [...this._stateData];
   }
 }

@@ -8,9 +8,8 @@ describe('AddInventoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddInventoryComponent ]
-    })
-    .compileComponents();
+      declarations: [AddInventoryComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

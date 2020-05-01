@@ -1,8 +1,8 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Product } from './product';
 import { ProductFilter } from './product-filter';
-import { Injectable, Inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 const headers = new HttpHeaders().set('Accept', 'application/json');
 
@@ -11,9 +11,7 @@ export class ProductService {
   productList: Product[] = [];
   api = '/api/products';
 
-  constructor(
-    private http: HttpClient, @Inject('BASE_URL') private baseUrl: string
-  ) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.api = baseUrl + 'api/products';
   }
 
@@ -24,10 +22,11 @@ export class ProductService {
   }
 
   load(filter: ProductFilter): void {
-    this.find(filter).subscribe(result => {
-      this.productList = result;
-    },
-      err => {
+    this.find(filter).subscribe(
+      (result) => {
+        this.productList = result;
+      },
+      (err) => {
         console.error('error loading', err);
       }
     );
@@ -35,7 +34,7 @@ export class ProductService {
 
   find(filter: ProductFilter): Observable<Product[]> {
     const params = {
-      'name': filter.name,
+      name: filter.name
     };
 
     return this.http.get<Product[]>(this.api, { params, headers });
@@ -65,4 +64,3 @@ export class ProductService {
     return null;
   }
 }
-
