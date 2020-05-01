@@ -131,7 +131,7 @@ namespace MakerTracker.Controllers
                 .Build().ToList();
 
             _context.Products.AddRange(products);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
 
             var profiles = Builder<Profile>.CreateListOfSize(300)
@@ -159,7 +159,7 @@ namespace MakerTracker.Controllers
                 .Build();
 
             _context.Profiles.AddRange(profiles);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
 
             var transactions = Builder<Transaction>.CreateListOfSize(1000)
@@ -186,7 +186,7 @@ namespace MakerTracker.Controllers
 
             _context.Transactions.AddRange(transactions);
             _context.Transactions.AddRange(transactions2);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok("Populated");
         }
