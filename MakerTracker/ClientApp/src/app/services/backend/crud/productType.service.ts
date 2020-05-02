@@ -24,6 +24,13 @@ export class ProductTypeService extends GenericCrudService<ProductTypeDto> {
     });
   }
 
+  lookup() {
+    return this.query(this._baseUrl, {
+      $orderBy: 'SortOrder',
+      $select: 'Id,Name'
+    });
+  }
+
   getProductHierarchy(): Observable<IProductTypeGroup[]> {
     return this.query('api/ProductTypes/Query', {
       $expand: 'Products($filter=IsDeprecated eq false;$select=Id,Name,ImageUrl)',

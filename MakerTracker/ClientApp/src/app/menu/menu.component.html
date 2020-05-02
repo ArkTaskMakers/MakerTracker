@@ -3,9 +3,7 @@
   <div class="spacer"></div>
   <ng-container *ngIf="!isCollapsed; else collapsedMenu">
     <ng-container *ngFor="let item of filteredMenuItems | async">
-      <ng-container
-        *ngTemplateOutlet="plainRender; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="plainRender; context: { $implicit: item }"></ng-container>
     </ng-container>
   </ng-container>
 </mat-toolbar>
@@ -13,24 +11,16 @@
 <ng-template #plainRender let-item>
   <ng-container [ngSwitch]="item.type">
     <ng-container *ngSwitchCase="menuItemTypes.Route">
-      <ng-container
-        *ngTemplateOutlet="routeItem; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="routeItem; context: { $implicit: item }"></ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="menuItemTypes.Action">
-      <ng-container
-        *ngTemplateOutlet="actionItem; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="actionItem; context: { $implicit: item }"></ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="menuItemTypes.Divider">
-      <ng-container
-        *ngTemplateOutlet="divider; context: { $implicit: true }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="divider; context: { $implicit: item }"></ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="menuItemTypes.Dropdown">
-      <ng-container
-        *ngTemplateOutlet="isCollapsed ? dropdownFlatten : dropdown; context: { $implicit: item }"
-      >
+      <ng-container *ngTemplateOutlet="isCollapsed ? dropdownFlatten : dropdown; context: { $implicit: item }">
       </ng-container>
     </ng-container>
   </ng-container>
@@ -38,9 +28,7 @@
 
 <ng-template #dropdownFlatten let-item>
   <ng-container *ngFor="let subItem of item.items">
-    <ng-container
-      *ngTemplateOutlet="plainRender; context: { $implicit: subItem }"
-    ></ng-container>
+    <ng-container *ngTemplateOutlet="plainRender; context: { $implicit: subItem }"></ng-container>
   </ng-container>
 </ng-template>
 
@@ -51,11 +39,7 @@
 </ng-template>
 
 <ng-template #dropdown let-item>
-  <button
-    mat-button
-    [mat-menu-trigger-for]="dropdownMenu"
-    [matMenuTriggerData]="{ $implicit: item }"
-  >
+  <button mat-button [mat-menu-trigger-for]="dropdownMenu" [matMenuTriggerData]="{ $implicit: item }">
     {{ item.text }}
   </button>
 </ng-template>
@@ -63,23 +47,19 @@
 <mat-menu #dropdownMenu="matMenu">
   <ng-template matMenuContent let-item>
     <ng-container *ngFor="let item of item.items">
-      <ng-container
-        *ngTemplateOutlet="plainRender; context: { $implicit: item }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="plainRender; context: { $implicit: item }"></ng-container>
     </ng-container>
   </ng-template>
 </mat-menu>
 
 <mat-menu #headerMenu="matMenu">
   <ng-container *ngFor="let item of filteredMenuItems | async">
-    <ng-container
-      *ngTemplateOutlet="plainRender; context: { $implicit: item }"
-    ></ng-container>
+    <ng-container *ngTemplateOutlet="plainRender; context: { $implicit: item }"></ng-container>
   </ng-container>
 </mat-menu>
 
-<ng-template #divider>
-  <mat-divider [vertical]="!isCollapsed"></mat-divider>
+<ng-template #divider let-item>
+  <mat-divider [vertical]="!isCollapsed && !item.isHorizontal" [attr.test]="item.isHorizontal"></mat-divider>
 </ng-template>
 
 <ng-template #routeItem let-item>

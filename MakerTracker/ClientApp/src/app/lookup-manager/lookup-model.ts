@@ -1,5 +1,7 @@
 import { GenericCrudService } from '../services/backend/crud/genericCrud.service';
 
+export type LookupInputType = 'number' | 'text' | 'email' | 'select' | 'textarea' | 'bool-toggle' | 'image';
+
 export class BaseLookupModel<T = any> {
   lookupName = '';
   lookupDisplayName = '';
@@ -17,9 +19,7 @@ export class BaseLookupModel<T = any> {
 
 export class BaseLookupFormField implements ILookupFormField {
   field: string;
-
-  // TODO: Add for boolean and image selector from product lookup
-  fieldType: 'number' | 'text' | 'email' | 'select' | 'textarea' = 'text';
+  fieldType: LookupInputType = 'text';
   label: string;
   options: any = null;
   placeholder: string = null;
@@ -32,7 +32,7 @@ export class BaseLookupFormField implements ILookupFormField {
 
 export interface ILookupFormField {
   field: string;
-  fieldType: 'text' | 'number' | 'email' | 'select' | 'textarea';
+  fieldType: LookupInputType;
   label: string;
   options: any;
   placeholder: string;
