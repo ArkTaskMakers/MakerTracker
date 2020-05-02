@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BaseLookupModel } from '../lookup-model';
+import { BaseLookupModel, ILookupFormField } from '../lookup-model';
 import { ModelProviderService } from '../lookup-model-provider.service';
 
 /** The component for editing equipment */
@@ -39,29 +39,74 @@ export class LookupEditorComponent implements OnInit {
     protected route: ActivatedRoute,
     private router: Router,
     private _snackBar: MatSnackBar,
-    modelProvider: ModelProviderService
+    modelProvider: ModelProviderService,
+    private cd: ChangeDetectorRef
   ) {
-    router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.model = modelProvider.models.get(this.route.snapshot.paramMap.get('model'));
-    const id = <any>this.route.snapshot.paramMap.get('id');
-    (id === 'new' ? of((this.model.factory && this.model.factory()) || {}) : this.model.service.get(id)).subscribe(
-      (entry) => {
-        this.entry = entry;
-        this.feedback = {};
-        this.title = entry.id
-          ? `Editing '${this.model.entryDisplayNameFormatter(entry)}'`
-          : `Add new ${this.model.lookupDisplayName}`;
-      },
-      () => {
-        this._snackBar.open('Error loading', null, {
-          duration: 2000
-        });
-      }
-    );
+    this.route.paramMap.subscribe((params) => {
+      this.entry = null;
+      this.model = modelProvider.models.get(params.get('model'));
+      const id = <any>params.get('id');
+      (id === 'new' ? of((this.model.factory && this.model.factory()) || {}) : this.model.service.get(id)).subscribe(
+        (entry) => {
+          this.entry = entry;
+          this.feedback = {};
+          this.title = entry.id
+            ? `Editing '${this.model.entryDisplayNameFormatter(entry)}'`
+            : `Add new ${this.model.lookupDisplayName}`;
+        },
+        () => {
+          this._snackBar.open('Error loading', null, {
+            duration: 2000
+          });
+        }
+      );
+    });
   }
 
   /** Hooks into the OnInit lifetime event. */
   ngOnInit() {}
+
+  onFileChange(event, field: ILookupFormField) {
+    field.options = field.options || {};
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.compressImage(reader.result, field.options.width || 64, field.options.height || 64).then(
+          (compressed: string) => {
+            this.entry[field.field] = compressed;
+          },
+          (err) => {
+            this._snackBar.open('Invalid image', null, {
+              duration: 2000
+            });
+          }
+        );
+
+        // need to run CD since file load runs outside of zone
+        this.cd.markForCheck();
+      };
+    }
+  }
+
+  compressImage(src, newX, newY) {
+    return new Promise((res, rej) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        const elem = document.createElement('canvas');
+        elem.width = newX;
+        elem.height = newY;
+        const ctx = elem.getContext('2d');
+        ctx.drawImage(img, 0, 0, newX, newY);
+        const data = ctx.canvas.toDataURL('image/jpeg', 0.75);
+        res(data);
+      };
+      img.onerror = (error) => rej(error);
+    });
+  }
 
   /** Saves the changes to the current entry. */
   save() {

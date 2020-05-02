@@ -15,5 +15,20 @@
     .form-group {
       margin-bottom: 15px;
     }
+
+    .image-field {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 25% !important;
+      }
+
+      > *:not(:first-child) {
+        margin-left: 15px;
+      }
+    }
   }
 }

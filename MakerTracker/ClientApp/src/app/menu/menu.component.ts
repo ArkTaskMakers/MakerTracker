@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { ModelProviderService } from '../lookup-manager/lookup-model-provider.service';
 import { InitProfileComponent } from '../Profiles/init-profile/init-profile.component';
 import { AuthService } from '../services/auth/auth.service';
 import { BackendService } from '../services/backend/backend.service';
@@ -16,6 +17,14 @@ import { ActionMenuItem, BaseMenuItem, DividerMenuItem, DropdownMenuItem, MenuIt
 export class MenuComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[];
   menuItemTypes = MenuItemTypes;
+
+  adminMenuItems: BaseMenuItem[] = [
+    new ActionMenuItem({
+      text: 'Test Onboarding',
+      action: () => this.openOnboardingWizard()
+    }),
+    new DividerMenuItem({ isHorizontal: true })
+  ];
   menuItems: BaseMenuItem[] = [
     new RouteMenuItem({
       text: 'My Profile',
@@ -38,24 +47,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       text: 'Admin',
       requiresAuth: true,
       requiresAdmin: true,
-      items: [
-        new RouteMenuItem({
-          text: 'Manage Products',
-          route: ['/products']
-        }),
-        new RouteMenuItem({
-          text: 'Manage Equipment',
-          route: ['/admin/equipment']
-        }),
-        new RouteMenuItem({
-          text: 'Manage Product Types',
-          route: ['/admin/product-type']
-        }),
-        new ActionMenuItem({
-          text: 'Test Onboarding',
-          action: () => this.openOnboardingWizard()
-        })
-      ]
+      items: this.adminMenuItems
     }),
     new DividerMenuItem({
       requiresAuth: true
@@ -87,8 +79,20 @@ export class MenuComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private backend: BackendService
-  ) {}
+    private backend: BackendService,
+    private lookups: ModelProviderService
+  ) {
+    const lookupMenuEntries = [...lookups.models.values()];
+    lookupMenuEntries.sort((a, b) => a.lookupDisplayName.localeCompare(b.lookupDisplayName));
+    lookupMenuEntries.forEach((entry) => {
+      this.adminMenuItems.push(
+        new RouteMenuItem({
+          text: `Manage ${entry.lookupDisplayName}`,
+          route: ['admin', entry.lookupName]
+        })
+      );
+    });
+  }
 
   ngOnInit() {
     this._subscriptions = [

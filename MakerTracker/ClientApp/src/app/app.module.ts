@@ -16,7 +16,6 @@ import { JWTInterceptorInterceptor } from './jwtinterceptor.interceptor';
 import { LookupModule } from './lookup-manager/lookup.module';
 import { MaterialModule } from './material/material.module';
 import { MenuComponent } from './menu/menu.component';
-import { ProductModule } from './product/product.module';
 import { InitProfileComponent } from './Profiles/init-profile/init-profile.component';
 import { UpdateProfileComponent } from './Profiles/update-profile/update-profile.component';
 import { AuthService } from './services/auth/auth.service';
@@ -54,7 +53,6 @@ import { AuthService } from './services/auth/auth.service';
     BrowserAnimationsModule,
     MaterialModule,
     LayoutModule,
-    ProductModule,
     LookupModule,
     ReactiveFormsModule
   ],

@@ -10,25 +10,51 @@
         {{ feedback.message }}
       </div>
       <div class="form-group" *ngFor="let field of model.formFields">
-        <ng-container [ngSwitch]="field.type">
+        <ng-container [ngSwitch]="field.fieldType">
           <mat-form-field *ngSwitchCase="'textarea'">
             <mat-label>{{ field.label }}</mat-label>
             <textarea
               matInput
               [(ngModel)]="entry[field.field]"
-              [attr.id]="field.field"
-              [attr.name]="field.field"
+              [id]="field.field"
+              [name]="field.field"
               [attr.maxlength]="field.options && field.options.maxlength"
               [placeholder]="field.placeholder"
               [attr.rows]="(field.options && field.options.rows) || 5"
               [required]="field.required"
             ></textarea>
           </mat-form-field>
+          <div class="image-field" *ngSwitchCase="'image'">
+            <img [src]="entry[field.field]" *ngIf="entry[field.field]" />
+            <mat-form-field>
+              <mat-label>Image URL</mat-label>
+              <input
+                matInput
+                [(ngModel)]="entry[field.field]"
+                [id]="field.field"
+                [name]="field.field"
+                [placeholder]="field.placeholder"
+              />
+            </mat-form-field>
+            <button type="button" mat-icon-button (click)="fileUpload.click()">
+              <mat-icon>add_photo_alternate</mat-icon
+              ><input
+                type="file"
+                #fileUpload
+                [name]="field.field + '-fileUpload'"
+                [hidden]="true"
+                (change)="onFileChange($event, field)"
+              />
+            </button>
+          </div>
+          <mat-slide-toggle [(ngModel)]="entry[field.field]" [name]="field.field" *ngSwitchCase="'bool-toggle'">
+            Is Deprecated
+          </mat-slide-toggle>
           <mat-form-field *ngSwitchCase="'select'">
             <mat-select
               [(ngModel)]="entry[field.field]"
-              [attr.id]="field.field"
-              [attr.name]="field.field"
+              [id]="field.field"
+              [name]="field.field"
               [placeholder]="field.placeholder"
               [multiple]="field.options.multiple"
               [required]="field.required"
@@ -59,17 +85,10 @@
       <div class="form-group"></div>
     </mat-card-content>
     <mat-card-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!editForm.form.valid"
-      >
+      <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.form.valid">
         <mat-icon>save</mat-icon> Save
       </button>
-      <button mat-button type="button" (click)="cancel()">
-        <mat-icon>close</mat-icon> Cancel
-      </button>
+      <button mat-button type="button" (click)="cancel()"><mat-icon>close</mat-icon> Cancel</button>
     </mat-card-actions>
   </mat-card>
 </form>

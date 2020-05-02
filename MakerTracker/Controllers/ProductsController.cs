@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MakerTracker.DBModels;
-using MakerTracker.Models;
-using MakerTracker.Models.Products;
-using Microsoft.AspNetCore.Authorization;
-
-namespace MakerTracker.Controllers
+﻿namespace MakerTracker.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+    using MakerTracker.DBModels;
+    using MakerTracker.Models.Products;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -27,9 +25,10 @@ namespace MakerTracker.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+        [EnableQuery]
+        public IActionResult GetProducts()
         {
-            return await _context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return Ok(_context.Products.ProjectTo<ProductDto>(_mapper.ConfigurationProvider));
         }
 
         // GET: api/Products/5

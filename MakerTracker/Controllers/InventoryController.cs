@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MakerTracker.DBModels;
-using MakerTracker.Models;
-using MakerTracker.Models.Inventory;
-using Microsoft.AspNetCore.Authorization;
-
-namespace MakerTracker.Controllers
+﻿namespace MakerTracker.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using MakerTracker.DBModels;
+    using MakerTracker.Models.Inventory;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]

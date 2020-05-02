@@ -38,6 +38,42 @@
                     Id = 1,
                     Name = "Other",
                     SortOrder = 9999
+                },
+                new ProductType
+                {
+                    Id = 2,
+                    Name = "Face Shield",
+                    SortOrder = 1
+                },
+                new ProductType
+                {
+                    Id = 3,
+                    Name = "Mask",
+                    SortOrder = 5
+                },
+                new ProductType
+                {
+                    Id = 4,
+                    Name = "Ventilator",
+                    SortOrder = 10
+                },
+                new ProductType
+                {
+                    Id = 5,
+                    Name = "Intubation Box",
+                    SortOrder = 15
+                },
+                new ProductType
+                {
+                    Id = 6,
+                    Name = "Supplies",
+                    SortOrder = 20
+                },
+                new ProductType
+                {
+                    Id = 7,
+                    Name = "Materials",
+                    SortOrder = 25
                 });
             });
         }

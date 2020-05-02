@@ -9,12 +9,14 @@ import { LOOKUP_MODELS } from './lookup-model-provider.service';
 import { LOOKUP_ROUTES } from './lookup.routes';
 import { EquipmentModel } from './models/equipment.model';
 import { ProductTypeModel } from './models/product-type.model';
+import { ProductModel } from './models/product.model';
 
 @NgModule({
   imports: [CommonModule, FormsModule, MaterialModule, RouterModule.forChild(LOOKUP_ROUTES)],
   declarations: [LookupListComponent, LookupEditorComponent],
   providers: [
     { provide: LOOKUP_MODELS, useClass: ProductTypeModel, multi: true },
+    { provide: LOOKUP_MODELS, useClass: ProductModel, multi: true },
     { provide: LOOKUP_MODELS, useClass: EquipmentModel, multi: true }
   ],
   exports: []
