@@ -7,7 +7,10 @@ export class BaseLookupModel<T = any> {
   lookupDisplayName = '';
   entryDisplayNameFormatter: (data: T) => string;
   service: GenericCrudService<T>;
-  columns: ILookupTableField[];
+  nameField = 'name';
+  descriptionField: string;
+  imageField: string;
+
   formFields: ILookupFormField[];
   factory: () => T;
 
@@ -37,20 +40,4 @@ export interface ILookupFormField {
   options: any;
   placeholder: string;
   required: boolean;
-}
-
-export class BaseLookupTableField implements ILookupTableField {
-  field: string;
-  formatter?: (data: any) => string;
-
-  constructor(init?: Partial<BaseLookupTableField>) {
-    Object.assign(this, init);
-
-    this.formatter = this.formatter || ((data: any): string => data[this.field]);
-  }
-}
-
-export interface ILookupTableField {
-  field: string;
-  formatter?: (data: any) => string;
 }

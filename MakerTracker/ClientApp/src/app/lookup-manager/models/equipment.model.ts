@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EquipmentDto } from 'autogen/EquipmentDto';
 import { EquipmentService } from 'src/app/services/backend/crud/equipment.service';
-import { BaseLookupFormField, BaseLookupModel, BaseLookupTableField } from '../lookup-model';
+import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 
 @Injectable()
 export class EquipmentModel extends BaseLookupModel<EquipmentDto> {
@@ -11,11 +11,8 @@ export class EquipmentModel extends BaseLookupModel<EquipmentDto> {
       lookupDisplayName: 'Equipment',
       entryDisplayNameFormatter: (data) => data.name,
       service,
-      columns: [
-        new BaseLookupTableField({
-          field: 'name'
-        })
-      ],
+      nameField: 'name',
+      descriptionField: 'description',
       formFields: [
         new BaseLookupFormField({
           field: 'name',

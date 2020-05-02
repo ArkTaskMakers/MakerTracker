@@ -88,12 +88,10 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.adminMenuItems.push(
         new RouteMenuItem({
           text: `Manage ${entry.lookupDisplayName}`,
-          route: ['admin', entry.lookupName],
-          requiresAuth: true
+          route: ['admin', entry.lookupName]
         })
       );
     });
-    console.log(this.adminMenuItems);
   }
 
   ngOnInit() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProductTypeDto } from 'autogen/ProductTypeDto';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
-import { BaseLookupFormField, BaseLookupModel, BaseLookupTableField } from '../lookup-model';
+import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 
 @Injectable()
 export class ProductTypeModel extends BaseLookupModel<ProductTypeDto> {
@@ -11,11 +11,7 @@ export class ProductTypeModel extends BaseLookupModel<ProductTypeDto> {
       lookupDisplayName: 'Product Types',
       entryDisplayNameFormatter: (data) => data.name,
       service,
-      columns: [
-        new BaseLookupTableField({
-          field: 'name'
-        })
-      ],
+      nameField: 'name',
       formFields: [
         new BaseLookupFormField({
           field: 'name',

@@ -4,14 +4,10 @@
     <form [formGroup]="firstFormGroup" #firstForm class="flex-column">
       <ng-template matStepLabel>Your Role</ng-template>
       <p>
-        We're happy to have you! Before we get started, we need to know a little
-        bit more about you. Please select the most fitting role(s).
+        We're happy to have you! Before we get started, we need to know a little bit more about you. Please select the
+        most fitting role(s).
       </p>
-      <mat-button-toggle-group
-        multiple
-        [vertical]="true"
-        class="flex-grow init-group"
-      >
+      <mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
         <mat-button-toggle
           class="flex-grow init-button"
           [checked]="isSupplier"
@@ -34,8 +30,7 @@
           <div class="init-description flex-grow">
             <div class="mat-headline flex-grow">I am a requestor</div>
             <p>
-              I'm requesting materials or PPE on behalf of the medical
-              community.
+              I'm requesting materials or PPE on behalf of the medical community.
             </p>
           </div>
         </mat-button-toggle>
@@ -78,12 +73,7 @@
       </p>
       <mat-form-field>
         <mat-label>City</mat-label>
-        <input
-          matInput
-          formControlName="city"
-          placeholder="Ex. Little Rock"
-          required
-        />
+        <input matInput formControlName="city" placeholder="Ex. Little Rock" required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-select placeholder="State" formControlName="state" required>
@@ -91,21 +81,12 @@
             {{ state.name }}
           </mat-option>
         </mat-select>
-        <mat-error
-          *ngIf="secondFormGroup.controls['state'].hasError('required')"
-        >
+        <mat-error *ngIf="secondFormGroup.controls['state'].hasError('required')">
           State is <strong>required</strong>
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input
-          matInput
-          maxlength="5"
-          placeholder="Zip Code"
-          type="text"
-          formControlName="zipCode"
-          required
-        />
+        <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
       </mat-form-field>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious mat-raised-button color="primary">
@@ -126,15 +107,8 @@
       <mat-form-field>
         <mat-label>What are you able to supply?</mat-label>
         <mat-select formControlName="products" multiple>
-          <mat-optgroup
-            *ngFor="let group of products"
-            [label]="group.name"
-            [disabled]="!group.products.length"
-          >
-            <mat-option
-              *ngFor="let product of group.products"
-              [value]="product.id"
-            >
+          <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
+            <mat-option *ngFor="let product of group.products" [value]="product.id">
               {{ product.name }}
             </mat-option>
           </mat-optgroup>
@@ -161,12 +135,7 @@
       </p>
       <mat-form-field>
         <mat-label>Needs</mat-label>
-        <input
-          matInput
-          formControlName="secondCtrl"
-          placeholder="NOT DONE YET"
-          required
-        />
+        <input matInput formControlName="secondCtrl" placeholder="NOT DONE YET" required />
       </mat-form-field>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious mat-raised-button color="primary">

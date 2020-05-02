@@ -28,12 +28,13 @@ export class LookupListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    private router: Router,
+    router: Router,
     modelProvider: ModelProviderService
   ) {
-    router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.model = modelProvider.models.get(this.route.snapshot.paramMap.get('model'));
-    this.refresh();
+    this.route.paramMap.subscribe((params) => {
+      this.model = modelProvider.models.get(params.get('model'));
+      this.refresh();
+    });
   }
 
   /** Hooks into the OnInit lifetime event. */

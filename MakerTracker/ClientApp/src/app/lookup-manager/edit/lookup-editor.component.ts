@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -42,23 +42,25 @@ export class LookupEditorComponent implements OnInit {
     modelProvider: ModelProviderService,
     private cd: ChangeDetectorRef
   ) {
-    router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.model = modelProvider.models.get(this.route.snapshot.paramMap.get('model'));
-    const id = <any>this.route.snapshot.paramMap.get('id');
-    (id === 'new' ? of((this.model.factory && this.model.factory()) || {}) : this.model.service.get(id)).subscribe(
-      (entry) => {
-        this.entry = entry;
-        this.feedback = {};
-        this.title = entry.id
-          ? `Editing '${this.model.entryDisplayNameFormatter(entry)}'`
-          : `Add new ${this.model.lookupDisplayName}`;
-      },
-      () => {
-        this._snackBar.open('Error loading', null, {
-          duration: 2000
-        });
-      }
-    );
+    this.route.paramMap.subscribe((params) => {
+      this.entry = null;
+      this.model = modelProvider.models.get(params.get('model'));
+      const id = <any>params.get('id');
+      (id === 'new' ? of((this.model.factory && this.model.factory()) || {}) : this.model.service.get(id)).subscribe(
+        (entry) => {
+          this.entry = entry;
+          this.feedback = {};
+          this.title = entry.id
+            ? `Editing '${this.model.entryDisplayNameFormatter(entry)}'`
+            : `Add new ${this.model.lookupDisplayName}`;
+        },
+        () => {
+          this._snackBar.open('Error loading', null, {
+            duration: 2000
+          });
+        }
+      );
+    });
   }
 
   /** Hooks into the OnInit lifetime event. */

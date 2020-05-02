@@ -48,8 +48,8 @@
 
             var updatedProfile = _mapper.Map(model, profile);
             var googleAddress = await this.GeoCodeLocation(updatedProfile);
-            updatedProfile.Latitude = googleAddress.Coordinates.Latitude;
-            updatedProfile.Longitude = googleAddress.Coordinates.Longitude;
+            updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
+            updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
 
             if (updatedProfile.Id > 0)
             {
@@ -72,6 +72,10 @@
 
         private async Task<GoogleAddress> GeoCodeLocation(DBModels.Profile p)
         {
+            if (string.IsNullOrWhiteSpace(_configuration["GoogleAPIKey"]))
+            {
+                return null;
+            }
             var geocoder = new GoogleGeocoder(_configuration["GoogleAPIKey"]);
             var addresses = await geocoder.GeocodeAsync(string.Join(' ', p.Address, p.Address2, p.City, p.State, p.ZipCode));
             return addresses.First();

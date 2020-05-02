@@ -4,7 +4,7 @@ import { ProductTypeDto } from 'autogen/ProductTypeDto';
 import { shareReplay } from 'rxjs/operators';
 import { ProductService } from 'src/app/services/backend/crud/product.service';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
-import { BaseLookupFormField, BaseLookupModel, BaseLookupTableField } from '../lookup-model';
+import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 
 @Injectable()
 export class ProductModel extends BaseLookupModel<ProductDto> {
@@ -14,11 +14,9 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
       lookupDisplayName: 'Products',
       entryDisplayNameFormatter: (data) => data.name,
       service,
-      columns: [
-        new BaseLookupTableField({
-          field: 'name'
-        })
-      ]
+      nameField: 'name',
+      descriptionField: 'description',
+      imageField: 'imageUrl'
     });
 
     this.formFields = [
@@ -43,7 +41,7 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
       new BaseLookupFormField({
         field: 'productTypeId',
         fieldType: 'select',
-        label: 'Product Type',
+        placeholder: 'Product Type',
         options: {
           fieldOptions: typeSvc.lookup().pipe(shareReplay(1)),
           getOptionValue: (option: ProductTypeDto) => option.id,

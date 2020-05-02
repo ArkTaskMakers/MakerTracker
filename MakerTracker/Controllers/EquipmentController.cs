@@ -37,9 +37,9 @@
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EquipmentDto>>> GetEquipments()
+        public IActionResult GetEquipments()
         {
-            return await _context.Equipments.ProjectTo<EquipmentDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return Ok(_context.Equipments.ProjectTo<EquipmentDto>(_mapper.ConfigurationProvider));
         }
 
         /// <summary>
