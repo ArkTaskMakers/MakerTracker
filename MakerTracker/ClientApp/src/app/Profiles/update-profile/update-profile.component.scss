@@ -1,34 +1,6 @@
-.full-width {
-  width: 100%;
-}
-
-.shipping-card {
-  min-width: 120px;
-  margin: 20px auto;
-}
-
-.mat-radio-button {
-  display: block;
-  margin: 5px 0;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-}
-
-.col {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.col:last-child {
-  margin-right: 0;
-}
-
 header.masthead {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1.0)), url("/img/bg-profile.jpg") no-repeat center center;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)),
+    url('/img/bg-profile.jpg') no-repeat center center;
   background-size: cover;
 }
 
@@ -37,8 +9,8 @@ header.masthead {
 }
 
 .toggle-section {
-  padding-top: 20px;
-  .row {
-    padding-top: 10px;
+  padding-top: 15px;
+  & > * {
+    padding-top: 15px;
   }
 }

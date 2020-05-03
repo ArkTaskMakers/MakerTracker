@@ -65,29 +65,42 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup" #secondForm class="flex-column">
-      <ng-template matStepLabel>Location</ng-template>
-      <p>
-        Where are you located?
-      </p>
+  <mat-step [stepControl]="locationFormGroup">
+    <form [formGroup]="locationFormGroup" #secondForm class="flex-column">
+      <ng-template matStepLabel>Contact/Location</ng-template>
       <mat-form-field>
-        <mat-label>City</mat-label>
-        <input matInput formControlName="city" placeholder="Ex. Little Rock" required />
+        <input matInput placeholder="Company Name" formControlName="companyName" />
       </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-select placeholder="State" formControlName="state" required>
-          <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-            {{ state.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="secondFormGroup.controls['state'].hasError('required')">
-          State is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+      <div class="flex-row stackable flex-between">
+        <mat-form-field>
+          <input matInput placeholder="First name" formControlName="firstName" required />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Last name" formControlName="lastName" required />
+        </mat-form-field>
+      </div>
       <mat-form-field>
-        <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
+        <input matInput placeholder="Email Address" formControlName="email" required />
       </mat-form-field>
+      <div class="flex-row stackable flex-between">
+        <mat-form-field>
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city" placeholder="Ex. Little Rock" required />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="State" formControlName="state" required>
+            <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="locationFormGroup.controls['state'].hasError('required')">
+            State is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
+        </mat-form-field>
+      </div>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious mat-raised-button color="primary">
           <mat-icon>arrow_back</mat-icon> Back
@@ -112,6 +125,14 @@
               {{ product.name }}
             </mat-option>
           </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>What equipment do you have access to?</mat-label>
+        <mat-select formControlName="equipment" multiple>
+          <mat-option *ngFor="let item of equipment" [value]="item.id">
+            {{ item.name }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <div class="flex-row flex-between">

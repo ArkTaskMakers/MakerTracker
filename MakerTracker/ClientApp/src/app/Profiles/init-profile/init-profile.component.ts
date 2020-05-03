@@ -4,7 +4,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ProfileDto } from 'autogen/ProfileDto';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
+import { EquipmentService } from 'src/app/services/backend/crud/equipment.service';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
 import { IState, StatesService } from 'src/app/services/states.service';
 import { IProductTypeGroup } from 'src/app/ui-models/productTypeGroup';
@@ -35,12 +37,14 @@ export class InitProfileComponent implements OnInit {
   }
 
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  locationFormGroup: FormGroup;
   supplierFormGroup: FormGroup;
   requestorFormGroup: FormGroup;
 
   states: IState[];
-  products: IProductTypeGroup[];
+  products: IProductTypeGroup[] = [];
+  equipment: { id: number; name: string }[] = [];
+  email = '';
 
   constructor(
     public dialogRef: MatDialogRef<InitProfileComponent>,
@@ -49,8 +53,13 @@ export class InitProfileComponent implements OnInit {
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     productTypesSvc: ProductTypeService,
-    stateSvc: StatesService
+    equipmentSvc: EquipmentService,
+    stateSvc: StatesService,
+    authSvc: AuthService
   ) {
+    authSvc.userProfile$.subscribe((profile) => {
+      this.email = profile.email;
+    });
     this.firstFormGroup = this.fb.group(
       {
         isSupplier: [false],
@@ -59,13 +68,18 @@ export class InitProfileComponent implements OnInit {
       },
       { validators: this.verifyRoles }
     );
-    this.secondFormGroup = this.fb.group({
+    this.locationFormGroup = this.fb.group({
+      companyName: null,
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
       city: ['', Validators.required],
       state: ['AR', Validators.required],
       zipCode: ['', Validators.required]
     });
     this.supplierFormGroup = this.fb.group({
-      products: [[]]
+      products: [[]],
+      equipment: [[]]
     });
     this.requestorFormGroup = this.fb.group({
       secondCtrl: ['', Validators.required]
@@ -73,6 +87,9 @@ export class InitProfileComponent implements OnInit {
     this.states = stateSvc.states;
     productTypesSvc.getProductHierarchy().subscribe((products) => {
       this.products = products;
+    });
+    equipmentSvc.lookup().subscribe((equipment) => {
+      this.equipment = equipment;
     });
   }
 
@@ -114,7 +131,9 @@ export class InitProfileComponent implements OnInit {
       .saveProfile(
         new ProfileDto({
           isSupplier: this.isSupplier,
-          isRequestor: this.isRequestor
+          isRequestor: this.isRequestor,
+          ...this.locationFormGroup.value,
+          email: this.email
         })
       )
       .subscribe(

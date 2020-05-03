@@ -46,7 +46,6 @@
         {
             var profile = await GetLoggedInProfile();
 
-            var updatedProfile = _mapper.Map(model, profile);
             var googleAddress = await this.GeoCodeLocation(updatedProfile);
             updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
             updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
