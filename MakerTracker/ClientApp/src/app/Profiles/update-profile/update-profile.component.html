@@ -9,202 +9,91 @@
   </div>
 </header>
 
-<form
-  class="dashboard-card"
-  [formGroup]="profileForm"
-  novalidate
-  (ngSubmit)="onSubmit()"
->
+<form class="dashboard-card" [formGroup]="profileForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-content>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Company Name"
-              formControlName="companyName"
-            />
-          </mat-form-field>
-        </div>
+      <h2>Contact Info</h2>
+      <mat-form-field>
+        <input matInput placeholder="Company Name" formControlName="companyName" />
+      </mat-form-field>
+      <div class="flex-row stackable flex-between">
+        <mat-form-field>
+          <input matInput placeholder="First name" formControlName="firstName" required />
+          <mat-error *ngIf="profileForm.controls['firstName'].hasError('required')">
+            First name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Last name" formControlName="lastName" required />
+          <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
+            Last name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="First name"
-              formControlName="firstName"
-            />
-            <mat-error
-              *ngIf="profileForm.controls['firstName'].hasError('required')"
-            >
-              First name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Last name"
-              formControlName="lastName"
-            />
-            <mat-error
-              *ngIf="profileForm.controls['lastName'].hasError('required')"
-            >
-              Last name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
+      <div class="flex-row stackable flex-between">
+        <mat-form-field>
+          <input matInput placeholder="Contact Email Address" formControlName="email" required />
+          <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
+            Contact Email is <strong>required</strong>
+          </mat-error>
+          <mat-hint>This is <strong>NOT</strong> tied to your login.</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Phone Number" formControlName="phone" />
+        </mat-form-field>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Email Address"
-              formControlName="email"
-            />
-            <mat-error
-              *ngIf="profileForm.controls['email'].hasError('required')"
-            >
-              Email is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Phone Number"
-              formControlName="phone"
-            />
-          </mat-form-field>
-        </div>
+      <h2>Location</h2>
+      <div class="flex-row stackable flex-between">
+        <mat-form-field>
+          <input matInput placeholder="City" formControlName="city" required />
+          <mat-error *ngIf="profileForm.controls['city'].hasError('required')">
+            City is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="State" formControlName="state" required>
+            <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="profileForm.controls['state'].hasError('required')">
+            State is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            maxlength="5"
+            placeholder="Zip Code"
+            type="text"
+            formControlName="zipCode"
+            pattern="\d{5}"
+            required
+          />
+        </mat-form-field>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <textarea
-              matInput
-              placeholder="Address"
-              formControlName="address"
-            ></textarea>
-            <mat-error
-              *ngIf="profileForm.controls['address'].hasError('required')"
-            >
-              Address is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <textarea
-              matInput
-              placeholder="Address 2"
-              formControlName="address2"
-            ></textarea>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="City" formControlName="city" />
-            <mat-error
-              *ngIf="profileForm.controls['city'].hasError('required')"
-            >
-              City is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="State" formControlName="state">
-              <mat-option
-                *ngFor="let state of states"
-                [value]="state.abbreviation"
-              >
-                {{ state.name }}
-              </mat-option>
-            </mat-select>
-            <mat-error
-              *ngIf="profileForm.controls['state'].hasError('required')"
-            >
-              State is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              maxlength="5"
-              placeholder="Zip Code"
-              type="text"
-              formControlName="zipCode"
-            />
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <textarea
-              matInput
-              placeholder="About Me"
-              formControlName="bio"
-              rows="5"
-            ></textarea>
-            <mat-hint>Tell us about yourself.</mat-hint>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="toggle-section">
-        <div class="row">
-          <div class="col">
-            <mat-slide-toggle formControlName="isSelfQuarantined">
-              Are you in self quarantine?
-            </mat-slide-toggle>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <mat-slide-toggle formControlName="isDropOffPoint">
-              Are you a drop-off point?
-            </mat-slide-toggle>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <mat-slide-toggle formControlName="isRequestor">
-              Are you a Requestor?
-            </mat-slide-toggle>
-          </div>
-        </div>
-
-        <div class="row">
-          <mat-slide-toggle formControlName="isSupplier">
-            Are you a Supplier?
-          </mat-slide-toggle>
-        </div>
+      <h2>About You</h2>
+      <mat-form-field>
+        <textarea matInput placeholder="About Me" formControlName="bio" rows="5"></textarea>
+        <mat-hint>Tell us about yourself.</mat-hint>
+      </mat-form-field>
+      <div class="toggle-section flex-column">
+        <mat-slide-toggle formControlName="isSelfQuarantined">
+          Are you in self quarantine?
+        </mat-slide-toggle>
+        <mat-slide-toggle formControlName="isDropOffPoint">
+          Are you a drop-off point?
+        </mat-slide-toggle>
+        <mat-slide-toggle formControlName="isRequestor">
+          Are you a Requestor?
+        </mat-slide-toggle>
+        <mat-slide-toggle formControlName="isSupplier">
+          Are you a Supplier?
+        </mat-slide-toggle>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="loading"
-      >
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading">
         Submit
       </button>
     </mat-card-actions>

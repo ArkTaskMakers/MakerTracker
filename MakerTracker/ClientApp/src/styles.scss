@@ -72,6 +72,18 @@ mat-toolbar.mat-toolbar {
 
 .flex-row {
   @extend .d-flex;
+  &.flex-between {
+    & > mat-form-field {
+      display: block;
+      flex: 1 1;
+    }
+    & > *:not(:first-child):not(button) {
+      padding-left: 5px;
+    }
+    & > *:not(:last-child):not(button) {
+      padding-right: 5px;
+    }
+  }
   flex-direction: row;
 }
 
@@ -81,7 +93,7 @@ mat-toolbar.mat-toolbar {
 }
 
 .flex-row-reverse {
-  @extend .d-flex;
+  @extend .flex-row;
   flex-direction: row-reverse;
 }
 
@@ -95,6 +107,22 @@ mat-toolbar.mat-toolbar {
 
 .flex-shrink {
   flex: 0 1;
+}
+
+@media (max-width: 768px) {
+  .flex-row.stackable {
+    flex-direction: column;
+    & > *:not(:first-child):not(button) {
+      padding-left: 0;
+    }
+    & > *:not(:last-child):not(button) {
+      padding-right: 0;
+    }
+  }
+  .flex-row-reverse.stackable {
+    @extend .flex-row.stackable;
+    flex-direction: column-reverse;
+  }
 }
 
 .init-button {
@@ -112,4 +140,8 @@ mat-toolbar.mat-toolbar {
       }
     }
   }
+}
+
+.mat-form-field-required-marker {
+  color: red;
 }

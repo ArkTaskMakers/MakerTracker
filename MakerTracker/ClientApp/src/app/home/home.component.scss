@@ -5,14 +5,9 @@ section {
   margin: 0 20px;
 }
 
-.rowstack {
-  display: flex;
-  flex-direction: row;
-}
-
 .landing-content {
   max-width: 1024px;
-  &:not(.rowstack) {
+  &:not(.flex-row) {
     margin: 0 auto;
   }
 }
@@ -135,9 +130,5 @@ header.masthead {
       max-height: 200px;
       align-self: flex-end;
     }
-  }
-
-  .rowstack {
-    flex-direction: column;
   }
 }

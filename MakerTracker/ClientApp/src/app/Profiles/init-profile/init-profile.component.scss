@@ -25,3 +25,11 @@
 .continue {
   margin-top: 15px;
 }
+
+.flex-between {
+  & > .mat-form-field {
+    flex: 1 1;
+    display: block;
+    min-width: 0;
+  }
+}
