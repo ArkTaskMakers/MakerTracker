@@ -109,6 +109,10 @@ mat-toolbar.mat-toolbar {
   flex: 0 1;
 }
 
+.align-center {
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .flex-row.stackable {
     flex-direction: column;

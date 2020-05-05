@@ -10,6 +10,7 @@
 
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Maker> Makers { get; set; }
+        public DbSet<MakerStock> MakerStock { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<MakerOrder> MakerOrders { get; set; }

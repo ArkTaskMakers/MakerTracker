@@ -63,6 +63,9 @@
     <None Update="ClientApp\autogen\MakerEquipmentDto.ts">
       <CustomToolNamespace>Models\Equipment\MakerEquipmentDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\MakerStockDto.ts">
+      <CustomToolNamespace>Models\Products\MakerStockDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\ProductDto.ts">
       <CustomToolNamespace>Models\Products\ProductDto.cs</CustomToolNamespace>
     </None>

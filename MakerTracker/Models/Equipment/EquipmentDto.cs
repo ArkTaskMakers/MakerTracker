@@ -1,4 +1,4 @@
-namespace MakerTracker.Models.Equipment
+namespace MakerTracker.Models
 {
     using System.ComponentModel.DataAnnotations;
 

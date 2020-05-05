@@ -32,4 +32,35 @@
     display: block;
     min-width: 0;
   }
+  & > button.mat-icon-button {
+    min-width: 40px;
+  }
+}
+
+.wizard-section {
+  margin-bottom: 20px;
+}
+
+.maker-info {
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 1px #eee solid;
+}
+
+.maker-stock {
+  @extend .maker-info;
+  & > * {
+    flex: 1 1 50%;
+  }
+}
+
+.maker-equipment {
+  @extend .maker-info;
+  & > *:not(button) {
+    flex: 1 0;
+  }
+}
+
+.mat-divider {
+  margin: 0 0 20px 0;
 }
