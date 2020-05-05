@@ -114,27 +114,85 @@
   <mat-step [stepControl]="supplierFormGroup" *ngIf="isSupplier">
     <form [formGroup]="supplierFormGroup" class="flex-column">
       <ng-template matStepLabel>Supplying</ng-template>
-      <p>
-        DEV NOTE: THIS PART ISN'T DONE YET
-      </p>
-      <mat-form-field>
-        <mat-label>What are you able to supply?</mat-label>
-        <mat-select formControlName="products" multiple>
-          <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
-            <mat-option *ngFor="let product of group.products" [value]="product.id">
-              {{ product.name }}
+      <div class="flex-column wizard-section">
+        <h3>
+          What do you have ready to go?
+        </h3>
+        <mat-form-field>
+          <mat-label>Product/Supplies</mat-label>
+          <mat-select (selectionChange)="handleProductChanges($event)" multiple>
+            <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
+              <mat-option *ngFor="let product of group.products" [value]="product">
+                {{ product.name }}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <div
+          class="maker-stock flex-row stackable flex-between align-center"
+          *ngFor="let product of supplierFormGroup.get('products').value; let i = index"
+        >
+          <span class="product-label">{{ product.productName }}</span>
+          <mat-form-field>
+            <input
+              matInput
+              type="number"
+              required
+              placeholder="Quantity"
+              [name]="'product - ' + i + '-qty'"
+              [(ngModel)]="product.quantity"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="supplierFormGroup.get('products').updateValueAndValidity()"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex-column wizard-section">
+        <h3>What equipment do you have access to?</h3>
+        <mat-form-field>
+          <mat-label>Equipment</mat-label>
+          <mat-select (selectionChange)="handleEquipmentChanges($event)">
+            <mat-option *ngFor="let item of equipment" [value]="item">
+              {{ item.name }}
             </mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>What equipment do you have access to?</mat-label>
-        <mat-select formControlName="equipment" multiple>
-          <mat-option *ngFor="let item of equipment" [value]="item.id">
-            {{ item.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+          </mat-select>
+        </mat-form-field>
+        <div
+          class="maker-equipment flex-row stackable flex-between align-center"
+          *ngFor="let item of supplierFormGroup.get('equipment').value; let i = index"
+        >
+          <span class="equipment-label">{{ item.equipmentName }}</span>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Manufacturer"
+              [name]="'equipment-' + i + '-mfg'"
+              [(ngModel)]="item.manufacturer"
+              [ngModelOptions]="{ standalone: true }"
+              maxlength="100"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Model #"
+              [name]="'equipment-' + i + '-mfg'"
+              [(ngModel)]="item.modelNumber"
+              [ngModelOptions]="{ standalone: true }"
+              maxlength="100"
+            />
+          </mat-form-field>
+          <button
+            mat-icon-button
+            type="button"
+            class="flex-shrink"
+            color="warn"
+            (click)="supplierFormGroup.controls['equipment'].value.splice(i, 1)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+      </div>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious mat-raised-button color="primary">
           <mat-icon>arrow_back</mat-icon> Back

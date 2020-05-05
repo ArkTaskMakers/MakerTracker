@@ -1,4 +1,4 @@
-namespace MakerTracker.Models.Equipment
+namespace MakerTracker.Models
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -24,6 +24,11 @@ namespace MakerTracker.Models.Equipment
         /// </summary>
         [Required]
         public int EquipmentId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the equipment.
+        /// </summary>
+        public string EquipmentName { get; set; }
 
         /// <summary>
         ///     Gets or sets the manufacturer of the equipment owned.

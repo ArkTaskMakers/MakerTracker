@@ -1,6 +1,7 @@
 ﻿namespace MakerTracker.DBModels
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     ///     Model class representing the connection between a maker and equipment with metadata.
@@ -14,15 +15,25 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the maker identifier.
+        /// </summary>
+        public int MakerId { get; set; }
+
+        /// <summary>
         ///     Gets or sets the maker who owns the equipment.
         /// </summary>
-        [Required]
+        [ForeignKey(nameof(MakerId))]
         public Maker Maker { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment identifier.
+        /// </summary>
+        public int EquipmentId { get; set; }
 
         /// <summary>
         ///     Gets or sets the equipment the maker owns.
         /// </summary>
-        [Required]
+        [ForeignKey(nameof(EquipmentId))]
         public Equipment Equipment { get; set; }
 
         /// <summary>

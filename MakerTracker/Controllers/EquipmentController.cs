@@ -1,12 +1,11 @@
 ﻿namespace MakerTracker.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using MakerTracker.DBModels;
-    using MakerTracker.Models.Equipment;
+    using MakerTracker.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;

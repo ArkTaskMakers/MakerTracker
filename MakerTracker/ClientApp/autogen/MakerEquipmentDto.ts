@@ -12,6 +12,9 @@ export class MakerEquipmentDto {
     /** Gets or sets the equipment identifier. */
     equipmentId: number;
 
+    /** Gets or sets the name of the equipment. */
+    equipmentName: string;
+
     /** Gets or sets the manufacturer of the equipment owned. */
     manufacturer: string;
 
