@@ -1,10 +1,12 @@
-﻿namespace MakerTracker.Models.Profiles
+namespace MakerTracker.Models.Profiles
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     [TypeScriptModel]
     public class ProfileDto
     {
+        [Key]
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public string FirstName { get; set; }

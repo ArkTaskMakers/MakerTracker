@@ -11,6 +11,7 @@ import { of, zip } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { EquipmentService } from 'src/app/services/backend/crud/equipment.service';
+import { MakerEquipmentService } from 'src/app/services/backend/crud/makerEquipment.service';
 import { MakerStockService } from 'src/app/services/backend/crud/makerStock.service';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
 import { IState, StatesService } from 'src/app/services/states.service';
@@ -61,7 +62,8 @@ export class InitProfileComponent implements OnInit {
     equipmentSvc: EquipmentService,
     stateSvc: StatesService,
     authSvc: AuthService,
-    private stockSvc: MakerStockService
+    private stockSvc: MakerStockService,
+    private makerEquipmentSvc: MakerEquipmentService
   ) {
     authSvc.userProfile$.subscribe((profile) => {
       this.email = profile.email;
@@ -181,7 +183,8 @@ export class InitProfileComponent implements OnInit {
           email: this.email
         })
       ),
-      this.isSupplier ? this.stockSvc.bulkSave(this.supplierFormGroup.get('products').value) : of(null)
+      this.isSupplier ? this.stockSvc.bulkSave(this.supplierFormGroup.get('products').value) : of(null),
+      this.isSupplier ? this.makerEquipmentSvc.bulkSave(this.supplierFormGroup.get('equipment').value) : of(null)
     ).subscribe(
       () => {
         this.closeDialog();

@@ -13,6 +13,7 @@
         /// <summary>
         ///     Gets or sets the identifier for this product type.
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>

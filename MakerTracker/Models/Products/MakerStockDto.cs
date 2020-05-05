@@ -1,4 +1,4 @@
-﻿namespace MakerTracker.Models
+namespace MakerTracker.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@
         [Key]
         public int Id { get; set; }
 
-        public int MakerId {get;set;}
+        public int MakerId { get; set; }
 
         public int ProductId { get; set; }
 

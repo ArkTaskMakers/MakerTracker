@@ -1,6 +1,5 @@
 ﻿namespace MakerTracker.Controllers
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -12,46 +11,46 @@
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    ///     REST controller for manipulating maker stock
+    ///     REST controller for manipulating maker equipment
     /// </summary>
     /// <seealso cref="MakerTracker.Controllers.ApiBaseController" />
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MakerStockController : ApiBaseController
+    public class MakerEquipmentController : ApiBaseController
     {
         private readonly IMapper _mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MakerStockController"/> class.
+        ///     Initializes a new instance of the <see cref="MakerEquipmentController"/> class.
         /// </summary>
         /// <param name="context">The database context.</param>
         /// <param name="mapper">The automapper.</param>
-        public MakerStockController(MakerTrackerContext context, IMapper mapper) : base(context)
+        public MakerEquipmentController(MakerTrackerContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Gets the maker stock entries from the database.
+        ///     Gets the maker equipment entries from the database.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetMakerStocks()
+        public async Task<IActionResult> GetMakerEquipments()
         {
             var profile = await GetLoggedInProfile();
-            return Ok(_context.MakerStock.ProjectTo<MakerStockDto>(_mapper.ConfigurationProvider));
+            return Ok(_context.MakerEquipment.ProjectTo<MakerEquipmentDto>(_mapper.ConfigurationProvider));
         }
 
         /// <summary>
-        ///     Gets the maker stock matching a specific identifier.
+        ///     Gets the maker equipment matching a specific identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<MakerStock>> GetMakerStock(int id)
+        public async Task<ActionResult<MakerEquipment>> GetMakerEquipment(int id)
         {
-            var entry = await _context.MakerStock.FindAsync(id);
+            var entry = await _context.MakerEquipment.FindAsync(id);
             int makerId = entry?.MakerId ?? 0;
             var profile = await GetLoggedInProfile();
             if (!await _context.Makers.Where(e => e.OwnerProfile.Id == profile.Id && e.Id == makerId).AnyAsync())
@@ -62,13 +61,13 @@
         }
 
         /// <summary>
-        ///     Updates the maker stock entry received via a PUT request.
+        ///     Updates the maker equipment entry received via a PUT request.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entry">The entry.</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMakerStock(int id, MakerStockDto entry)
+        public async Task<IActionResult> PutMakerEquipment(int id, MakerEquipmentDto entry)
         {
             if (id != entry.Id)
             {
@@ -81,7 +80,7 @@
                 return NotFound();
             }
 
-            var dbEntry = _mapper.Map<MakerStock>(entry);
+            var dbEntry = _mapper.Map<MakerEquipment>(entry);
             _context.Entry(dbEntry).State = EntityState.Modified;
 
             try
@@ -90,7 +89,7 @@
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MakerStockExists(id))
+                if (!MakerEquipmentExists(id))
                 {
                     return NotFound();
                 }
@@ -104,31 +103,31 @@
         }
 
         /// <summary>
-        ///     Creates the maker stock entry received via a POST request.
+        ///     Creates the maker Equipment entry received via a POST request.
         /// </summary>
         /// <param name="entry">The entry to create.</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<MakerStock>> PostMakerStock(MakerStockDto entry)
+        public async Task<ActionResult<MakerEquipment>> PostMakerEquipment(MakerEquipmentDto entry)
         {
             var maker = await EnsureMaker();
-            var dbEntry = SetUpMakerStock(entry, maker);
+            var dbEntry = SetUpMakerEquipment(entry, maker);
             await _context.SaveChangesAsync();
             return CreatedAtAction("Post", new { id = entry.Id }, _mapper.Map<MakerEquipmentDto>(dbEntry));
         }
 
         /// <summary>
-        ///     Creates the maker stock entry received via a POST request.
+        ///     Creates the maker equipment entry received via a POST request.
         /// </summary>
         /// <param name="entry">The entry to create.</param>
         /// <returns></returns>
         [HttpPost("bulk")]
-        public async Task<ActionResult<MakerStock>> PostMakerStockBulk(MakerStockDto[] entries)
+        public async Task<ActionResult<MakerEquipment>> PostMakerEquipmentBulk(MakerEquipmentDto[] entries)
         {
             var maker = await EnsureMaker();
-            var dbEntries = entries.Select(e => SetUpMakerStock(e, maker)).ToList();
+            var dbEntries = entries.Select(e => SetUpMakerEquipment(e, maker)).ToList();
             await _context.SaveChangesAsync();
-            return Created("api/MakerStock/bulk", _mapper.ProjectTo<MakerEquipmentDto>(dbEntries.AsQueryable()));
+            return Created("api/MakerEquipment/bulk", _mapper.ProjectTo<MakerEquipmentDto>(dbEntries.AsQueryable()));
         }
 
         private async Task<Maker> EnsureMaker()
@@ -148,24 +147,23 @@
             return maker;
         }
 
-        private MakerStock SetUpMakerStock(MakerStockDto entry, Maker maker)
+        private MakerEquipment SetUpMakerEquipment(MakerEquipmentDto entry, Maker maker)
         {
-            var dbEntry = _mapper.Map<MakerStock>(entry);
+            var dbEntry = _mapper.Map<MakerEquipment>(entry);
             dbEntry.Maker = maker;
-            dbEntry.UpdatedOn = DateTime.Now;
-            _context.MakerStock.Add(dbEntry);
+            _context.MakerEquipment.Add(dbEntry);
             return dbEntry;
         }
 
         /// <summary>
-        ///     Deletes the maker stock matching the specified identifier.
+        ///     Deletes the maker equipment matching the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MakerStock>> DeleteMakerStock(int id)
+        public async Task<ActionResult<MakerEquipment>> DeleteMakerEquipment(int id)
         {
-            var entry = await _context.MakerStock.FindAsync(id);
+            var entry = await _context.MakerEquipment.FindAsync(id);
             if (entry == null)
             {
                 return NotFound();
@@ -177,15 +175,15 @@
                 return NotFound();
             }
 
-            _context.MakerStock.Remove(entry);
+            _context.MakerEquipment.Remove(entry);
             await _context.SaveChangesAsync();
 
             return entry;
         }
 
-        private bool MakerStockExists(int id)
+        private bool MakerEquipmentExists(int id)
         {
-            return _context.MakerStock.Any(e => e.Id == id);
+            return _context.MakerEquipment.Any(e => e.Id == id);
         }
     }
 }
