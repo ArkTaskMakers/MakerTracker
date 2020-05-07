@@ -24,6 +24,7 @@ namespace MakerTracker.DBModels
         public bool? IsDropOffPoint { get; set; }
         public bool IsSupplier { get; set; }
         public bool IsRequestor { get; set; }
+        public bool HasCadSkills { get; set; }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }

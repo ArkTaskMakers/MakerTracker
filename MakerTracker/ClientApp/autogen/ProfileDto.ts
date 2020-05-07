@@ -37,6 +37,8 @@ export class ProfileDto {
 
     isRequestor: boolean;
 
+    hasCadSkills: boolean;
+
     displayName: string;
 
     /** Initializes a new instance of the ProfileDto class **/

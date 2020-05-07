@@ -149,3 +149,22 @@ mat-toolbar.mat-toolbar {
 .mat-form-field-required-marker {
   color: red;
 }
+
+.mat-slide-toggle.paragraph-toggle {
+  height: auto;
+  margin: 15px 0 25px 0;
+  background: #eee;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+
+  label.mat-slide-toggle-label {
+    align-items: flex-start;
+    .mat-slide-toggle-bar {
+      margin-top: 4px;
+    }
+    .mat-slide-toggle-content {
+      white-space: normal;
+    }
+  }
+}

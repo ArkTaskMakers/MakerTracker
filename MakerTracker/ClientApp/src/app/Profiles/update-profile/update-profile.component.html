@@ -36,7 +36,9 @@
           <mat-error *ngIf="profileForm.controls['email'].hasError('required')">
             Contact Email is <strong>required</strong>
           </mat-error>
-          <mat-hint>This is <strong>NOT</strong> tied to your login.</mat-hint>
+          <mat-hint
+            >Updating your contact email does <strong>NOT</strong> change your to your login email address.</mat-hint
+          >
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Phone Number" formControlName="phone" />
@@ -89,6 +91,9 @@
         </mat-slide-toggle>
         <mat-slide-toggle formControlName="isSupplier">
           Are you a Supplier?
+        </mat-slide-toggle>
+        <mat-slide-toggle formControlName="hasCadSkills">
+          Do you have CAD Skills?
         </mat-slide-toggle>
       </div>
     </mat-card-content>

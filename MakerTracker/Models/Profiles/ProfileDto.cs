@@ -1,10 +1,12 @@
-﻿namespace MakerTracker.Models.Profiles
+namespace MakerTracker.Models.Profiles
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     [TypeScriptModel]
     public class ProfileDto
     {
+        [Key]
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public string FirstName { get; set; }
@@ -22,6 +24,7 @@
         public bool IsDropOffPoint { get; set; }
         public bool IsSupplier { get; set; }
         public bool IsRequestor { get; set; }
+        public bool HasCadSkills { get; set; }
         public string DisplayName => $"{FirstName} {LastName} ({Email})";
 
     }

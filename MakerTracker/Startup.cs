@@ -95,17 +95,6 @@ namespace MakerTracker
                     await db.Profiles.AddAsync(profile);
                     await db.SaveChangesAsync();
                 }
-
-                var maker = db.Makers.FirstOrDefault(m => m.OwnerProfile == profile);
-                if (maker == null)
-                {
-                    maker = new Maker()
-                    {
-                        OwnerProfile = profile,
-                    };
-                    await db.Makers.AddAsync(maker);
-                    await db.SaveChangesAsync();
-                }
             }
         }
 

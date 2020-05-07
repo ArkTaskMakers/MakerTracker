@@ -113,10 +113,36 @@
         public async Task<ActionResult<Transaction>> PostTransaction(AddInventoryDto model)
         {
             var profile = await GetLoggedInProfile();
-            var product = _context.Products.Find(model.ProductId);
+            CreateTransaction(model, profile);
+            await _context.SaveChangesAsync();
+
+            return Ok(true);
+            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+        }
+
+        // POST: api/Inventory
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPost("bulk")]
+        public async Task<ActionResult<Transaction>> PostTransactions(AddInventoryDto[] entries)
+        {
+            var profile = await GetLoggedInProfile();
+            foreach (var entry in entries)
+            {
+                CreateTransaction(entry, profile);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok(true);
+            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+        }
+
+        private Transaction CreateTransaction(AddInventoryDto entry, Profile profile)
+        {
+            var product = _context.Products.Find(entry.ProductId);
             var transaction = new Transaction()
             {
-                Amount = model.Amount,
+                Amount = entry.Amount,
                 From = null,
                 To = profile,
                 TransactionDate = DateTime.Now,
@@ -127,10 +153,7 @@
             };
 
             _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
-
-            return Ok(true);
-            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+            return transaction;
         }
 
         // DELETE: api/Inventory/5

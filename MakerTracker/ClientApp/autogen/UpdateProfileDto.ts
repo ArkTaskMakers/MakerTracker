@@ -33,6 +33,8 @@ export class UpdateProfileDto {
 
     isRequestor: boolean;
 
+    hasCadSkills: boolean;
+
     /** Initializes a new instance of the UpdateProfileDto class **/
     public constructor(init?: Partial<UpdateProfileDto>) {
         Object.assign(this, init);

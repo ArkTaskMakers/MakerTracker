@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MakerStockDto } from 'autogen/MakerStockDto';
+import { MakerEquipmentDto } from 'autogen/MakerEquipmentDto';
 import { Observable } from 'rxjs';
 import { GenericCrudService } from './genericCrud.service';
 
@@ -8,22 +8,22 @@ import { GenericCrudService } from './genericCrud.service';
 @Injectable({
   providedIn: 'root'
 })
-export class MakerStockService extends GenericCrudService<MakerStockDto> {
+export class MakerEquipmentService extends GenericCrudService<MakerEquipmentDto> {
   /**
    * Initializes a new instance of the ProductTypeService class.
    * @param http The http client for hitting the REST API.
    */
   constructor(http: HttpClient) {
-    super('/api/MakerStock', http);
+    super('/api/MakerEquipment', http);
   }
 
   list() {
     return this.query(this._baseUrl, {
-      $orderBy: 'UpdatedOn'
+      $orderBy: 'EquipmentId,Manufacturer,ModelNumber,Id'
     });
   }
 
-  bulkSave(payload: MakerStockDto[]): Observable<any> {
-    return this._http.post('api/MakerStock/bulk', payload);
+  bulkSave(payload: MakerEquipmentDto[]): Observable<any> {
+    return this._http.post('api/MakerEquipment/bulk', payload);
   }
 }

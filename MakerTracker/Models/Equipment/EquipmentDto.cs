@@ -11,6 +11,7 @@ namespace MakerTracker.Models
         /// <summary>
         ///     Gets or sets the identifier.
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>

@@ -80,7 +80,10 @@
         </mat-form-field>
       </div>
       <mat-form-field>
-        <input matInput placeholder="Email Address" formControlName="email" required />
+        <input matInput placeholder="Contact Email Address" formControlName="email" required />
+        <mat-hint
+          >Updating your contact email does <strong>NOT</strong> change your to your login email address.</mat-hint
+        >
       </mat-form-field>
       <div class="flex-row stackable flex-between">
         <mat-form-field>
@@ -101,6 +104,13 @@
           <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
         </mat-form-field>
       </div>
+      <mat-slide-toggle formControlName="hasCadSkills">
+        Do you have CAD Skills?
+      </mat-slide-toggle>
+      <mat-slide-toggle class="paragraph-toggle" formControlName="isSelfQuarantined">
+        Are you currently in self-quarantine because you are experiencing symptoms or have a close relative who is
+        experiencing symptoms? For maximum safety, we are asking only healthy makers to make parts right now.
+      </mat-slide-toggle>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious mat-raised-button color="primary">
           <mat-icon>arrow_back</mat-icon> Back
@@ -132,7 +142,7 @@
           class="maker-stock flex-row stackable flex-between align-center"
           *ngFor="let product of supplierFormGroup.get('products').value; let i = index"
         >
-          <span class="product-label">{{ product.productName }}</span>
+          <span class="product-label">{{ productMap.get(product.productId) }}</span>
           <mat-form-field>
             <input
               matInput
@@ -140,8 +150,9 @@
               required
               placeholder="Quantity"
               [name]="'product - ' + i + '-qty'"
-              [(ngModel)]="product.quantity"
+              [(ngModel)]="product.amount"
               [ngModelOptions]="{ standalone: true }"
+              min="0"
               (change)="supplierFormGroup.get('products').updateValueAndValidity()"
             />
           </mat-form-field>
