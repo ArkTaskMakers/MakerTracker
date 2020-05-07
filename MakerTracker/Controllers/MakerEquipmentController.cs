@@ -126,7 +126,9 @@
             var profile = await GetLoggedInProfile();
             var dbEntries = entries.Select(e => SetUpMakerEquipment(e, profile)).ToList();
             await _context.SaveChangesAsync();
-            return Created("api/MakerEquipment/bulk", _mapper.ProjectTo<MakerEquipmentDto>(dbEntries.AsQueryable()));
+            var ids = dbEntries.Select(e => e.Id).ToList();
+            var results = _mapper.ProjectTo<MakerEquipmentDto>(_context.MakerEquipment.Where(e => ids.Contains(e.Id)));
+            return Created("api/MakerEquipment/bulk", results);
         }
 
         private MakerEquipment SetUpMakerEquipment(MakerEquipmentDto entry, DBModels.Profile profile)
