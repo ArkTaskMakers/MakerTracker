@@ -18,10 +18,6 @@
                 .ForMember(e => e.UsedBy, opts => opts.Ignore());
             CreateMap<EquipmentDto, Equipment>(AutoMapper.MemberList.Destination)
                 .ForMember(e => e.UsedBy, opts => opts.Ignore());
-            CreateMap<MakerStock, MakerStockDto>(AutoMapper.MemberList.Destination)
-                .ForMember(e => e.ProductName, opts => opts.MapFrom(e => e.Product.Name));
-            CreateMap<MakerStockDto, MakerStock>(AutoMapper.MemberList.Source)
-                .ForSourceMember(e => e.ProductName, opts => opts.DoNotValidate());
             CreateMap<MakerEquipment, MakerEquipmentDto>(AutoMapper.MemberList.Destination)
                 .ForMember(e => e.EquipmentName, opts => opts.MapFrom(e => e.Equipment.Name));
             CreateMap<MakerEquipmentDto, MakerEquipment>(AutoMapper.MemberList.Source)

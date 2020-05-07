@@ -15,15 +15,15 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the maker identifier.
+        /// Gets or sets the profile identifier.
         /// </summary>
-        public int MakerId { get; set; }
+        public int ProfileId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the maker who owns the equipment.
+        /// Gets or sets the profile.
         /// </summary>
-        [ForeignKey(nameof(MakerId))]
-        public Maker Maker { get; set; }
+        [ForeignKey(nameof(ProfileId))]
+        public Profile Profile { get; set; }
 
         /// <summary>
         /// Gets or sets the equipment identifier.

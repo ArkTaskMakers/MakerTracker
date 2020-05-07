@@ -24,6 +24,7 @@ namespace MakerTracker.Models.Profiles
         public bool IsDropOffPoint { get; set; }
         public bool IsSupplier { get; set; }
         public bool IsRequestor { get; set; }
+        public bool HasCadSkills { get; set; }
         public string DisplayName => $"{FirstName} {LastName} ({Email})";
 
     }

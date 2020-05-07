@@ -51,9 +51,8 @@
         public async Task<ActionResult<MakerEquipment>> GetMakerEquipment(int id)
         {
             var entry = await _context.MakerEquipment.FindAsync(id);
-            int makerId = entry?.MakerId ?? 0;
             var profile = await GetLoggedInProfile();
-            if (!await _context.Makers.Where(e => e.OwnerProfile.Id == profile.Id && e.Id == makerId).AnyAsync())
+            if (entry == null || entry.ProfileId != profile.Id)
             {
                 return NotFound();
             }
@@ -75,7 +74,7 @@
             }
 
             var profile = await GetLoggedInProfile();
-            if (!await _context.Makers.Where(e => e.OwnerProfile.Id == profile.Id && e.Id == entry.MakerId).AnyAsync())
+            if (!await _context.MakerEquipment.AnyAsync(e => e.ProfileId == profile.Id && e.Id == entry.Id))
             {
                 return NotFound();
             }
@@ -110,8 +109,8 @@
         [HttpPost]
         public async Task<ActionResult<MakerEquipment>> PostMakerEquipment(MakerEquipmentDto entry)
         {
-            var maker = await EnsureMaker();
-            var dbEntry = SetUpMakerEquipment(entry, maker);
+            var profile = await GetLoggedInProfile();
+            var dbEntry = SetUpMakerEquipment(entry, profile);
             await _context.SaveChangesAsync();
             return CreatedAtAction("Post", new { id = entry.Id }, _mapper.Map<MakerEquipmentDto>(dbEntry));
         }
@@ -124,33 +123,16 @@
         [HttpPost("bulk")]
         public async Task<ActionResult<MakerEquipment>> PostMakerEquipmentBulk(MakerEquipmentDto[] entries)
         {
-            var maker = await EnsureMaker();
-            var dbEntries = entries.Select(e => SetUpMakerEquipment(e, maker)).ToList();
+            var profile = await GetLoggedInProfile();
+            var dbEntries = entries.Select(e => SetUpMakerEquipment(e, profile)).ToList();
             await _context.SaveChangesAsync();
             return Created("api/MakerEquipment/bulk", _mapper.ProjectTo<MakerEquipmentDto>(dbEntries.AsQueryable()));
         }
 
-        private async Task<Maker> EnsureMaker()
-        {
-            var profile = await GetLoggedInProfile();
-            var maker = await _context.Makers.Where(e => e.OwnerProfile.Id == profile.Id).SingleOrDefaultAsync();
-            if (maker == null)
-            {
-                maker = new Maker
-                {
-                    OwnerProfile = profile
-                };
-                _context.Makers.Add(maker);
-                await _context.SaveChangesAsync();
-            }
-
-            return maker;
-        }
-
-        private MakerEquipment SetUpMakerEquipment(MakerEquipmentDto entry, Maker maker)
+        private MakerEquipment SetUpMakerEquipment(MakerEquipmentDto entry, DBModels.Profile profile)
         {
             var dbEntry = _mapper.Map<MakerEquipment>(entry);
-            dbEntry.Maker = maker;
+            dbEntry.Profile = profile;
             _context.MakerEquipment.Add(dbEntry);
             return dbEntry;
         }
@@ -170,7 +152,7 @@
             }
 
             var profile = await GetLoggedInProfile();
-            if(!await _context.Makers.Where(e => e.OwnerProfile.Id == profile.Id && e.Id == entry.MakerId).AnyAsync())
+            if(profile.Id != entry.ProfileId)
             {
                 return NotFound();
             }

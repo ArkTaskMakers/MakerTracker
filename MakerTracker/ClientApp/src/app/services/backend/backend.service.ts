@@ -18,8 +18,12 @@ export class BackendService {
     return this._http.get<InventoryProductSummaryDto[]>(this.baseUrl + 'api/inventory');
   }
 
-  saveInventory(data: AddInventoryDto): Observable<boolean> {
-    return this._http.post<boolean>(this.baseUrl + 'api/inventory', data);
+  saveInventory(data: AddInventoryDto | AddInventoryDto[]): Observable<boolean> {
+    let urlSuffix = '';
+    if (Array.isArray(data)) {
+      urlSuffix = '/bulk';
+    }
+    return this._http.post<boolean>(`${this.baseUrl}api/inventory${urlSuffix}`, data);
   }
 
   editInventory(data: EditInventoryDto): Observable<boolean> {

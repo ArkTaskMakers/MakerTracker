@@ -7,7 +7,7 @@ namespace MakerTracker.DBModels
     public class MakerOrder {
         public int Id { get; set; }
 
-        public Maker Maker { get; set; }
+        public Profile Profile { get; set; }
 
         public int ProductId { get; set; }
 

@@ -15,10 +15,9 @@ namespace MakerTracker.Models
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the maker identifier.
+        /// Gets or sets the profile identifier.
         /// </summary>
-        [Required]
-        public int MakerId { get; set; }
+        public int ProfileId { get; set; }
 
         /// <summary>
         ///     Gets or sets the equipment identifier.

@@ -25,7 +25,8 @@ export class UpdateProfileComponent implements OnInit {
     isDropOffPoint: null,
     zipCode: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
     isRequestor: false,
-    isSupplier: false
+    isSupplier: false,
+    hasCadSkills: false
   });
 
   states: IState[];

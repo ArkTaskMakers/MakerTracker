@@ -6,8 +6,8 @@ export class MakerEquipmentDto {
     /** Gets or sets the identifier. */
     id: number;
 
-    /** Gets or sets the maker identifier. */
-    makerId: number;
+    /** Gets or sets the profile identifier. */
+    profileId: number;
 
     /** Gets or sets the equipment identifier. */
     equipmentId: number;
