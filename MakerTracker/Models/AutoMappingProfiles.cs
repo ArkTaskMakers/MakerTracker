@@ -22,6 +22,8 @@
                 .ForMember(e => e.EquipmentName, opts => opts.MapFrom(e => e.Equipment.Name));
             CreateMap<MakerEquipmentDto, MakerEquipment>(AutoMapper.MemberList.Source)
                 .ForSourceMember(e => e.EquipmentName, opts => opts.DoNotValidate());
+            CreateMap<Need, NeedDto>(AutoMapper.MemberList.Destination);
+            CreateMap<NeedDto, Need>(AutoMapper.MemberList.Source);
         }
     }
 }

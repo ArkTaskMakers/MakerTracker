@@ -17,6 +17,7 @@ import { ActionMenuItem, BaseMenuItem, DividerMenuItem, DropdownMenuItem, MenuIt
 export class MenuComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[];
   menuItemTypes = MenuItemTypes;
+  email: string;
 
   adminMenuItems: BaseMenuItem[] = [
     new ActionMenuItem({
@@ -26,14 +27,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     new DividerMenuItem({ isHorizontal: true })
   ];
   menuItems: BaseMenuItem[] = [
-    new RouteMenuItem({
-      text: 'My Profile',
-      route: ['/profile'],
-      requiresAuth: true
-    }),
-    new DividerMenuItem({
-      requiresAuth: true
-    }),
     new RouteMenuItem({
       text: 'My Dashboard',
       route: ['/dashboard'],
@@ -52,15 +45,30 @@ export class MenuComponent implements OnInit, OnDestroy {
     new DividerMenuItem({
       requiresAuth: true
     }),
+    new DropdownMenuItem({
+      icon: 'person_outline',
+      text: () => this.email,
+      requiresAuth: true,
+      items: [
+        new RouteMenuItem({
+          text: 'My Profile',
+          route: ['/profile'],
+          requiresAuth: true
+        }),
+        new DividerMenuItem({
+          isHorizontal: true
+        }),
+        new ActionMenuItem({
+          text: 'Log Out',
+          action: () => this.auth.logout(),
+          requiresAuth: true
+        })
+      ]
+    }),
     new ActionMenuItem({
       text: 'Log In',
       action: () => this.auth.login(),
       requiresAnon: true
-    }),
-    new ActionMenuItem({
-      text: 'Log Out',
-      action: () => this.auth.logout(),
-      requiresAuth: true
     })
   ];
 
@@ -110,7 +118,9 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.auth.userProfile$.subscribe((user) => {
         if (user) {
           this.backend.getProfile().subscribe(
-            () => {},
+            () => {
+              this.email = user.email;
+            },
             (error) => {
               if (error.status === 404) {
                 this.openOnboardingWizard();

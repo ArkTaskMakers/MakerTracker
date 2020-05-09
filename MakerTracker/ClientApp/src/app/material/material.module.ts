@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -40,7 +41,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatTooltipModule,
     MatButtonToggleModule,
-    MatStepperModule
+    MatStepperModule,
+    MatNativeDateModule
   ],
   exports: [
     MatInputModule,
@@ -60,7 +62,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatTooltipModule,
     MatButtonToggleModule,
-    MatStepperModule
+    MatStepperModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule {}

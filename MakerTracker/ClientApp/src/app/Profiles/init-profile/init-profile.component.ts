@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AddInventoryDto } from 'autogen/AddInventoryDto';
-import { MakerEquipmentDto } from 'autogen/MakerEquipmentDto';
 import { ProfileDto } from 'autogen/ProfileDto';
-import { of, zip } from 'rxjs';
+import { Observable, of, zip } from 'rxjs';
 import { flatMap, toArray } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { EquipmentService } from 'src/app/services/backend/crud/equipment.service';
 import { MakerEquipmentService } from 'src/app/services/backend/crud/makerEquipment.service';
+import { NeedService } from 'src/app/services/backend/crud/need.service';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
 import { IState, StatesService } from 'src/app/services/states.service';
 import { IProductEntry, IProductTypeGroup } from 'src/app/ui-models/productTypeGroup';
@@ -42,6 +41,7 @@ export class InitProfileComponent implements OnInit {
     this.firstFormGroup.get('isNeither').setValue(value);
   }
 
+  today = new Date();
   firstFormGroup: FormGroup;
   locationFormGroup: FormGroup;
   supplierFormGroup: FormGroup;
@@ -58,12 +58,13 @@ export class InitProfileComponent implements OnInit {
     private router: Router,
     private backend: BackendService,
     private snackBar: MatSnackBar,
-    private fb: FormBuilder,
+    public fb: FormBuilder,
     productTypesSvc: ProductTypeService,
     equipmentSvc: EquipmentService,
     stateSvc: StatesService,
     authSvc: AuthService,
-    private makerEquipmentSvc: MakerEquipmentService
+    private makerEquipmentSvc: MakerEquipmentService,
+    private needSvc: NeedService
   ) {
     this.firstFormGroup = this.fb.group(
       {
@@ -88,11 +89,11 @@ export class InitProfileComponent implements OnInit {
       this.locationFormGroup.get('email').setValue(profile.email);
     });
     this.supplierFormGroup = this.fb.group({
-      products: [[], this.verifyInventory],
-      equipment: [[]]
+      products: this.fb.array([]),
+      equipment: this.fb.array([])
     });
     this.requestorFormGroup = this.fb.group({
-      secondCtrl: ['', Validators.required]
+      needs: this.fb.array([])
     });
     this.states = stateSvc.states;
     productTypesSvc.getProductHierarchy().subscribe((products) => {
@@ -114,34 +115,53 @@ export class InitProfileComponent implements OnInit {
 
   ngOnInit() {}
 
-  handleProductChanges(event: MatSelectChange) {
-    const currentValues = <AddInventoryDto[]>this.supplierFormGroup.get('products').value;
+  createInventory(fb: FormBuilder): (value: IProductEntry, key: number) => FormGroup {
+    return (value: IProductEntry, key: number) =>
+      this.fb.group({
+        productId: value.id,
+        amount: [null, [Validators.required, Validators.min(1)]]
+      });
+  }
+
+  createNeed(fb: FormBuilder): (value: IProductEntry, key: number) => FormGroup {
+    return (value: IProductEntry, key: number) =>
+      this.fb.group({
+        productId: value.id,
+        amount: [null, [Validators.required, Validators.min(1)]],
+        dueDate: [null],
+        specialInstructions: null
+      });
+  }
+
+  handleProductChanges(
+    event: MatSelectChange,
+    currentValues: FormArray,
+    factory: (value: IProductEntry, key: number) => FormGroup
+  ) {
     const selection = <IProductEntry[]>event.value;
-    const known = new Set<number>(currentValues.map((e) => e.productId));
+    const known = new Set<number>(currentValues.controls.map((e) => e.get('productId').value));
     const incoming = new Map(selection.map((e) => [e.id, e] as [number, IProductEntry]));
     known.forEach((e) => {
       if (!incoming.has(e)) {
-        const existing = currentValues.findIndex((p) => p.productId === event.value.id);
-        currentValues.splice(existing, 1);
+        const existing = currentValues.controls.findIndex((p) => p.get('productId').value === event.value.id);
+        currentValues.controls.splice(existing, 1);
       }
     });
     incoming.forEach((value, key) => {
       if (!known.has(key)) {
-        currentValues.push(
-          new AddInventoryDto({
-            productId: value.id
-          })
-        );
+        currentValues.push(factory(value, key));
       }
     });
-    this.supplierFormGroup.get('products').updateValueAndValidity();
+    currentValues.updateValueAndValidity();
   }
 
   handleEquipmentChanges(event: MatSelectChange) {
-    this.supplierFormGroup.get('equipment').value.push(
-      new MakerEquipmentDto({
+    (this.supplierFormGroup.get('equipment') as FormArray).push(
+      this.fb.group({
         equipmentId: event.value.id,
-        equipmentName: event.value.name
+        equipmentName: event.value.name,
+        manufacturer: null,
+        modelNumber: null
       })
     );
     event.source.writeValue(null);
@@ -178,11 +198,6 @@ export class InitProfileComponent implements OnInit {
       : null;
   };
 
-  verifyInventory: ValidatorFn = (control: FormControl): ValidationErrors | null => {
-    const data = <AddInventoryDto[]>control.value;
-    return data.length && data.some((e) => !(e.amount > 0)) ? { invalidAmount: true } : null;
-  };
-
   submit() {
     zip(
       this.backend.saveProfile(
@@ -192,8 +207,17 @@ export class InitProfileComponent implements OnInit {
           ...this.locationFormGroup.value
         })
       ),
-      this.isSupplier ? this.backend.saveInventory(this.supplierFormGroup.get('products').value) : of(null),
-      this.isSupplier ? this.makerEquipmentSvc.bulkSave(this.supplierFormGroup.get('equipment').value) : of(null)
+      this.saveData(
+        this.supplierFormGroup.get('products').value,
+        (data) => this.backend.saveInventory(data),
+        this.isSupplier
+      ),
+      this.saveData(
+        this.supplierFormGroup.get('equipment').value,
+        (data) => this.makerEquipmentSvc.bulkSave(data),
+        this.isSupplier
+      ),
+      this.saveData(this.requestorFormGroup.get('needs').value, (data) => this.needSvc.bulkSave(data), this.isRequestor)
     ).subscribe(
       () => {
         this.closeDialog();
@@ -205,5 +229,9 @@ export class InitProfileComponent implements OnInit {
         });
       }
     );
+  }
+
+  saveData(data: any[], saveDelegate: (input: any[]) => Observable<any>, condition: boolean = true) {
+    return condition && data && data.length ? saveDelegate(data) : of(null);
   }
 }
