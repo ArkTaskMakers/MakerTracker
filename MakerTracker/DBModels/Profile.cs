@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
 namespace MakerTracker.DBModels
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+
     public class Profile
     {
         public int Id { get; set; }
@@ -29,8 +29,17 @@ namespace MakerTracker.DBModels
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public string AdminNotes { get; set; }
+
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
+
+
+
+        public ICollection<ProfileHierarchy> Parents { get; set; } = new List<ProfileHierarchy>();
+        public ICollection<ProfileHierarchy> Children { get; set; } = new List<ProfileHierarchy>();
+
+        public bool IsVerified { get; set; }
 
         public static void ConfigureEntity(ModelBuilder builder)
         {

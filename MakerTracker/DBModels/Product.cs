@@ -27,7 +27,7 @@
         [ForeignKey(nameof(ProductTypeId))]
         public ProductType ProductType { get; set; }
 
-        public ICollection<NeedDetail> NeedRequests{ get; set; } = new List<NeedDetail>();
+        public ICollection<Need> NeedRequests{ get; set; } = new List<Need>();
 
         public ICollection<MakerOrder> InMakerQueues { get; set; } = new List<MakerOrder>();
 
