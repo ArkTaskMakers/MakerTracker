@@ -17,6 +17,7 @@ import { ActionMenuItem, BaseMenuItem, DividerMenuItem, DropdownMenuItem, MenuIt
 export class MenuComponent implements OnInit, OnDestroy {
   private _subscriptions: Subscription[];
   menuItemTypes = MenuItemTypes;
+  email: string;
 
   adminMenuItems: BaseMenuItem[] = [
     new ActionMenuItem({
@@ -46,6 +47,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     }),
     new DropdownMenuItem({
       icon: 'person_outline',
+      text: () => this.email,
       requiresAuth: true,
       items: [
         new RouteMenuItem({
@@ -116,7 +118,9 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.auth.userProfile$.subscribe((user) => {
         if (user) {
           this.backend.getProfile().subscribe(
-            () => {},
+            () => {
+              this.email = user.email;
+            },
             (error) => {
               if (error.status === 404) {
                 this.openOnboardingWizard();

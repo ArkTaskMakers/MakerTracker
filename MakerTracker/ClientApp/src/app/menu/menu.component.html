@@ -39,21 +39,10 @@
 </ng-template>
 
 <ng-template #dropdown let-item>
-  <button
-    *ngIf="item.icon"
-    mat-icon-button
-    [mat-menu-trigger-for]="dropdownMenu"
-    [matMenuTriggerData]="{ $implicit: item }"
-  >
-    <mat-icon>{{ item.icon }}</mat-icon>
-  </button>
-  <button
-    *ngIf="!item.icon"
-    mat-button
-    [mat-menu-trigger-for]="dropdownMenu"
-    [matMenuTriggerData]="{ $implicit: item }"
-  >
-    {{ item.text }}
+  <button mat-button [mat-menu-trigger-for]="dropdownMenu" [matMenuTriggerData]="{ $implicit: item }">
+    <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+    <span *ngIf="item.text">{{ item.getText() }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
   </button>
 </ng-template>
 
