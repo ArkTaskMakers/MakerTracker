@@ -3,6 +3,7 @@ import { MenuItemTypes } from './menuItemTypes.enum';
 
 export class DropdownMenuItem extends BaseMenuItem {
   text: string;
+  icon: string;
   items: BaseMenuItem[];
 
   /** Initializes a new instance of the DropdownMenuItem class **/

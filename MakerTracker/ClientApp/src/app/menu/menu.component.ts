@@ -27,14 +27,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   ];
   menuItems: BaseMenuItem[] = [
     new RouteMenuItem({
-      text: 'My Profile',
-      route: ['/profile'],
-      requiresAuth: true
-    }),
-    new DividerMenuItem({
-      requiresAuth: true
-    }),
-    new RouteMenuItem({
       text: 'My Dashboard',
       route: ['/dashboard'],
       requiresAuth: true
@@ -52,15 +44,29 @@ export class MenuComponent implements OnInit, OnDestroy {
     new DividerMenuItem({
       requiresAuth: true
     }),
+    new DropdownMenuItem({
+      icon: 'person_outline',
+      requiresAuth: true,
+      items: [
+        new RouteMenuItem({
+          text: 'My Profile',
+          route: ['/profile'],
+          requiresAuth: true
+        }),
+        new DividerMenuItem({
+          isHorizontal: true
+        }),
+        new ActionMenuItem({
+          text: 'Log Out',
+          action: () => this.auth.logout(),
+          requiresAuth: true
+        })
+      ]
+    }),
     new ActionMenuItem({
       text: 'Log In',
       action: () => this.auth.login(),
       requiresAnon: true
-    }),
-    new ActionMenuItem({
-      text: 'Log Out',
-      action: () => this.auth.logout(),
-      requiresAuth: true
     })
   ];
 
