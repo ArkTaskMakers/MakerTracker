@@ -33,7 +33,7 @@
         }
 
         /// <summary>
-        ///     Gets the maker equipment entries from the database.
+        ///     Gets the entries from the database.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        ///     Gets the maker equipment matching a specific identifier.
+        ///     Gets the entry matching a specific identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
@@ -61,7 +61,7 @@
         }
 
         /// <summary>
-        ///     Updates the maker equipment entry received via a PUT request.
+        ///     Updates the entry received via a PUT request.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="entry">The entry.</param>
@@ -104,7 +104,7 @@
         }
 
         /// <summary>
-        ///     Creates the maker Equipment entry received via a POST request.
+        ///     Creates the entry received via a POST request.
         /// </summary>
         /// <param name="entry">The entry to create.</param>
         /// <returns></returns>
@@ -124,7 +124,7 @@
         }
 
         /// <summary>
-        ///     Creates the maker equipment entry received via a POST request.
+        ///     Creates the entry received via a POST request.
         /// </summary>
         /// <param name="entry">The entry to create.</param>
         /// <returns></returns>
@@ -145,25 +145,8 @@
             return Created("api/Need/bulk", results);
         }
 
-        private bool VerifyProfileOnEntry(ICollection<int> allowedProfiles, NeedDto entry)
-        {
-            return entry.ProfileId <= 0 || allowedProfiles.Contains(entry.ProfileId);
-        }
-
-        private Need SetUpNeed(NeedDto entry, DBModels.Profile profile)
-        {
-            var dbEntry = _mapper.Map<Need>(entry);
-            if (entry.ProfileId <= 0)
-            {
-                dbEntry.Profile = profile;
-            }
-            dbEntry.CreatedDate = System.DateTime.Now;
-            _context.Needs.Add(dbEntry);
-            return dbEntry;
-        }
-
         /// <summary>
-        ///     Deletes the maker equipment matching the specified identifier.
+        ///     Deletes the entry matching the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
@@ -198,6 +181,23 @@
         private bool NeedExists(int id)
         {
             return _context.Needs.Any(e => e.Id == id);
+        }
+
+        private bool VerifyProfileOnEntry(ICollection<int> allowedProfiles, NeedDto entry)
+        {
+            return entry.ProfileId <= 0 || allowedProfiles.Contains(entry.ProfileId);
+        }
+
+        private Need SetUpNeed(NeedDto entry, DBModels.Profile profile)
+        {
+            var dbEntry = _mapper.Map<Need>(entry);
+            if (entry.ProfileId <= 0)
+            {
+                dbEntry.Profile = profile;
+            }
+            dbEntry.CreatedDate = System.DateTime.Now;
+            _context.Needs.Add(dbEntry);
+            return dbEntry;
         }
     }
 }
