@@ -48,7 +48,7 @@
             </button>
           </div>
           <mat-slide-toggle [(ngModel)]="entry[field.field]" [name]="field.field" *ngSwitchCase="'bool-toggle'">
-            Is Deprecated
+            {{ field.label }}
           </mat-slide-toggle>
           <mat-form-field *ngSwitchCase="'select'">
             <mat-select

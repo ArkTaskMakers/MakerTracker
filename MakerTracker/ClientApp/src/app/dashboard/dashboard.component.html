@@ -10,9 +10,9 @@
 </header>
 
 <div class="grid-container">
-  <mat-grid-list cols="1" rowHeight="500px">
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <mat-card class="dashboard-card">
+  <div class="flex-row flex-between stackable">
+    <div class="dashboard-card flex-grow d-flex" *ngIf="isSupplier">
+      <mat-card class="flex-column flex-grow">
         <mat-card-header>
           <mat-card-title>
             My Inventory:
@@ -24,18 +24,63 @@
         <mat-card-content class="dashboard-card-content">
           <mat-list>
             <mat-list-item *ngFor="let i of inventorySummary">
-              <img matListAvatar class="product-preview" [src]="i.productImageUrl" [alt]="i.productName">
-              <h3 matLine> {{i.productName}} </h3>
-              <div matLine>You have: <span class="mat-body-2">{{i.amount}} </span></div>
-              <button mat-button color="secondary" (click)="openDeliveryInventoryDialog(i)">Deliver</button>
-              <button mat-button color="primary" (click)="openEditInventoryDialog(i)">Update Count</button>
+              <img matListAvatar class="product-preview" [src]="i.productImageUrl" [alt]="i.productName" />
+              <h3 matLine>{{ i.productName }}</h3>
+              <p matLine>
+                You have: <span class="mat-body-2">{{ i.amount }} </span>
+              </p>
+              <button mat-mini-fab matTooltip="Deliver">
+                <mat-icon>local_shipping</mat-icon></button
+              >&nbsp;
+              <button mat-mini-fab (click)="openInventoryDialog(i)" color="primary" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-list-item>
           </mat-list>
         </mat-card-content>
         <mat-card-actions align="start">
-          <button mat-raised-button color="primary" (click)="openAddInventoryDialog()">Add Product</button>
+          <button mat-raised-button color="primary" (click)="openInventoryDialog()">
+            <mat-icon>add</mat-icon> New Inventory
+          </button>
         </mat-card-actions>
       </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div>
+    <div class="dashboard-card flex-grow d-flex" *ngIf="isRequestor">
+      <mat-card class="flex-column flex-grow">
+        <mat-card-header>
+          <mat-card-title>
+            My Needs:
+          </mat-card-title>
+          <mat-card-subtitle>
+            These are the products you have recorded needs for.
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <mat-list>
+            <mat-list-item *ngFor="let i of needs">
+              <img
+                matListAvatar
+                class="product-preview"
+                [src]="getProductField(i, 'imageUrl')"
+                [alt]="getProductField(i, 'name')"
+              />
+              <h3 matLine>{{ getProductField(i, 'name') }}</h3>
+              <p matLine>
+                You still need <span class="mat-body-2">{{ i.quantity }}</span
+                ><span *ngIf="i.dueDate"> by {{ i.dueDate | date: 'shortDate' }}</span>
+              </p>
+              <button mat-mini-fab (click)="openNeedDialog(i)" color="primary" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-card-actions align="start">
+          <button mat-raised-button color="primary" (click)="openNeedDialog()">
+            <mat-icon>add</mat-icon> New Request
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 </div>

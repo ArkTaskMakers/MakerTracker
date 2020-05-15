@@ -127,7 +127,7 @@ export class InitProfileComponent implements OnInit {
     return (value: IProductEntry, key: number) =>
       this.fb.group({
         productId: value.id,
-        amount: [null, [Validators.required, Validators.min(1)]],
+        quantity: [null, [Validators.required, Validators.min(1)]],
         dueDate: [null],
         specialInstructions: null
       });

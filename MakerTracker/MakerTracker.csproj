@@ -48,17 +48,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ClientApp\autogen\AddInventoryDto.ts">
-      <CustomToolNamespace>Models\AddInventoryDto.cs</CustomToolNamespace>
-    </None>
-    <None Update="ClientApp\autogen\EditInventoryDto.ts">
-      <CustomToolNamespace>Models\EditInventoryDto.cs</CustomToolNamespace>
-    </None>
     <None Update="ClientApp\autogen\EquipmentDto.ts">
       <CustomToolNamespace>Models\Equipment\EquipmentDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\InventoryProductSummaryDto.ts">
       <CustomToolNamespace>Models\InventoryProductSummaryDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\InventoryTransactionDto.ts">
+      <CustomToolNamespace>Models\Inventory\InventoryTransactionDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\MakerEquipmentDto.ts">
       <CustomToolNamespace>Models\Equipment\MakerEquipmentDto.cs</CustomToolNamespace>
@@ -81,10 +78,6 @@
     <None Update="ClientApp\autogen\UpdateProfileDto.ts">
       <CustomToolNamespace>Models\Profiles\UpdateProfileDto.cs</CustomToolNamespace>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Inventory\" />
   </ItemGroup>
 
   <ItemGroup>

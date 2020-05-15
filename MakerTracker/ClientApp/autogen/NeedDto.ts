@@ -24,6 +24,9 @@ export class NeedDto {
     /** Gets or sets the quantity. */
     quantity: number;
 
+    /** Gets a value indicating whether this instance is overdue. */
+    isOverdue: boolean;
+
     /** Gets or sets any special instructions tied to the Need. */
     specialInstructions: string;
 

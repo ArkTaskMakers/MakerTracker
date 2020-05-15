@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { AddInventoryDto } from 'autogen/AddInventoryDto';
-import { EditInventoryDto } from 'autogen/EditInventoryDto';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
+import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { ProductDto } from 'autogen/ProductDto';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
@@ -18,16 +17,16 @@ export class BackendService {
     return this._http.get<InventoryProductSummaryDto[]>(this.baseUrl + 'api/inventory');
   }
 
-  saveInventory(data: AddInventoryDto | AddInventoryDto[]): Observable<boolean> {
+  saveInventory(data: InventoryTransactionDto | InventoryTransactionDto[]): Observable<InventoryTransactionDto> {
     let urlSuffix = '';
     if (Array.isArray(data)) {
       urlSuffix = '/bulk';
     }
-    return this._http.post<boolean>(`${this.baseUrl}api/inventory${urlSuffix}`, data);
+    return this._http.post<InventoryTransactionDto>(`${this.baseUrl}api/inventory${urlSuffix}`, data);
   }
 
-  editInventory(data: EditInventoryDto): Observable<boolean> {
-    return this._http.put<boolean>(`${this.baseUrl}api/inventory/${data.productId}`, data);
+  editInventory(data: InventoryTransactionDto): Observable<InventoryTransactionDto> {
+    return this._http.put<InventoryTransactionDto>(`${this.baseUrl}api/inventory/${data.product.id}`, data);
   }
 
   getProductList(): Observable<ProductDto[]> {

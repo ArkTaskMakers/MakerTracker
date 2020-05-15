@@ -2,14 +2,6 @@
   margin: 20px;
 }
 
-.dashboard-card {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-}
-
 .mat-card {
   display: flex;
   flex-direction: column;
@@ -19,13 +11,17 @@
   flex-shrink: 0;
 }
 
+.dashboard-card {
+  margin-bottom: 20px;
+}
+
 .mat-card-content {
   flex-grow: 1;
   overflow: auto;
 }
 
 header.masthead {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1.0)), url("/img/bg-dashboard.jpg") no-repeat center center;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)),
+    url('/img/bg-dashboard.jpg') no-repeat center center;
   background-size: cover;
-  
 }

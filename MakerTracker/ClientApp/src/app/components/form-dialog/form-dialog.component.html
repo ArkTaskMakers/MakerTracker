@@ -1,0 +1,122 @@
+<form #editForm="ngForm" [formGroup]="dialogForm" (ngSubmit)="save()">
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>
+        {{ config.title }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content">
+      <div *ngIf="alert" class="alert alert-{{ alert.type }}">
+        {{ alert.message }}
+      </div>
+      <div class="form-group" *ngFor="let field of model.formFields">
+        <ng-container [ngSwitch]="field.fieldType" *ngIf="!field.isHidden || !field.isHidden(dialogForm)">
+          <p *ngSwitchCase="'description'" class="description">
+            {{ getFieldLabel(field) }}
+          </p>
+          <mat-form-field *ngSwitchCase="'textarea'">
+            <mat-label>{{ getFieldLabel(field) }}</mat-label>
+            <textarea
+              matInput
+              [formControlName]="field.field"
+              [attr.maxlength]="field.options && field.options.maxlength"
+              [placeholder]="field.placeholder"
+              [attr.rows]="(field.options && field.options.rows) || 5"
+              [required]="field.required"
+            ></textarea>
+          </mat-form-field>
+          <mat-form-field *ngSwitchCase="'date'">
+            <mat-label>{{ getFieldLabel(field) }}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [min]="field.options.min"
+              [formControlName]="field.field"
+              [required]="field.required"
+              [placeholder]="field.placeholder"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker [startAt]="field.options.min"></mat-datepicker>
+            <mat-hint *ngIf="!field.required">optional</mat-hint>
+          </mat-form-field>
+          <div class="image-field" *ngSwitchCase="'image'">
+            <img [src]="dialogForm.get(field.field).value" *ngIf="dialogForm.get(field.field).value" />
+            <mat-form-field>
+              <mat-label>Image URL</mat-label>
+              <input
+                matInput
+                [formControlName]="field.field"
+                [id]="field.field"
+                [name]="field.field"
+                [placeholder]="field.placeholder"
+              />
+            </mat-form-field>
+            <button type="button" mat-icon-button (click)="fileUpload.click()">
+              <mat-icon>add_photo_alternate</mat-icon
+              ><input
+                type="file"
+                #fileUpload
+                [name]="field.field + '-fileUpload'"
+                [hidden]="true"
+                (change)="onFileChange($event, field)"
+              />
+            </button>
+          </div>
+          <mat-slide-toggle [formControlName]="field.field" [name]="field.field" *ngSwitchCase="'bool-toggle'">
+            {{ getFieldLabel(field) }}
+          </mat-slide-toggle>
+          <mat-form-field *ngSwitchCase="'select'">
+            <mat-select
+              [formControlName]="field.field"
+              [placeholder]="field.placeholder"
+              [multiple]="field.options.multiple"
+              [required]="field.required"
+              [compareWith]="field.options.compareWith"
+            >
+              <ng-container *ngIf="field.options.fieldGroups">
+                <mat-optgroup
+                  *ngFor="let group of field.options.fieldGroups | async"
+                  [label]="field.options.getOptionGroupDisplay(group)"
+                  [hidden]="!field.options.getOptionGroupOptions(group).length"
+                >
+                  <mat-option
+                    *ngFor="let option of field.options.getOptionGroupOptions(group)"
+                    [value]="field.options.getOptionValue(option)"
+                  >
+                    {{ field.options.getOptionDisplay(option) }}
+                  </mat-option>
+                </mat-optgroup>
+                <ng-container *ngIf="field.options.fieldOptions">
+                  <mat-option *ngFor="let option of group.options" [value]="field.options.getOptionValue(option)">
+                    {{ field.options.getOptionDisplay(option) }}
+                  </mat-option></ng-container
+                >
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngSwitchDefault>
+            <mat-label>{{ getFieldLabel(field) }}</mat-label>
+            <input
+              matInput
+              [formControlName]="field.field"
+              [type]="field.type"
+              [maxlength]="field.options && field.options.maxlength"
+              [placeholder]="field.placeholder"
+              [required]="field.required"
+              [step]="(field.options && field.options.step) || 1"
+              [min]="field.options && field.options.min"
+              [max]="field.options && field.options.max"
+            />
+          </mat-form-field>
+        </ng-container>
+      </div>
+      <div class="form-group"></div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!editForm.form.valid">
+        <mat-icon>save</mat-icon> Save
+      </button>
+      <button mat-button type="button" (click)="cancel()"><mat-icon>close</mat-icon> Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
