@@ -67,7 +67,7 @@
               <h3 matLine>{{ getProductField(i, 'name') }}</h3>
               <p matLine>
                 You still need <span class="mat-body-2">{{ i.quantity }}</span
-                ><span *ngIf="i.dueDate"> by {{ i.dueDate | date: 'shortDate' }}</span>
+                ><span *ngIf="i.dueDate" [class.overdue]="i.isOverdue"> by {{ i.dueDate | date: 'shortDate' }}</span>
               </p>
               <button mat-mini-fab (click)="openNeedDialog(i)" color="primary" matTooltip="Edit">
                 <mat-icon>edit</mat-icon>

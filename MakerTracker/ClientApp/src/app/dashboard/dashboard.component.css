@@ -20,6 +20,10 @@
   overflow: auto;
 }
 
+.overdue {
+  color: red;
+}
+
 header.masthead {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 44, 69, 1)),
     url('/img/bg-dashboard.jpg') no-repeat center center;
