@@ -118,7 +118,7 @@ export class InitProfileComponent implements OnInit {
   createInventory(fb: FormBuilder): (value: IProductEntry, key: number) => FormGroup {
     return (value: IProductEntry, key: number) =>
       this.fb.group({
-        productId: value.id,
+        product: value,
         amount: [null, [Validators.required, Validators.min(1)]]
       });
   }
