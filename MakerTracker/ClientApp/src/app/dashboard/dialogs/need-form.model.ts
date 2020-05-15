@@ -77,9 +77,9 @@ export class NeedFormModel extends FormDialogModel<NeedDto> {
   buildForm(fb: FormBuilder) {
     const data = { ...this.entry };
     return fb.group({
-      id: data && data.id,
-      profileId: data && data.profileId,
-      createdDate: data && data.createdDate,
+      id: (data && data.id) || 0,
+      profileId: (data && data.profileId) || 0,
+      createdDate: (data && data.createdDate) || new Date(),
       fulfilledDate: data && data.fulfilledDate,
       productId: [data && data.productId, [Validators.required]],
       quantity: [(data && data.quantity) || 0, [Validators.required, Validators.min(0)]],
