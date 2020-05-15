@@ -19,7 +19,8 @@ export class NeedService extends GenericCrudService<NeedDto> {
 
   list() {
     return this.query(this._baseUrl, {
-      $orderBy: 'DueDate,CreatedDate'
+      $orderBy: 'DueDate,CreatedDate',
+      $filter: 'quantity gt 0'
     });
   }
 

@@ -65,15 +65,15 @@
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, EditInventoryDto model)
+        public async Task<IActionResult> PutTransaction(int id, InventoryTransactionDto model)
         {
-            if (id != model.ProductId)
+            if (id != model.Product.Id)
             {
                 return BadRequest("Product ID's don't match");
             }
 
             var profile = await GetLoggedInProfile();
-            var product = _context.Products.Find(model.ProductId);
+            var product = _context.Products.Find(model.Product.Id);
             var currentAmount = _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Where(x => x.Product == product)
                 .Select(t => new
@@ -83,7 +83,7 @@
                 .Sum(x => x.Amount);
 
             //positive amount means they are increasing the amount
-            var difference = model.NewAmount - currentAmount;
+            var difference = model.Amount - currentAmount;
 
             if (difference != 0)
             {
@@ -110,7 +110,7 @@
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(AddInventoryDto model)
+        public async Task<ActionResult<Transaction>> PostTransaction(InventoryTransactionDto model)
         {
             var profile = await GetLoggedInProfile();
             CreateTransaction(model, profile);
@@ -124,7 +124,7 @@
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost("bulk")]
-        public async Task<ActionResult<Transaction>> PostTransactions(AddInventoryDto[] entries)
+        public async Task<ActionResult<Transaction>> PostTransactions(InventoryTransactionDto[] entries)
         {
             var profile = await GetLoggedInProfile();
             foreach (var entry in entries)
@@ -137,9 +137,9 @@
             //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
 
-        private Transaction CreateTransaction(AddInventoryDto entry, Profile profile)
+        private Transaction CreateTransaction(InventoryTransactionDto entry, Profile profile)
         {
-            var product = _context.Products.Find(entry.ProductId);
+            var product = _context.Products.Find(entry.Product.Id);
             var transaction = new Transaction()
             {
                 Amount = entry.Amount,

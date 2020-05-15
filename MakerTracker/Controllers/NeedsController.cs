@@ -7,6 +7,7 @@
     using AutoMapper.QueryableExtensions;
     using MakerTracker.DBModels;
     using MakerTracker.Models;
+    using Microsoft.AspNet.OData;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [EnableQuery]
         public async Task<IActionResult> GetNeeds()
         {
             var profile = await GetLoggedInProfile();

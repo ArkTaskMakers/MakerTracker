@@ -6,9 +6,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { MakerComponentsModule } from './components/maker-components.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddInventoryComponent } from './dashboard/dialogs/add-inventory/add-inventory.component';
-import { EditInventoryComponent } from './dashboard/dialogs/edit-inventory/edit-inventory.component';
 import { FooterNavComponent } from './footer-nav/footer-nav.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
@@ -26,10 +25,8 @@ import { AuthService } from './services/auth/auth.service';
     MenuComponent,
     HomeComponent,
     DashboardComponent,
-    AddInventoryComponent,
     FooterNavComponent,
     DashboardComponent,
-    EditInventoryComponent,
     UpdateProfileComponent,
     InitProfileComponent
   ],
@@ -37,6 +34,7 @@ import { AuthService } from './services/auth/auth.service';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    MakerComponentsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       {
