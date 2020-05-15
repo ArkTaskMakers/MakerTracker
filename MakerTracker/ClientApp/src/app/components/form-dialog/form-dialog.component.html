@@ -94,6 +94,19 @@
               </ng-container>
             </mat-select>
           </mat-form-field>
+          <mat-form-field *ngSwitchCase="'number'">
+            <mat-label>{{ getFieldLabel(field) }}</mat-label>
+            <input
+              matInput
+              [formControlName]="field.field"
+              type="number"
+              [placeholder]="field.placeholder"
+              [required]="field.required"
+              [step]="(field.options && field.options.step) || 1"
+              [min]="field.options && field.options.min"
+              [max]="field.options && field.options.max"
+            />
+          </mat-form-field>
           <mat-form-field *ngSwitchDefault>
             <mat-label>{{ getFieldLabel(field) }}</mat-label>
             <input
@@ -103,9 +116,6 @@
               [maxlength]="field.options && field.options.maxlength"
               [placeholder]="field.placeholder"
               [required]="field.required"
-              [step]="(field.options && field.options.step) || 1"
-              [min]="field.options && field.options.min"
-              [max]="field.options && field.options.max"
             />
           </mat-form-field>
         </ng-container>
