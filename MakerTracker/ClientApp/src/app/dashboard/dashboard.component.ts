@@ -14,6 +14,7 @@ import { BackendService } from '../services/backend/backend.service';
 import { NeedService } from '../services/backend/crud/need.service';
 import { ProductTypeService } from '../services/backend/crud/productType.service';
 import { IProductEntry, IProductTypeGroup } from '../ui-models/productTypeGroup';
+import { DeliveryFormModel } from './dialogs/delivery-form.model';
 import { InventoryFormModel } from './dialogs/inventory-form.model';
 import { NeedFormModel } from './dialogs/need-form.model';
 
@@ -39,12 +40,7 @@ export class DashboardComponent implements OnInit {
     backend.getProfile().subscribe((profile: ProfileDto) => {
       this.isRequestor = profile.isRequestor;
       this.isSupplier = profile.isSupplier;
-      if (this.isSupplier) {
-        this.refreshInventory();
-      }
-      if (this.isRequestor) {
-        this.refreshNeeds();
-      }
+      this.refreshDashboard();
     });
     productTypesSvc.getProductHierarchy().subscribe((products) => {
       this.products = products;
@@ -61,6 +57,15 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  private refreshDashboard() {
+    if (this.isSupplier) {
+      this.refreshInventory();
+    }
+    if (this.isRequestor) {
+      this.refreshNeeds();
+    }
+  }
 
   private refreshInventory() {
     this.backend.getInventorySummary().subscribe((res) => (this.inventorySummary = res));
@@ -102,7 +107,7 @@ export class DashboardComponent implements OnInit {
           this.productTypesSvc
         )
       }),
-      () => this.refreshInventory()
+      () => this.refreshDashboard()
     );
   }
 
@@ -116,15 +121,17 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  openDeliveryInventoryDialog(): void {
-    // const dialogRef = this.dialog.open(EditInventoryComponent, {
-    //   data: <EditInventoryDto>{
-    //     productId: product.productId,
-    //     newAmount: product.amount
-    //   }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.refreshDashBoard();
-    // });
+  fulfill(data: NeedDto): void {
+    this.needSvc.fulfill(data).subscribe(() => this.refreshNeeds());
+  }
+
+  openDeliveryDialog(data: InventoryProductSummaryDto): void {
+    this.openDialog(
+      FormDialogComponent,
+      new FormDialogConfig({
+        model: new DeliveryFormModel(data, this.backend, this.productMap, this.needSvc)
+      }),
+      () => this.refreshDashboard()
+    );
   }
 }

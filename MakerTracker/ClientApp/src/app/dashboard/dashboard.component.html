@@ -29,7 +29,7 @@
               <p matLine>
                 You have: <span class="mat-body-2">{{ i.amount }} </span>
               </p>
-              <button mat-mini-fab matTooltip="Deliver">
+              <button mat-mini-fab matTooltip="Deliver" (click)="openDeliveryDialog(i)" [disabled]="i.amount <= 0">
                 <mat-icon>local_shipping</mat-icon></button
               >&nbsp;
               <button mat-mini-fab (click)="openInventoryDialog(i)" color="primary" matTooltip="Edit">
@@ -66,9 +66,23 @@
               />
               <h3 matLine>{{ getProductField(i, 'name') }}</h3>
               <p matLine>
-                You still need <span class="mat-body-2">{{ i.quantity }}</span
-                ><span *ngIf="i.dueDate" [class.overdue]="i.isOverdue"> by {{ i.dueDate | date: 'shortDate' }}</span>
+                <span *ngIf="i.outstandingQuantity > 0">
+                  You still need <span class="mat-body-2">{{ i.outstandingQuantity }}</span>
+                  <span *ngIf="i.outstandingQuantity > 0 && i.dueDate" [class.overdue]="i.isOverdue">
+                    by {{ i.dueDate | date: 'shortDate' }}</span
+                  ></span
+                >
+                <span *ngIf="i.outstandingQuantity <= 0" class="text-success"> Need Met!</span>
               </p>
+              <button
+                *ngIf="i.outstandingQuantity <= 0"
+                mat-mini-fab
+                (click)="fulfill(i)"
+                class="text-success"
+                matTooltip="Mark as Fulfilled"
+              >
+                <mat-icon>check</mat-icon></button
+              >&nbsp;
               <button mat-mini-fab (click)="openNeedDialog(i)" color="primary" matTooltip="Edit">
                 <mat-icon>edit</mat-icon>
               </button>

@@ -88,9 +88,6 @@ export class NeedFormModel extends FormDialogModel<NeedDto> {
     });
   }
 
-  factory() {
-    return new NeedDto();
-  }
   onSubmit(data: NeedDto): Observable<NeedDto> {
     return this.isEditMode ? this.service.update(data.id, data) : this.service.create(data);
   }

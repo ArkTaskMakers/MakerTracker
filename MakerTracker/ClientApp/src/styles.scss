@@ -168,3 +168,11 @@ mat-toolbar.mat-toolbar {
     }
   }
 }
+
+.text-success {
+  color: darkgreen !important;
+  &.mat-mini-fab {
+    color: white !important;
+    background: darkgreen !important;
+  }
+}

@@ -30,7 +30,7 @@
                     ProductId = t.Product.Id,
                     t.Product.Name,
                     t.Product.ImageUrl,
-                    Amount = t.To == profile ? t.Amount : -1 * t.Amount,
+                    Amount = t.From == profile ? -t.Amount : t.Amount,
                     t.Id
                 });
 
@@ -113,7 +113,7 @@
         public async Task<ActionResult<Transaction>> PostTransaction(InventoryTransactionDto model)
         {
             var profile = await GetLoggedInProfile();
-            CreateTransaction(model, profile);
+            await CreateTransaction(model, profile);
             await _context.SaveChangesAsync();
 
             return Ok(true);
@@ -129,27 +129,29 @@
             var profile = await GetLoggedInProfile();
             foreach (var entry in entries)
             {
-                CreateTransaction(entry, profile);
+                await CreateTransaction(entry, profile);
             }
             await _context.SaveChangesAsync();
 
             return Ok(true);
-            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
 
-        private Transaction CreateTransaction(InventoryTransactionDto entry, Profile profile)
+        private async Task<Transaction> CreateTransaction(InventoryTransactionDto entry, Profile profile)
         {
-            var product = _context.Products.Find(entry.Product.Id);
+            var product = await _context.Products.FindAsync(entry.Product.Id);
+            var to = entry.NeedId != null ? (await _context.Needs.FindAsync(entry.NeedId)).Profile : profile;
+            var from = entry.NeedId != null ? profile : null;
             var transaction = new Transaction()
             {
                 Amount = entry.Amount,
-                From = null,
-                To = profile,
+                From = from,
+                To = to,
                 TransactionDate = DateTime.Now,
                 TransactionType = TransactionType.Stock,
                 Status = TransactionStatus.Confirmed,
                 Product = product,
                 ConfirmationDate = DateTime.Now,
+                NeedId = entry.NeedId
             };
 
             _context.Transactions.Add(transaction);

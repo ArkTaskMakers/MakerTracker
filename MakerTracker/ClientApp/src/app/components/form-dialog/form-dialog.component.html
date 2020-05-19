@@ -86,12 +86,15 @@
                     {{ field.options.getOptionDisplay(option) }}
                   </mat-option>
                 </mat-optgroup>
-                <ng-container *ngIf="field.options.fieldOptions">
-                  <mat-option *ngFor="let option of group.options" [value]="field.options.getOptionValue(option)">
-                    {{ field.options.getOptionDisplay(option) }}
-                  </mat-option></ng-container
-                >
               </ng-container>
+              <ng-container *ngIf="field.options.fieldOptions">
+                <mat-option
+                  *ngFor="let option of field.options.fieldOptions | async"
+                  [value]="field.options.getOptionValue(option)"
+                >
+                  {{ field.options.getOptionDisplay(option) }}
+                </mat-option></ng-container
+              >
             </mat-select>
           </mat-form-field>
           <mat-form-field *ngSwitchCase="'number'">

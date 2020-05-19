@@ -1,6 +1,8 @@
 ﻿namespace MakerTracker.DBModels
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -67,5 +69,7 @@
         ///     Gets or sets any administrative notes attached to the need.
         /// </summary>
         public string AdminNotes { get; set; }
+
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

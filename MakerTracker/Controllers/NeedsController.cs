@@ -1,5 +1,6 @@
 ﻿namespace MakerTracker.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -42,7 +43,7 @@
         public async Task<IActionResult> GetNeeds()
         {
             var profile = await GetLoggedInProfile();
-            return Ok(_context.Needs.ProjectTo<NeedDto>(_mapper.ConfigurationProvider));
+            return Ok(_context.Needs.Where(e => e.ProfileId == profile.Id).Include(e => e.Transactions).ProjectTo<NeedDto>(_mapper.ConfigurationProvider));
         }
 
         /// <summary>
@@ -60,6 +61,64 @@
                 return NotFound();
             }
             return entry == null ? (ActionResult)NotFound() : Ok(entry);
+        }
+
+        /// <summary>
+        ///     Gets the outstanding needs for a specific product
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpGet("products/{productId}")]
+        [EnableQuery]
+        public async Task<ActionResult<IQueryable<NeedLookupDto>>> GetOutstandingNeedsLookup(int productId)
+        {
+            var results = await _context.Needs.Where(e => e.FulfilledDate == null && e.ProductId == productId && e.Quantity > 0)
+                .Select(e => new NeedLookupDto
+                {
+                    NeedId = e.Id,
+                    DueDate = e.DueDate,
+                    OutstandingQuantity = e.Transactions.Any() ? e.Quantity - e.Transactions.Sum(e => e.Amount) : e.Quantity,
+                    ProductId = e.ProductId,
+                    ProfileDisplayName = e.Profile.CompanyName ?? $"{e.Profile.FirstName} {e.Profile.LastName}"
+                }).Where(e => e.OutstandingQuantity > 0)
+                .ToListAsync();
+
+            return Ok(results.AsQueryable());
+        }
+
+        /// <summary>
+        ///     Gets the overall stats for all outstanding needs.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpGet("summary/all")]
+        public async Task<ActionResult<AllNeedsSummaryDto>> GetNeedSummaryAll()
+        {
+            var needsMet = _context.Needs.Where(e => e.FulfilledDate != null).Sum(e => e.Quantity);
+            var outstandingNeeds = await _context.Needs.Where(e => e.FulfilledDate == null)
+                .GroupJoin(_context.Transactions, e => e.Id, e => e.NeedId, (need, transactions) => need.Quantity - transactions.Sum(t => t.Amount))
+                .SumAsync(needBalance => needBalance < 0 ? 0 : needBalance);
+
+            return Ok(new AllNeedsSummaryDto
+            {
+                NeedsMet = needsMet,
+                OutstandingNeeds = outstandingNeeds
+            });
+        }
+
+        [HttpPost("fulfill/{id}")]
+        public async Task<IActionResult> Fulfill(int id)
+        {
+            var entry = await _context.Needs.FindAsync(id);
+            var profile = await GetLoggedInProfile();
+            if (entry == null || entry.ProfileId != profile.Id)
+            {
+                return NotFound();
+            }
+
+            entry.FulfilledDate = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         /// <summary>
