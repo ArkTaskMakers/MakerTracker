@@ -27,6 +27,8 @@ export class NeedDto {
     /** Gets a value indicating whether this instance is overdue. */
     isOverdue: boolean;
 
+    outstandingQuantity: number;
+
     /** Gets or sets any special instructions tied to the Need. */
     specialInstructions: string;
 

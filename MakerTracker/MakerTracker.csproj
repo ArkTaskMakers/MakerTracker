@@ -48,6 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ClientApp\autogen\AllNeedsSummaryDto.ts">
+      <CustomToolNamespace>Models\AllNeedsSummaryDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\EquipmentDto.ts">
       <CustomToolNamespace>Models\Equipment\EquipmentDto.cs</CustomToolNamespace>
     </None>
@@ -65,6 +68,9 @@
     </None>
     <None Update="ClientApp\autogen\NeedDto.ts">
       <CustomToolNamespace>Models\NeedDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\NeedLookupDto.ts">
+      <CustomToolNamespace>Models\NeedLookupDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProductDto.ts">
       <CustomToolNamespace>Models\Products\ProductDto.cs</CustomToolNamespace>

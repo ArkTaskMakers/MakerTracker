@@ -36,7 +36,6 @@ export abstract class FormDialogModel<T = any> {
     Object.assign(this, init);
   }
 
-  abstract factory(): T;
   abstract buildForm(fb: FormBuilder): FormGroup;
   abstract onSubmit(data: T): Observable<T>;
 

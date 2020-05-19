@@ -50,6 +50,8 @@
         /// </summary>
         public bool IsOverdue => DueDate != null && DueDate < DateTime.Today;
 
+        public int OutstandingQuantity { get; set; }
+
         /// <summary>
         ///     Gets or sets any special instructions tied to the Need.
         /// </summary>

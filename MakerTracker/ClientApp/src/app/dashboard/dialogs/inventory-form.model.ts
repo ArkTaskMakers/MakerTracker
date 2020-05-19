@@ -61,9 +61,6 @@ export class InventoryFormModel extends FormDialogModel<InventoryTransactionDto>
     });
   }
 
-  factory() {
-    return new InventoryTransactionDto();
-  }
   onSubmit(data: InventoryTransactionDto): Observable<InventoryTransactionDto> {
     return this.isEditMode ? this.service.editInventory(data) : this.service.saveInventory(data);
   }

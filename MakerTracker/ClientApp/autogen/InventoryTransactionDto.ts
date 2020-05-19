@@ -8,6 +8,8 @@ export class InventoryTransactionDto {
 
     amount: number;
 
+    needId: number;
+
     /** Initializes a new instance of the InventoryTransactionDto class **/
     public constructor(init?: Partial<InventoryTransactionDto>) {
         Object.assign(this, init);
