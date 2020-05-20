@@ -64,7 +64,7 @@ namespace MakerTracker.Controllers
                     p.IsRequestor,
                     p.IsSupplier,
                     p.Location,
-                    //Note this distance calculation is done in sql since it knows the projections, once in memory we loose that.
+                    //Note this distance calculation is done in sql since it knows the projections, once in memory we lose that.
                     DistanceInMeters = p.Location.Distance(profile.Location)
                 })
                 .OrderBy(p => p.Location.Distance(profile.Location))

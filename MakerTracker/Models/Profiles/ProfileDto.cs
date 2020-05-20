@@ -1,5 +1,3 @@
-using NetTopologySuite.Geometries;
-
 namespace MakerTracker.Models.Profiles
 {
     using System;
