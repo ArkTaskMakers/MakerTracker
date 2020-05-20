@@ -1,4 +1,6 @@
-﻿namespace MakerTracker.Controllers
+﻿using NetTopologySuite.Geometries;
+
+namespace MakerTracker.Controllers
 {
     using System;
     using System.Linq;
@@ -50,7 +52,8 @@
             var googleAddress = await this.GeoCodeLocation(updatedProfile);
             updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
             updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
-
+            updatedProfile.Location = new Point(googleAddress?.Coordinates.Longitude ?? 0,
+                googleAddress?.Coordinates.Latitude ?? 0) { SRID = 4326 };
             if (updatedProfile.Id > 0)
             {
                 _context.Entry(updatedProfile).State = EntityState.Modified;

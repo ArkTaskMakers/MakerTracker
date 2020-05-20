@@ -25,13 +25,13 @@ namespace MakerTracker.Controllers
     {
         private readonly IWebHostEnvironment _env;
 
-       
+
         public GISController(IWebHostEnvironment env, MakerTrackerContext context) : base(context)
         {
             _env = env;
         }
 
-        
+
         [HttpGet("csv")]
         public IActionResult DownloadCSVFile()
         {
@@ -58,7 +58,7 @@ namespace MakerTracker.Controllers
                 p.Phone,
                 p.IsRequestor,
                 p.IsSupplier,
-                
+
             }).ToListAsync();
 
             var geomFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
@@ -105,7 +105,7 @@ namespace MakerTracker.Controllers
 
             await using (var csvWriter = new StreamWriter(GetCSVFilePath()))
             await using (var csv = new CsvWriter(csvWriter, CultureInfo.InvariantCulture))
-            {    
+            {
                 csv.WriteRecords(data);
             }
 
@@ -122,9 +122,21 @@ namespace MakerTracker.Controllers
             BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
             BuilderSetup.DisablePropertyNamingFor<Profile, int>(x => x.Id);
             BuilderSetup.DisablePropertyNamingFor<Transaction, int>(x => x.Id);
+            BuilderSetup.DisablePropertyNamingFor<ProductType, int>(x => x.Id);
+
+            int productTypeCount = 3;
+            var productTypes = Builder<ProductType>.CreateListOfSize(productTypeCount)
+                .All()
+                .With(p => p.Name = faker.Commerce.Categories(1)[0])
+                .With(p => p.SortOrder = faker.Random.Number(0, productTypeCount))
+                .Build().ToList();
+
+            _context.ProductTypes.AddRange(productTypes);
+            await _context.SaveChangesAsync();
 
             var products = Builder<Product>.CreateListOfSize(20)
                 .All()
+                    .With(p => p.ProductTypeId = faker.PickRandom(productTypes.Select(x => x.Id)))
                     .With(p => p.Name = faker.Commerce.ProductName())
                     .With(p => p.Description = faker.Commerce.ProductAdjective())
                     .With(p => p.ImageUrl = $"https://i.picsum.photos/id/" + p.Id + "/400/400.jpg")
@@ -149,6 +161,7 @@ namespace MakerTracker.Controllers
                     .With(p => p.Phone = faker.Phone.PhoneNumber())
                     .With(p => p.Latitude = faker.Address.Latitude(33.0075, 36.4997)) // min&max of Arkansas
                     .With(p => p.Longitude = faker.Address.Longitude(-94.6198, -89.6594)) // min&max of Arkansas
+                    .With(p => p.Location = new Point(faker.Address.Longitude(-94.6198, -89.6594), faker.Address.Latitude(33.0075, 36.4997)) { SRID = 4326 }) // min&max of Arkansas
                 .Random(10)
                     .With(p => p.CompanyName == faker.Company.CompanyName())
                 .Random(30)
@@ -171,6 +184,7 @@ namespace MakerTracker.Controllers
                     .With(t => t.From = null)
                     .With(t => t.To = faker.PickRandom(profiles))
                     .With(t => t.TransactionDate = faker.Date.Between(new DateTime(2020, 04, 01), DateTime.Now))
+                    .With(t => t.NeedId = null)
                 .Build();
 
             var transactions2 = Builder<Transaction>.CreateListOfSize(200)
@@ -182,6 +196,7 @@ namespace MakerTracker.Controllers
                     .With(t => t.From = faker.PickRandom(profiles))
                     .With(t => t.To = faker.PickRandom(profiles))
                     .With(t => t.TransactionDate = faker.Date.Between(new DateTime(2020, 04, 01), DateTime.Now))
+                    .With(t => t.NeedId = null)
                 .Build();
 
             _context.Transactions.AddRange(transactions);
