@@ -1,3 +1,5 @@
+using NetTopologySuite.Geometries;
+
 namespace MakerTracker.DBModels
 {
     using System;
@@ -28,6 +30,8 @@ namespace MakerTracker.DBModels
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+
+        public Point Location { get; set; }
 
         public string AdminNotes { get; set; }
 

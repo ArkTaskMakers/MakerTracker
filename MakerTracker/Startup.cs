@@ -36,7 +36,8 @@ namespace MakerTracker
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<MakerTrackerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    x => x.UseNetTopologySuite()));
 
             services.AddControllers().AddNewtonsoftJson(opts =>
             {
