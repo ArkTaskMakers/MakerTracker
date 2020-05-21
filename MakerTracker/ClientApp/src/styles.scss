@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss";
 
 body {
   margin: 0;
@@ -175,4 +177,8 @@ mat-toolbar.mat-toolbar {
     color: white !important;
     background: darkgreen !important;
   }
+}
+
+.ag-theme-material {
+    @include ag-theme-material();
 }

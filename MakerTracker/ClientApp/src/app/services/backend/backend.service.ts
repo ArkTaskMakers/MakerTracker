@@ -4,6 +4,8 @@ import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { ProductDto } from 'autogen/ProductDto';
 import { ProfileDto } from 'autogen/ProfileDto';
+import { RequestorReportDto } from 'autogen/RequestorReportDto';
+import { SupplierReportDto } from 'autogen/SupplierReportDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { Observable } from 'rxjs';
 
@@ -43,5 +45,13 @@ export class BackendService {
 
   saveProfile(request: UpdateProfileDto): Observable<boolean> {
     return this._http.put<boolean>(`${this.baseUrl}api/profiles`, request);
+  }
+
+  getAllRequestors(): Observable<RequestorReportDto[]> {
+    return this._http.get<RequestorReportDto[]>(`${this.baseUrl}api/adminReports/requestors`);
+  }
+
+  getAllSuppliers(): Observable<SupplierReportDto[]> {
+    return this._http.get<SupplierReportDto[]>(`${this.baseUrl}api/adminReports/suppliers`);
   }
 }

@@ -64,6 +64,9 @@
     <None Update="ClientApp\autogen\MakerEquipmentDto.ts">
       <CustomToolNamespace>Models\Equipment\MakerEquipmentDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\MakerReportDto.ts">
+      <CustomToolNamespace>Models\AdminReports\MakerReportDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\MakerStockDto.ts">
       <CustomToolNamespace>Models\Products\MakerStockDto.cs</CustomToolNamespace>
     </None>
@@ -80,10 +83,16 @@
       <CustomToolNamespace>Models\Products\ProductTypeDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProfileDto.ts">
-      <CustomToolNamespace>Models\Profiles\ProfileDto.cs</CustomToolNamespace>
+      <CustomToolNamespace>Models\AdminReports\ProfileDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProfilesNearMeDto.ts">
       <CustomToolNamespace>Models\Profiles\ProfilesNearMeDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\RequestorReportDto.ts">
+      <CustomToolNamespace>Models\AdminReports\RequestorReportDto.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\autogen\SupplierReportDto.ts">
+      <CustomToolNamespace>Models\AdminReports\SupplierReportDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\UpdateProfileDto.ts">
       <CustomToolNamespace>Models\Profiles\UpdateProfileDto.cs</CustomToolNamespace>

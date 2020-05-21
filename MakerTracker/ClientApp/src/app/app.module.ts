@@ -28,7 +28,7 @@ import { AuthService } from './services/auth/auth.service';
     FooterNavComponent,
     DashboardComponent,
     UpdateProfileComponent,
-    InitProfileComponent
+    InitProfileComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
