@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { AgGridModule } from 'ag-grid-angular';
 import { AppComponent } from './app.component';
 import { MakerComponentsModule } from './components/maker-components.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -29,10 +28,9 @@ import { AuthService } from './services/auth/auth.service';
     FooterNavComponent,
     DashboardComponent,
     UpdateProfileComponent,
-    InitProfileComponent
+    InitProfileComponent,
   ],
   imports: [
-    AgGridModule.withComponents([]),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
