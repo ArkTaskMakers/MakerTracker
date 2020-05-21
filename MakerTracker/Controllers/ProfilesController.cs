@@ -49,7 +49,7 @@ namespace MakerTracker.Controllers
         {
             var profile = await GetLoggedInProfile();
 
-            double metersToMiles = 1610;
+            const double metersToMiles = 1610;
             double radiusMeters = metersToMiles * radiusInMiles;
             var profilesWithInRadius = await _context.Profiles
                 .Where(x => x.Location.Distance(profile.Location) <= radiusMeters)
