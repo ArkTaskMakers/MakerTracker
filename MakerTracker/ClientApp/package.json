@@ -24,6 +24,8 @@
     "@angular/platform-server": "9.1.4",
     "@angular/router": "9.1.4",
     "@auth0/auth0-spa-js": "^1.6.5",
+    "ag-grid-angular": "^23.1.1",
+    "ag-grid-community": "^23.1.1",
     "aspnet-prerendering": "^3.0.1",
     "core-js": "^3.3.3",
     "material-design-icons-iconfont": "^5.0.1",
@@ -47,10 +49,10 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
-    "typescript": "3.8.3",
     "tslib": "^1.10.0",
     "tslint": "~5.20.0",
-    "tslint-config-prettier": "^1.18.0"
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "3.8.3"
   },
   "optionalDependencies": {
     "node-sass": "^4.12.0",
