@@ -106,6 +106,7 @@ namespace MakerTracker.Controllers
             }
             else if (!string.IsNullOrWhiteSpace(User.Identity.Name))
             {
+                updatedProfile.CreatedDate = DateTime.UtcNow;
                 updatedProfile.Auth0Id = User.Identity.Name;
                 _context.Profiles.Add(updatedProfile);
             }
