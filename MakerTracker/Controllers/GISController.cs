@@ -114,15 +114,10 @@ namespace MakerTracker.Controllers
 
         private static string DetermineType(bool isRequestor, bool isSupplier)
         {
-            var t = "None";
-            if (isRequestor && isSupplier)
-                t = "Both";
-            else
-            {
-                if (isRequestor) t = "Requestor";
-                if (isSupplier) t = "Supplier";
-            }
-            return t;
+            return isRequestor && isSupplier ? "Both"
+                : isRequestor ? "Requestor"
+                : isSupplier ? "Supplier"
+                : "None";
         }
 
         [Authorize(Roles = "Admin")]
