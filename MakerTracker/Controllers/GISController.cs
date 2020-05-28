@@ -74,8 +74,7 @@ namespace MakerTracker.Controllers
                     {"lastName", d.LastName ?? ""},
                     {"companyName", d.CompanyName ?? ""},
                     {"dropOff", d.IsDropOffPoint.GetValueOrDefault().ToString()},
-                    {"requestor", d.IsRequestor.ToString()},
-                    {"supplier", d.IsSupplier.ToString()},
+                    {"type", DetermineType(d.IsRequestor,d.IsSupplier) },
                     {"phoneNumber", d.Phone ?? ""},
                     {"amount1", faker.Random.Number(100,10000) },
                     {"product1", faker.Commerce.ProductName() }
@@ -111,6 +110,19 @@ namespace MakerTracker.Controllers
 
 
             return Ok($"Files created and zipped to {zipPath}");
+        }
+
+        private static string DetermineType(bool isRequestor, bool isSupplier)
+        {
+            var t = "None";
+            if (isRequestor && isSupplier)
+                t = "Both";
+            else
+            {
+                if (isRequestor) t = "Requestor";
+                if (isSupplier) t = "Supplier";
+            }
+            return t;
         }
 
         [Authorize(Roles = "Admin")]
