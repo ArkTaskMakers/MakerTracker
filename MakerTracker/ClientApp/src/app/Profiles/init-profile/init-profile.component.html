@@ -188,7 +188,7 @@
                   type="button"
                   class="flex-shrink"
                   color="warn"
-                  (click)="supplierFormGroup.controls['equipment'].value.splice(i, 1)"
+                  (click)="supplierFormGroup.controls['equipment'].controls.splice(i, 1)"
                 >
                   <mat-icon>delete_forever</mat-icon>
                 </button>
