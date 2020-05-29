@@ -1,290 +1,288 @@
 <h2 class="flex-shrink">Welcome to Maker Tracker</h2>
-<mat-vertical-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup" #firstForm class="flex-column">
-      <ng-template matStepLabel>Your Role</ng-template>
-      <p>
-        We're happy to have you! Before we get started, we need to know a little bit more about you. Please select the
-        most fitting role(s).
-      </p>
-      <mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
-        <mat-button-toggle
-          class="flex-grow init-button"
-          [checked]="isSupplier"
-          (click)="isSupplier = !isSupplier; refreshNeither()"
-        >
-          <mat-icon *ngIf="!isSupplier">local_shipping</mat-icon>
-          <mat-icon *ngIf="isSupplier" class="active">check</mat-icon>
-          <div class="init-description flex-grow">
-            <div class="mat-headline flex-grow">I am a supplier</div>
-            <p>I supply materials or I'm a part of the maker community.</p>
-          </div>
-        </mat-button-toggle>
-        <mat-button-toggle
-          class="flex-grow init-button"
-          [checked]="isRequestor"
-          (click)="isRequestor = !isRequestor; refreshNeither()"
-        >
-          <mat-icon *ngIf="!isRequestor">local_hospital</mat-icon>
-          <mat-icon *ngIf="isRequestor" class="active">check</mat-icon>
-          <div class="init-description flex-grow">
-            <div class="mat-headline flex-grow">I am a requestor</div>
-            <p>
-              I'm requesting materials or PPE on behalf of the medical community.
-            </p>
-          </div>
-        </mat-button-toggle>
-        <mat-error *ngIf="firstFormGroup.hasError('lackingRole')">
-          Please select one or more roles.
-        </mat-error>
-        <mat-button-toggle
-          class="flex-grow init-button"
-          [checked]="isNeither"
-          (click)="isNeither = !isNeither; refreshOthers()"
-        >
-          <mat-icon *ngIf="!isNeither">account_circle</mat-icon>
-          <mat-icon *ngIf="isNeither" class="active">check</mat-icon>
-          <div class="init-description flex-grow">
-            <div class="mat-headline flex-grow">Neither</div>
-            <p>I'm merely interested in the maker tracker.</p>
-          </div>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-
-      <div class="flex-row-reverse">
-        <button
-          mat-button
-          matStepperNext
-          mat-raised-button
-          class="flex-grow continue"
-          color="primary"
-          [disabled]="!(isSupplier || isRequestor || isNeither)"
-        >
-          Continue <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="locationFormGroup">
-    <form [formGroup]="locationFormGroup" #secondForm class="flex-column">
-      <ng-template matStepLabel>Contact/Location</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Company Name" formControlName="companyName" />
-      </mat-form-field>
-      <div class="flex-row stackable flex-between">
-        <mat-form-field>
-          <input matInput placeholder="First name" formControlName="firstName" required />
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="Last name" formControlName="lastName" required />
-        </mat-form-field>
-      </div>
-      <mat-form-field>
-        <input matInput placeholder="Contact Email Address" formControlName="email" required />
-        <mat-hint
-          >Updating your contact email does <strong>NOT</strong> change your to your login email address.</mat-hint
-        >
-      </mat-form-field>
-      <div class="flex-row stackable flex-between">
-        <mat-form-field>
-          <mat-label>City</mat-label>
-          <input matInput formControlName="city" placeholder="Ex. Little Rock" required />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="State" formControlName="state" required>
-            <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-              {{ state.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="locationFormGroup.controls['state'].hasError('required')">
-            State is <strong>required</strong>
+<mat-dialog-content>
+  <mat-vertical-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup" #firstForm class="flex-column">
+        <ng-template matStepLabel>Your Role</ng-template>
+        <p>
+          We're happy to have you! Before we get started, we need to know a little bit more about you. Please select the
+          most fitting role(s).
+        </p>
+        <mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
+          <mat-button-toggle
+            class="flex-grow init-button"
+            [checked]="isSupplier"
+            (click)="isSupplier = !isSupplier; refreshNeither()"
+          >
+            <mat-icon *ngIf="!isSupplier">local_shipping</mat-icon>
+            <mat-icon *ngIf="isSupplier" class="active">check</mat-icon>
+            <div class="init-description flex-grow">
+              <div class="mat-headline flex-grow">I am a supplier</div>
+              <p>I supply materials or I'm a part of the maker community.</p>
+            </div>
+          </mat-button-toggle>
+          <mat-button-toggle
+            class="flex-grow init-button"
+            [checked]="isRequestor"
+            (click)="isRequestor = !isRequestor; refreshNeither()"
+          >
+            <mat-icon *ngIf="!isRequestor">local_hospital</mat-icon>
+            <mat-icon *ngIf="isRequestor" class="active">check</mat-icon>
+            <div class="init-description flex-grow">
+              <div class="mat-headline flex-grow">I am a requestor</div>
+              <p>
+                I'm requesting materials or PPE on behalf of the medical community.
+              </p>
+            </div>
+          </mat-button-toggle>
+          <mat-error *ngIf="firstFormGroup.hasError('lackingRole')">
+            Please select one or more roles.
           </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
-        </mat-form-field>
-      </div>
-      <mat-slide-toggle formControlName="hasCadSkills">
-        Do you have CAD Skills?
-      </mat-slide-toggle>
-      <mat-slide-toggle class="paragraph-toggle" formControlName="isSelfQuarantined">
-        Are you currently in self-quarantine because you are experiencing symptoms or have a close relative who is
-        experiencing symptoms? For maximum safety, we are asking only healthy makers to make parts right now.
-      </mat-slide-toggle>
-      <div class="flex-row flex-between">
-        <button mat-button matStepperPrevious mat-raised-button color="primary">
-          <mat-icon>arrow_back</mat-icon> Back
-        </button>
-        <button mat-button matStepperNext mat-raised-button color="primary">
-          Next <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="supplierFormGroup" *ngIf="isSupplier">
-    <form [formGroup]="supplierFormGroup" class="flex-column">
-      <ng-template matStepLabel>Supplying</ng-template>
-      <div class="flex-column wizard-section">
-        <h3>
-          What do you have ready to go?
-        </h3>
-        <mat-form-field>
-          <mat-label>Product/Supplies</mat-label>
-          <mat-select
-            (selectionChange)="handleProductChanges($event, supplierFormGroup.get('products'), createInventory(fb))"
-            multiple
+          <mat-button-toggle
+            class="flex-grow init-button"
+            [checked]="isNeither"
+            (click)="isNeither = !isNeither; refreshOthers()"
           >
-            <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
-              <mat-option *ngFor="let product of group.products" [value]="product">
-                {{ product.name }}
+            <mat-icon *ngIf="!isNeither">account_circle</mat-icon>
+            <mat-icon *ngIf="isNeither" class="active">check</mat-icon>
+            <div class="init-description flex-grow">
+              <div class="mat-headline flex-grow">Neither</div>
+              <p>I'm merely interested in the maker tracker.</p>
+            </div>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <div class="flex-row-reverse">
+          <button
+            mat-button
+            matStepperNext
+            mat-raised-button
+            class="flex-grow continue"
+            color="primary"
+            [disabled]="!(isSupplier || isRequestor || isNeither)"
+          >
+            Continue <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="locationFormGroup">
+      <form [formGroup]="locationFormGroup" #secondForm class="flex-column">
+        <ng-template matStepLabel>Contact/Location</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="Company Name" formControlName="companyName" />
+        </mat-form-field>
+        <div class="flex-row stackable flex-between">
+          <mat-form-field>
+            <input matInput placeholder="First name" formControlName="firstName" required />
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Last name" formControlName="lastName" required />
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <input matInput placeholder="Contact Email Address" formControlName="email" required />
+          <mat-hint
+            >Updating your contact email does <strong>NOT</strong> change your to your login email address.</mat-hint
+          >
+        </mat-form-field>
+        <div class="flex-row stackable flex-between">
+          <mat-form-field>
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" placeholder="Ex. Little Rock" required />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select placeholder="State" formControlName="state" required>
+              <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+                {{ state.name }}
               </mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
-        <div formArrayName="products">
-          <ng-container *ngFor="let product of supplierFormGroup.get('products').controls; let i = index">
-            <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
-              <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
-              <mat-form-field>
-                <input
-                  matInput
-                  type="number"
-                  required
-                  placeholder="Quantity"
-                  formControlName="amount"
-                  min="0"
-                  step="1"
-                />
-              </mat-form-field>
-            </div>
-          </ng-container>
+            </mat-select>
+            <mat-error *ngIf="locationFormGroup.controls['state'].hasError('required')">
+              State is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput maxlength="5" placeholder="Zip Code" type="text" formControlName="zipCode" required />
+          </mat-form-field>
         </div>
-      </div>
-      <div class="flex-column wizard-section">
-        <h3>What equipment do you have access to?</h3>
-        <mat-form-field>
-          <mat-label>Equipment</mat-label>
-          <mat-select (selectionChange)="handleEquipmentChanges($event)">
-            <mat-option *ngFor="let item of equipment" [value]="item">
-              {{ item.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div formArrayName="equipment">
-          <ng-container *ngFor="let item of supplierFormGroup.get('equipment').controls; let i = index">
-            <div [formGroupName]="i" class="maker-equipment flex-row stackable flex-between align-center">
-              <span class="equipment-label">{{ item.value.equipmentName }}</span>
-              <mat-form-field>
-                <input matInput placeholder="Manufacturer" formControlName="manufacturer" maxlength="100" />
-                <mat-hint>Optional</mat-hint>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput placeholder="Model #" formControlName="modelNumber" maxlength="100" />
-                <mat-hint>Optional</mat-hint>
-              </mat-form-field>
-              <button
-                mat-icon-button
-                type="button"
-                class="flex-shrink"
-                color="warn"
-                (click)="supplierFormGroup.controls['equipment'].value.splice(i, 1)"
-              >
-                <mat-icon>delete_forever</mat-icon>
-              </button>
-            </div>
-          </ng-container>
+        <mat-slide-toggle formControlName="hasCadSkills">
+          Do you have CAD Skills?
+        </mat-slide-toggle>
+        <mat-slide-toggle class="paragraph-toggle" formControlName="isSelfQuarantined">
+          Are you currently in self-quarantine because you are experiencing symptoms or have a close relative who is
+          experiencing symptoms? For maximum safety, we are asking only healthy makers to make parts right now.
+        </mat-slide-toggle>
+        <div class="flex-row flex-between">
+          <button mat-button matStepperPrevious mat-raised-button color="primary">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-button matStepperNext mat-raised-button color="primary">
+            Next <mat-icon>arrow_forward</mat-icon>
+          </button>
         </div>
-      </div>
-      <div class="flex-row flex-between">
-        <button mat-button matStepperPrevious mat-raised-button color="primary">
-          <mat-icon>arrow_back</mat-icon> Back
-        </button>
-        <button mat-button matStepperNext mat-raised-button color="primary">
-          Next<span *ngIf="!supplierFormGroup.get('products').length && !supplierFormGroup.get('equipment').length">
-            (Skip)</span
-          >
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="requestorFormGroup" *ngIf="isRequestor">
-    <form [formGroup]="requestorFormGroup">
-      <ng-template matStepLabel>Needs</ng-template>
-      <div class="flex-column wizard-section">
-        <h3>
-          Let's get a quick start on any needs you have. These will be attached to your profile. If you're managing
-          multiple drop-off profiles you can skip this for now and you can create the locations from the user menu.
-        </h3>
-        <mat-form-field>
-          <mat-label>Product/Supplies</mat-label>
-          <mat-select
-            (selectionChange)="handleProductChanges($event, requestorFormGroup.get('needs'), createNeed(fb))"
-            multiple
-          >
-            <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
-              <mat-option *ngFor="let product of group.products" [value]="product">
-                {{ product.name }}
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="supplierFormGroup" *ngIf="isSupplier">
+      <form [formGroup]="supplierFormGroup" class="flex-column">
+        <ng-template matStepLabel>Supplying</ng-template>
+        <div class="flex-column wizard-section">
+          <h3>
+            What do you have ready to go?
+          </h3>
+          <mat-form-field>
+            <mat-label>Product/Supplies</mat-label>
+            <mat-select
+              (selectionChange)="handleProductChanges($event, supplierFormGroup.get('products'), createInventory(fb))"
+              multiple
+            >
+              <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
+                <mat-option *ngFor="let product of group.products" [value]="product">
+                  {{ product.name }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+          <div formArrayName="products">
+            <ng-container *ngFor="let product of supplierFormGroup.get('products').controls; let i = index">
+              <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
+                <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
+                <mat-form-field>
+                  <input
+                    matInput
+                    type="number"
+                    required
+                    placeholder="Quantity"
+                    formControlName="amount"
+                    min="0"
+                    step="1"
+                  />
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="flex-column wizard-section">
+          <h3>What equipment do you have access to?</h3>
+          <mat-form-field>
+            <mat-label>Equipment</mat-label>
+            <mat-select (selectionChange)="handleEquipmentChanges($event)">
+              <mat-option *ngFor="let item of equipment" [value]="item">
+                {{ item.name }}
               </mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
-        <div formArrayName="needs">
-          <ng-container *ngFor="let product of requestorFormGroup.get('needs').controls; let i = index">
-            <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
-              <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
-              <mat-form-field>
-                <input
-                  formControlName="quantity"
-                  matInput
-                  type="number"
-                  required
-                  placeholder="Quantity"
-                  min="0"
-                  step="1"
-                />
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Needed by</mat-label>
-                <input matInput [matDatepicker]="picker" [min]="today" formControlName="dueDate" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker [startAt]="today"></mat-datepicker>
-                <mat-hint>optional</mat-hint>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Special Instructions</mat-label>
-                <textarea matInput formControlName="specialInstructions" rows="4"></textarea>
-                <mat-hint>optional</mat-hint>
-              </mat-form-field>
-            </div>
-          </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <div formArrayName="equipment">
+            <ng-container *ngFor="let item of supplierFormGroup.get('equipment').controls; let i = index">
+              <div [formGroupName]="i" class="maker-equipment flex-row stackable flex-between align-center">
+                <span class="equipment-label">{{ item.value.equipmentName }}</span>
+                <mat-form-field>
+                  <input matInput placeholder="Manufacturer" formControlName="manufacturer" maxlength="100" />
+                  <mat-hint>Optional</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="Model #" formControlName="modelNumber" maxlength="100" />
+                  <mat-hint>Optional</mat-hint>
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="flex-shrink"
+                  color="warn"
+                  (click)="supplierFormGroup.controls['equipment'].value.splice(i, 1)"
+                >
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
+              </div>
+            </ng-container>
+          </div>
         </div>
-      </div>
+        <div class="flex-row flex-between">
+          <button mat-button matStepperPrevious mat-raised-button color="primary">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-button matStepperNext mat-raised-button color="primary">
+            Next<span *ngIf="!supplierFormGroup.get('products').length && !supplierFormGroup.get('equipment').length">
+              (Skip)</span
+            >
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="requestorFormGroup" *ngIf="isRequestor">
+      <form [formGroup]="requestorFormGroup">
+        <ng-template matStepLabel>Needs</ng-template>
+        <div class="flex-column wizard-section">
+          <h3>
+            Let's get a quick start on any needs you have. These will be attached to your profile. If you're managing
+            multiple drop-off profiles you can skip this for now and you can create the locations from the user menu.
+          </h3>
+          <mat-form-field>
+            <mat-label>Product/Supplies</mat-label>
+            <mat-select
+              (selectionChange)="handleProductChanges($event, requestorFormGroup.get('needs'), createNeed(fb))"
+              multiple
+            >
+              <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
+                <mat-option *ngFor="let product of group.products" [value]="product">
+                  {{ product.name }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+          <div formArrayName="needs">
+            <ng-container *ngFor="let product of requestorFormGroup.get('needs').controls; let i = index">
+              <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
+                <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
+                <mat-form-field>
+                  <input
+                    formControlName="quantity"
+                    matInput
+                    type="number"
+                    required
+                    placeholder="Quantity"
+                    min="0"
+                    step="1"
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Needed by</mat-label>
+                  <input matInput [matDatepicker]="picker" [min]="today" formControlName="dueDate" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker [startAt]="today"></mat-datepicker>
+                  <mat-hint>optional</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Special Instructions</mat-label>
+                  <textarea matInput formControlName="specialInstructions" rows="4"></textarea>
+                  <mat-hint>optional</mat-hint>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="flex-row flex-between">
+          <button mat-button matStepperPrevious mat-raised-button color="primary">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-button matStepperNext mat-raised-button color="primary">
+            Next<span *ngIf="!requestorFormGroup.get('needs').length"> (Skip)</span> <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done!</ng-template>
+      <p>That's all we need!</p>
+      <p>You can explore more by proceeding to your dashboard.</p>
       <div class="flex-row flex-between">
-        <button mat-button matStepperPrevious mat-raised-button color="primary">
-          <mat-icon>arrow_back</mat-icon> Back
-        </button>
-        <button mat-button matStepperNext mat-raised-button color="primary">
-          Next<span *ngIf="!requestorFormGroup.get('needs').length"> (Skip)</span> <mat-icon>arrow_forward</mat-icon>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button class="continue" color="primary" [disabled]="isBusy" (click)="submit()">
+          Let's go! <mat-icon *ngIf="!isBusy">arrow_forward</mat-icon
+          ><mat-progress-spinner *ngIf="isBusy" [diameter]="20" color="primary" mode="indeterminate">
+          </mat-progress-spinner>
         </button>
       </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done!</ng-template>
-    <p>That's all we need!</p>
-    <p>You can explore more by proceeding to your dashboard.</p>
-    <div class="flex-row flex-between">
-      <button mat-button matStepperPrevious>Back</button>
-      <button
-        mat-raised-button
-        class="continue"
-        color="primary"
-        [disabled]="!(isSupplier || isRequestor || isNeither)"
-        (click)="submit()"
-      >
-        Let's go! <mat-icon>arrow_forward</mat-icon>
-      </button>
-    </div>
-  </mat-step>
-</mat-vertical-stepper>
+    </mat-step>
+  </mat-vertical-stepper>
+</mat-dialog-content>
