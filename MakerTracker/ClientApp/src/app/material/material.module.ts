@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -44,7 +45,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     MatButtonToggleModule,
     MatStepperModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatInputModule,
@@ -65,7 +67,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     MatButtonToggleModule,
     MatStepperModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule {}

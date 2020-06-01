@@ -41,6 +41,7 @@ export class InitProfileComponent implements OnInit {
     this.firstFormGroup.get('isNeither').setValue(value);
   }
 
+  isBusy = false;
   today = new Date();
   firstFormGroup: FormGroup;
   locationFormGroup: FormGroup;
@@ -119,6 +120,7 @@ export class InitProfileComponent implements OnInit {
     return (value: IProductEntry, key: number) =>
       this.fb.group({
         product: value,
+        productId: value.id,
         amount: [null, [Validators.required, Validators.min(1)]]
       });
   }
@@ -202,6 +204,7 @@ export class InitProfileComponent implements OnInit {
   };
 
   submit() {
+    this.isBusy = true;
     zip(
       this.backend.saveProfile(
         new ProfileDto({
@@ -223,10 +226,12 @@ export class InitProfileComponent implements OnInit {
       this.saveData(this.requestorFormGroup.get('needs').value, (data) => this.needSvc.bulkSave(data), this.isRequestor)
     ).subscribe(
       () => {
+        this.isBusy = false;
         this.closeDialog();
         this.router.navigate(['/dashboard']);
       },
       () => {
+        this.isBusy = false;
         this.snackBar.open('Error', undefined, {
           duration: 3000
         });
