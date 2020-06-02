@@ -75,6 +75,7 @@ export class UpdateProfileComponent implements OnInit {
       bio: data.bio,
       phone: data.phone,
       email: data.email,
+      hasCadSkills: data.hasCadSkills,
       isSelfQuarantined: data.isSelfQuarantined,
       isDropOffPoint: data.isDropOffPoint,
       isRequestor: data.isRequestor,
