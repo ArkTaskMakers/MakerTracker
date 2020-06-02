@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
@@ -42,7 +42,7 @@ export class AuthService {
   loggedIn: boolean = null;
   private roleMap = new Map<string, boolean>();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private zone: NgZone) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();

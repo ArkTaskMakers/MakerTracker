@@ -44,6 +44,20 @@ namespace MakerTracker.Controllers
         }
 
         // GET: api/Profiles
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProfileDto>> GetProfileById(int id)
+        {
+            var profile = _mapper.Map<ProfileDto>(await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id));
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return profile;
+        }
+
+        // GET: api/Profiles
         [HttpGet("ProfilesNearMe")]
         public async Task<ActionResult<List<ProfilesNearMeDto>>> GetProfilesNearMe(double radiusInMiles = 10)
         {

@@ -7,11 +7,14 @@ import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 export class ProductTypeModel extends BaseLookupModel<ProductTypeDto> {
   constructor(service: ProductTypeService) {
     super({
+      canAdd: true,
+      canExport: true,
+      canEdit: true,
+      canDelete: true,
       lookupName: 'product-type',
       lookupDisplayName: 'Product Types',
       entryDisplayNameFormatter: (data) => data.name,
       service,
-      nameField: 'name',
       formFields: [
         new BaseLookupFormField({
           field: 'name',
@@ -30,6 +33,10 @@ export class ProductTypeModel extends BaseLookupModel<ProductTypeDto> {
           placeholder: 'Input the sorting order for the type',
           required: true
         })
+      ],
+      columns: [
+        { headerName: 'Name', field: 'name', sortable: true, filter: true },
+        { headerName: 'Sort Order', field: 'sortOrder', sortable: true, filter: true }
       ]
     });
   }

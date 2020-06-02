@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { BackendService } from 'src/app/services/backend/backend.service';
@@ -36,13 +37,14 @@ export class UpdateProfileComponent implements OnInit {
     private fb: FormBuilder,
     private backend: BackendService,
     private _snackBar: MatSnackBar,
-    stateSvc: StatesService
+    stateSvc: StatesService,
+    private route: ActivatedRoute
   ) {
     this.states = stateSvc.states;
   }
 
   ngOnInit(): void {
-    this.backend.getProfile().subscribe((x) => this.patchValues(x));
+    this.backend.getProfile(this.route.snapshot.paramMap.get('id')).subscribe((x) => this.patchValues(x));
   }
 
   onSubmit() {

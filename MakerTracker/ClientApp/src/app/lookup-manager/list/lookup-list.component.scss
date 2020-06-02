@@ -22,6 +22,11 @@
 .mat-card-content {
   flex-grow: 1;
   overflow: auto;
+  display: flex;
+}
+
+ag-grid-angular {
+  border-top: 1px solid #ddd;
 }
 
 .title-with-button {
@@ -32,6 +37,10 @@
 
   .mat-card-header-text {
     margin-bottom: 0;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
   }
 }
 

@@ -1,0 +1,17 @@
+<a
+  *ngIf="params.type === 'link'"
+  mat-mini-fab
+  [routerLink]="params.route(params)"
+  [color]="params.color"
+  [matTooltip]="params.tooltip"
+  ><mat-icon>{{ params.icon }}</mat-icon></a
+>
+<button
+  *ngIf="params.type === 'action'"
+  mat-mini-fab
+  (click)="params.action(params)"
+  [color]="params.color"
+  [matTooltip]="params.tooltip"
+>
+  <mat-icon>{{ params.icon }}</mat-icon>
+</button>

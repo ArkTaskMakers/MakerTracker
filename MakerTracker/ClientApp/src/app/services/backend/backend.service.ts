@@ -39,7 +39,11 @@ export class BackendService {
     return this._http.get<ProductDto>(`${this.baseUrl}api/products/${id}`);
   }
 
-  getProfile(): Observable<ProfileDto> {
+  getProfile(id: string = ''): Observable<ProfileDto> {
+    if (id) {
+      return this._http.get<ProfileDto>(`${this.baseUrl}api/profiles/${id}`);
+    }
+
     return this._http.get<ProfileDto>(`${this.baseUrl}api/profiles`);
   }
 
