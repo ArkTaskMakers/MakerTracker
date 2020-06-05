@@ -42,7 +42,7 @@
                     ProductName = t.Key.Name,
                     ProductImageUrl = t.Key.ImageUrl,
                     Amount = t.Sum(x => x.Amount)
-                }).ToListAsync();
+                }).Where(s => s.Amount > 0).ToListAsync();
 
             return model;
         }
@@ -78,7 +78,7 @@
                 .Where(x => x.Product == product)
                 .Select(t => new
                 {
-                    Amount = t.To == profile ? t.Amount : -1 * t.Amount,
+                    Amount = t.To == profile && t.From != profile ? t.Amount : -1 * t.Amount,
                 })
                 .Sum(x => x.Amount);
 
