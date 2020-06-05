@@ -30,7 +30,7 @@
                     ProductId = t.Product.Id,
                     t.Product.Name,
                     t.Product.ImageUrl,
-                    Amount = t.From == profile ? -t.Amount : t.Amount,
+                    Amount = t.To == profile && t.NeedId == null ? t.Amount : -t.Amount,
                     t.Id
                 });
 
@@ -76,11 +76,8 @@
             var product = _context.Products.Find(model.Product.Id);
             var currentAmount = _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Where(x => x.Product == product)
-                .Select(t => new
-                {
-                    Amount = t.To == profile && t.NeedId == null ? t.Amount : -1 * t.Amount,
-                })
-                .Sum(x => x.Amount);
+                .Select(t => t.To == profile && t.NeedId == null ? t.Amount : -t.Amount)
+                .Sum();
 
             //positive amount means they are increasing the amount
             var difference = model.Amount - currentAmount;
