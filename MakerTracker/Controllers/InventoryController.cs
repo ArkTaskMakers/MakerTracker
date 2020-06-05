@@ -78,7 +78,7 @@
                 .Where(x => x.Product == product)
                 .Select(t => new
                 {
-                    Amount = t.To == profile && t.From != profile ? t.Amount : -1 * t.Amount,
+                    Amount = t.To == profile && t.NeedId == null ? t.Amount : -1 * t.Amount,
                 })
                 .Sum(x => x.Amount);
 
