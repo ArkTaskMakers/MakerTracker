@@ -24,15 +24,6 @@ export class MenuComponent implements OnInit, OnDestroy {
       text: 'Test Onboarding',
       action: () => this.openOnboardingWizard()
     }),
-    new DividerMenuItem({ isHorizontal: true }),
-    new RouteMenuItem({
-      text: `View Suppliers`,
-      route: ['admin', 'suppliers']
-    }),
-    new RouteMenuItem({
-      text: `View Requestors`,
-      route: ['admin', 'requestors']
-    }),
     new DividerMenuItem({ isHorizontal: true })
   ];
   menuItems: BaseMenuItem[] = [

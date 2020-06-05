@@ -1,8 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface ReadOnlyService<T> {
+  /** Lists all entries */
+  list(): Observable<T[]>;
+
+  /** Queries a specific url for entries */
+  query(url: string, params: { [string: string]: string | string[] }): Observable<T[]>;
+
+  /** Gets a specific entry */
+  get(id: number): Observable<T>;
+}
+
 /** A generic CRUD service for interacting with the REST API with less boilerplate */
-export class GenericCrudService<T> {
+export class GenericCrudService<T> implements ReadOnlyService<T> {
   /**
    * Initializes a new instance of the GenericCrudService class.
    * @param _baseUrl The base url to hit for the controller

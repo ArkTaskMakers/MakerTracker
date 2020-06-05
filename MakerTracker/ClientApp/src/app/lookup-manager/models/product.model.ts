@@ -8,16 +8,35 @@ import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 
 @Injectable()
 export class ProductModel extends BaseLookupModel<ProductDto> {
+  productMap: Map<number, ProductTypeDto> = new Map<number, ProductTypeDto>();
+
   constructor(service: ProductService, typeSvc: ProductTypeService) {
     super({
+      canAdd: true,
+      canExport: true,
+      canEdit: true,
+      canDelete: true,
       lookupName: 'products',
       lookupDisplayName: 'Products',
       entryDisplayNameFormatter: (data) => data.name,
-      service,
-      nameField: 'name',
-      descriptionField: 'description',
-      imageField: 'imageUrl'
+      service
     });
+
+    typeSvc.list().subscribe((types) => {
+      this.productMap = new Map(types.map((e) => [e.id, e] as [number, ProductTypeDto]));
+    });
+
+    this.columns = [
+      { headerName: 'Name', field: 'name', sortable: true, filter: true },
+      { headerName: 'Description', field: 'description', sortable: true, filter: true },
+      {
+        headerName: 'Product Type',
+        field: 'productTypeId',
+        sortable: true,
+        filter: true,
+        valueFormatter: (valueParams) => this.productMap.get(valueParams.value).name
+      }
+    ];
 
     this.formFields = [
       new BaseLookupFormField({

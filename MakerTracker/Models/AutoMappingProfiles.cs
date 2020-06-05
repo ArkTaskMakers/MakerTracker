@@ -15,6 +15,7 @@ namespace MakerTracker.Models
             CreateMap<Product, ProductDto>();
             CreateMap<ProductType, ProductTypeDto>();
             CreateMap<DBModels.Profile, ProfileDto>();
+            CreateMap<DBModels.Profile, AdminProfileDto>();
             CreateMap<DBModels.Profile, SupplierReportDto>();
             CreateMap<DBModels.Profile, RequestorReportDto>();
             CreateMap<UpdateProfileDto, DBModels.Profile>();

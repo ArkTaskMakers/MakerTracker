@@ -1,4 +1,5 @@
-import { GenericCrudService } from '../services/backend/crud/genericCrud.service';
+import { ColDef } from 'ag-grid-community';
+import { GenericCrudService, ReadOnlyService } from '../services/backend/crud/genericCrud.service';
 
 export type LookupInputType = 'number' | 'text' | 'email' | 'select' | 'textarea' | 'bool-toggle' | 'image';
 
@@ -6,10 +7,15 @@ export class BaseLookupModel<T = any> {
   lookupName = '';
   lookupDisplayName = '';
   entryDisplayNameFormatter: (data: T) => string;
-  service: GenericCrudService<T>;
-  nameField = 'name';
-  descriptionField: string;
-  imageField: string;
+  service: ReadOnlyService<T> | GenericCrudService<T>;
+  canAdd = false;
+  canExport = false;
+  canEdit = false;
+  canDelete = false;
+  columns: ColDef[];
+
+  editButtonOverride?: ColDef;
+  deleteButtonOverride?: ColDef;
 
   formFields: ILookupFormField[];
   factory: () => T;

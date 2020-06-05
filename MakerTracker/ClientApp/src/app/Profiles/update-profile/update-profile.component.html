@@ -96,6 +96,13 @@
           Do you have CAD Skills?
         </mat-slide-toggle>
       </div>
+      <div *ngIf="isAdminMode">
+        <hr />
+        <mat-form-field>
+          <textarea matInput placeholder="Admin Notes" formControlName="adminNotes" rows="5"></textarea>
+          <mat-hint>Administrative Notes.</mat-hint>
+        </mat-form-field>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit" [disabled]="loading">

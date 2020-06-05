@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { MakerComponentsModule } from './components/maker-components.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterNavComponent } from './footer-nav/footer-nav.component';
+import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { JWTInterceptorInterceptor } from './jwtinterceptor.interceptor';
@@ -28,7 +29,7 @@ import { AuthService } from './services/auth/auth.service';
     FooterNavComponent,
     DashboardComponent,
     UpdateProfileComponent,
-    InitProfileComponent,
+    InitProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -46,6 +47,11 @@ import { AuthService } from './services/auth/auth.service';
         path: 'profile',
         component: UpdateProfileComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'profile/:id',
+        component: UpdateProfileComponent,
+        canActivate: [AuthGuard, AdminGuard]
       }
     ]),
     BrowserAnimationsModule,

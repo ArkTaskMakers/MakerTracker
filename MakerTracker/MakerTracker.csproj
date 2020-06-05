@@ -49,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ClientApp\autogen\AdminProfileDto.ts">
+      <CustomToolNamespace>Models\Profiles\AdminProfileDto.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\AllNeedsSummaryDto.ts">
       <CustomToolNamespace>Models\AllNeedsSummaryDto.cs</CustomToolNamespace>
     </None>
@@ -82,8 +85,11 @@
     <None Update="ClientApp\autogen\ProductTypeDto.ts">
       <CustomToolNamespace>Models\Products\ProductTypeDto.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\autogen\ProfileDto - Copy.ts">
+      <CustomToolNamespace>Models\Profiles\ProfileDto - Copy.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\autogen\ProfileDto.ts">
-      <CustomToolNamespace>Models\AdminReports\ProfileDto.cs</CustomToolNamespace>
+      <CustomToolNamespace>Models\Profiles\ProfileDto.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\autogen\ProfilesNearMeDto.ts">
       <CustomToolNamespace>Models\Profiles\ProfilesNearMeDto.cs</CustomToolNamespace>

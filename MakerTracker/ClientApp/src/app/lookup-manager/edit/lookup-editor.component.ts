@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import { GenericCrudService } from 'src/app/services/backend/crud/genericCrud.service';
 import { BaseLookupModel, ILookupFormField } from '../lookup-model';
 import { ModelProviderService } from '../lookup-model-provider.service';
 
@@ -33,7 +34,8 @@ export class LookupEditorComponent implements OnInit {
    * @param route The activated route
    * @param router The angular router for navigation
    * @param _snackBar The snackbar for UI messaging
-   * @param _equipmentService The service for interacting with the REST API
+   * @param modelProvider The provider for getting lookup models
+   * @param cd The angular change detector
    */
   constructor(
     protected route: ActivatedRoute,
@@ -110,9 +112,8 @@ export class LookupEditorComponent implements OnInit {
 
   /** Saves the changes to the current entry. */
   save() {
-    const request = this.entry.id
-      ? this.model.service.update(this.entry.id, this.entry)
-      : this.model.service.create(this.entry);
+    const service = <GenericCrudService<any>>this.model.service;
+    const request = this.entry.id ? service.update(this.entry.id, this.entry) : service.create(this.entry);
     request.subscribe(
       (entry) => {
         this.entry = entry;
