@@ -12,7 +12,7 @@ export class RequestorListModel extends BaseLookupModel<RequestorReportDto> {
     super({
       canAdd: false,
       canExport: true,
-      canEdit: false,
+      canEdit: true,
       canDelete: false,
       lookupName: 'requestors',
       lookupDisplayName: 'Requestors',
@@ -26,7 +26,7 @@ export class RequestorListModel extends BaseLookupModel<RequestorReportDto> {
       editButtonOverride: <ColDef>{
         cellRendererParams: <ButtonColumnParams>{
           type: 'link',
-          route: (params) => ['profile', params.value],
+          route: (params) => ['/', 'profile', params.value],
           color: 'primary',
           tooltip: 'Edit',
           icon: 'edit'

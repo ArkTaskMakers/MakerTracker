@@ -1,6 +1,6 @@
 <a
   *ngIf="params.type === 'link'"
-  mat-mini-fab
+  mat-icon-button
   [routerLink]="params.route(params)"
   [color]="params.color"
   [matTooltip]="params.tooltip"
@@ -8,7 +8,7 @@
 >
 <button
   *ngIf="params.type === 'action'"
-  mat-mini-fab
+  mat-icon-button
   (click)="params.action(params)"
   [color]="params.color"
   [matTooltip]="params.tooltip"

@@ -3,6 +3,8 @@
 
 export class UpdateProfileDto {
 
+    id: number;
+
     companyName: string;
 
     firstName: string;
@@ -34,6 +36,8 @@ export class UpdateProfileDto {
     isRequestor: boolean;
 
     hasCadSkills: boolean;
+
+    adminNotes: string;
 
     /** Initializes a new instance of the UpdateProfileDto class **/
     public constructor(init?: Partial<UpdateProfileDto>) {

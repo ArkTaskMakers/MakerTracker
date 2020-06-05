@@ -34,7 +34,6 @@ namespace MakerTracker.Controllers
         public async Task<ActionResult<ProfileDto>> GetProfile()
         {
             var profile = _mapper.Map<ProfileDto>(await GetLoggedInProfile());
-
             if (profile == null)
             {
                 return NotFound();
@@ -45,10 +44,10 @@ namespace MakerTracker.Controllers
 
         // GET: api/Profiles
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProfileDto>> GetProfileById(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<AdminProfileDto>> GetProfileById(int id)
         {
-            var profile = _mapper.Map<ProfileDto>(await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id));
-
+            var profile = _mapper.Map<AdminProfileDto>(await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id));
             if (profile == null)
             {
                 return NotFound();
@@ -106,8 +105,33 @@ namespace MakerTracker.Controllers
         public async Task<IActionResult> PutProfile(UpdateProfileDto model)
         {
             var profile = await GetLoggedInProfile();
+            return await UpdateProfile(profile, model, false);
+        }
 
+        // PUT: api/Profiles/5
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> PutProfileById(int id, UpdateProfileDto model)
+        {
+            if(model.Id != id)
+            {
+                return BadRequest("Profile doesn't match.");
+            }
+
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id);
+            return await UpdateProfile(profile, model, true);
+        }
+
+        protected virtual async Task<IActionResult> UpdateProfile(Profile profile, UpdateProfileDto model, bool updateAdminNotes)
+        {
+            var adminNotes = profile.AdminNotes;
             var updatedProfile = _mapper.Map(model, profile);
+            if(!updateAdminNotes)
+            {
+                // restore from original
+                updatedProfile.AdminNotes = adminNotes;
+            }
+
             var googleAddress = await GeoCodeLocation(updatedProfile);
             updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
             updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;

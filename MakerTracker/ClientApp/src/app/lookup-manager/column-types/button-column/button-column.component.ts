@@ -4,8 +4,7 @@ import { ButtonColumnParams } from './button-column-params';
 
 @Component({
   selector: 'app-button-column',
-  templateUrl: './button-column.component.html',
-  styleUrls: ['./button-column.component.css']
+  templateUrl: './button-column.component.html'
 })
 export class ButtonColumnComponent implements ICellRendererAngularComp, OnDestroy {
   public params: ButtonColumnParams;

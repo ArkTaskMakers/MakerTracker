@@ -5,6 +5,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ProfileDto } from 'autogen/ProfileDto';
+import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { Observable, of, zip } from 'rxjs';
 import { flatMap, toArray } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -207,7 +208,7 @@ export class InitProfileComponent implements OnInit {
     this.isBusy = true;
     zip(
       this.backend.saveProfile(
-        new ProfileDto({
+        new UpdateProfileDto({
           isSupplier: this.isSupplier,
           isRequestor: this.isRequestor,
           ...this.locationFormGroup.value

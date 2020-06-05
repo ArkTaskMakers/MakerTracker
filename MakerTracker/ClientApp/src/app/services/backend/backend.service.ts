@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { AdminProfileDto } from 'autogen/AdminProfileDto';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { ProductDto } from 'autogen/ProductDto';
-import { ProfileDto } from 'autogen/ProfileDto';
 import { RequestorReportDto } from 'autogen/RequestorReportDto';
 import { SupplierReportDto } from 'autogen/SupplierReportDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
@@ -39,15 +39,19 @@ export class BackendService {
     return this._http.get<ProductDto>(`${this.baseUrl}api/products/${id}`);
   }
 
-  getProfile(id: string = ''): Observable<ProfileDto> {
+  getProfile(id: string = ''): Observable<AdminProfileDto> {
     if (id) {
-      return this._http.get<ProfileDto>(`${this.baseUrl}api/profiles/${id}`);
+      return this._http.get<AdminProfileDto>(`${this.baseUrl}api/profiles/${id}`);
     }
 
-    return this._http.get<ProfileDto>(`${this.baseUrl}api/profiles`);
+    return this._http.get<AdminProfileDto>(`${this.baseUrl}api/profiles`);
   }
 
-  saveProfile(request: UpdateProfileDto): Observable<boolean> {
+  saveProfile(request: UpdateProfileDto, id: string = ''): Observable<boolean> {
+    if (id) {
+      return this._http.put<boolean>(`${this.baseUrl}api/profiles/${id}`, request);
+    }
+
     return this._http.put<boolean>(`${this.baseUrl}api/profiles`, request);
   }
 

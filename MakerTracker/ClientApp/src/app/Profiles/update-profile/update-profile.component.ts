@@ -6,6 +6,7 @@ import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { IState, StatesService } from 'src/app/services/states.service';
+import { AdminProfileDto } from 'autogen/AdminProfileDto';
 
 @Component({
   selector: 'app-update-profile',
@@ -14,6 +15,7 @@ import { IState, StatesService } from 'src/app/services/states.service';
 })
 export class UpdateProfileComponent implements OnInit {
   profileForm = this.fb.group({
+    id: null,
     companyName: null,
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
@@ -27,11 +29,13 @@ export class UpdateProfileComponent implements OnInit {
     zipCode: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
     isRequestor: false,
     isSupplier: false,
-    hasCadSkills: false
+    hasCadSkills: false,
+    adminNotes: null
   });
 
   states: IState[];
   loading: boolean;
+  isAdminMode = false;
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +49,7 @@ export class UpdateProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.backend.getProfile(this.route.snapshot.paramMap.get('id')).subscribe((x) => this.patchValues(x));
+    this.isAdminMode = !!this.route.snapshot.paramMap.get('id');
   }
 
   onSubmit() {
@@ -56,23 +61,26 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     this.loading = true;
-    this.backend.saveProfile(this.profileForm.value as UpdateProfileDto).subscribe((x) => {
-      this._snackBar.open('Your profile is Updated!', null, {
-        duration: 2000
+    this.backend
+      .saveProfile(this.profileForm.value as UpdateProfileDto, this.route.snapshot.paramMap.get('id'))
+      .subscribe((x) => {
+        this._snackBar.open('Your profile is Updated!', null, {
+          duration: 2000
+        });
+        this.loading = false;
       });
-      this.loading = false;
-    });
   }
 
-  patchValues(data: ProfileDto) {
+  patchValues(data: AdminProfileDto) {
     this.profileForm.patchValue({
+      id: data.id,
       companyName: data.companyName,
       firstName: data.firstName,
       lastName: data.lastName,
       address: data.address,
       address2: data.address2,
       city: data.city,
-      state: data.state,
+      state: data.state || 'AR',
       zipCode: data.zipCode,
       bio: data.bio,
       phone: data.phone,
@@ -80,7 +88,8 @@ export class UpdateProfileComponent implements OnInit {
       isSelfQuarantined: data.isSelfQuarantined,
       isDropOffPoint: data.isDropOffPoint,
       isRequestor: data.isRequestor,
-      isSupplier: data.isSupplier
+      isSupplier: data.isSupplier,
+      adminNotes: data.adminNotes
     });
   }
 }

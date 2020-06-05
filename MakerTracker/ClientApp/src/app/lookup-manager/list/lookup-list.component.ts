@@ -64,7 +64,7 @@ export class LookupListComponent implements OnInit {
           cellRenderer: 'buttonColumn',
           sortable: false,
           filter: false,
-          pinned: 'right',
+          pinned: 'left',
           cellClass: 'compact',
           cellRendererParams: <ButtonColumnParams>{
             type: 'link',
@@ -86,7 +86,7 @@ export class LookupListComponent implements OnInit {
           cellRenderer: 'buttonColumn',
           sortable: false,
           filter: false,
-          pinned: 'right',
+          pinned: 'left',
           cellClass: 'compact',
           cellRendererParams: <ButtonColumnParams>{
             type: 'action',

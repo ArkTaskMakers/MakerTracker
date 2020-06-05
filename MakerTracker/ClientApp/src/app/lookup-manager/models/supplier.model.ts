@@ -12,7 +12,7 @@ export class SupplierListModel extends BaseLookupModel<SupplierReportDto> {
     super({
       canAdd: false,
       canExport: true,
-      canEdit: false,
+      canEdit: true,
       canDelete: false,
       lookupName: 'suppliers',
       lookupDisplayName: 'Suppliers',
@@ -26,7 +26,7 @@ export class SupplierListModel extends BaseLookupModel<SupplierReportDto> {
       editButtonOverride: <ColDef>{
         cellRendererParams: <ButtonColumnParams>{
           type: 'link',
-          route: (params) => ['profile', params.value],
+          route: (params) => ['/', 'profile', params.value],
           color: 'primary',
           tooltip: 'Edit',
           icon: 'edit'
