@@ -12,6 +12,15 @@
 <div class="grid-container">
   <div class="flex-row flex-between stackable">
     <div class="dashboard-card flex-grow d-flex" *ngIf="isSupplier">
+      <mat-card class="flex-column flex-grow iframe-card">
+        <mat-card-content class="dashboard-card-content d-flex">
+          <iframe
+            src="https://nis-llc.maps.arcgis.com/apps/webappviewer/index.html?id=2ff94434aa0e4185a6a14c88ce2b2c12"
+          ></iframe>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="dashboard-card flex-grow d-flex" *ngIf="isSupplier">
       <mat-card class="flex-column flex-grow">
         <mat-card-header>
           <mat-card-title>
