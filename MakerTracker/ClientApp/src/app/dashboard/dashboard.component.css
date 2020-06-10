@@ -7,6 +7,17 @@
   flex-direction: column;
 }
 
+.iframe-card {
+  padding: 0 !important;
+  min-height: 460px;
+}
+
+iframe {
+  border: 0;
+  border-radius: 4px;
+  flex: 1 1;
+}
+
 .mat-card-header {
   flex-shrink: 0;
 }
