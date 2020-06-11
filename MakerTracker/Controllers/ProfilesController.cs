@@ -105,6 +105,14 @@ namespace MakerTracker.Controllers
         public async Task<IActionResult> PutProfile(UpdateProfileDto model)
         {
             var profile = await GetLoggedInProfile();
+            if (model.Id == 0)
+            {
+                model.Id = profile.Id;
+            }
+            else if (model.Id != profile.Id)
+            {
+                throw new UnauthorizedAccessException();
+            }
             return await UpdateProfile(profile, model, false);
         }
 
@@ -113,7 +121,7 @@ namespace MakerTracker.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutProfileById(int id, UpdateProfileDto model)
         {
-            if(model.Id != id)
+            if (model.Id != id)
             {
                 return BadRequest("Profile doesn't match.");
             }
@@ -126,7 +134,7 @@ namespace MakerTracker.Controllers
         {
             var adminNotes = profile.AdminNotes;
             var updatedProfile = _mapper.Map(model, profile);
-            if(!updateAdminNotes)
+            if (!updateAdminNotes)
             {
                 // restore from original
                 updatedProfile.AdminNotes = adminNotes;

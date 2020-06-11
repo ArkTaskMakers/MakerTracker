@@ -12,15 +12,6 @@
 <div class="grid-container">
   <div class="flex-row flex-between stackable">
     <div class="dashboard-card flex-grow d-flex" *ngIf="isSupplier">
-      <mat-card class="flex-column flex-grow iframe-card">
-        <mat-card-content class="dashboard-card-content d-flex">
-          <iframe
-            src="https://nis-llc.maps.arcgis.com/apps/opsdashboard/index.html#/8f2aef41e7e84616b5a167391a04c12e"
-          ></iframe>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="dashboard-card flex-grow d-flex" *ngIf="isSupplier">
       <mat-card class="flex-column flex-grow">
         <mat-card-header>
           <mat-card-title>
@@ -103,6 +94,19 @@
             <mat-icon>add</mat-icon> New Request
           </button>
         </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div class="grid-container">
+  <div class="flex-row flex-between stackable">
+    <div class="dashboard-card flex-grow d-flex">
+      <mat-card class="flex-column flex-grow iframe-card">
+        <mat-card-content class="dashboard-card-content d-flex">
+          <iframe
+            src="https://nis-llc.maps.arcgis.com/apps/opsdashboard/index.html#/8f2aef41e7e84616b5a167391a04c12e"
+          ></iframe>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
