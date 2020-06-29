@@ -4,6 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AdminProfileDto } from 'autogen/AdminProfileDto';
+import { NeedDto } from 'autogen/NeedDto';
 import { ProfileDto } from 'autogen/ProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { Observable, of, zip } from 'rxjs';
@@ -48,7 +50,8 @@ export class InitProfileComponent implements OnInit {
   locationFormGroup: FormGroup;
   supplierFormGroup: FormGroup;
   requestorFormGroup: FormGroup;
-  productMap: Map<number, string>;
+  productMap: Map<number, IProductEntry>;
+  selectedProducts: IProductEntry[] = [];
 
   states: IState[];
   products: IProductTypeGroup[] = [];
@@ -66,7 +69,8 @@ export class InitProfileComponent implements OnInit {
     stateSvc: StatesService,
     authSvc: AuthService,
     private makerEquipmentSvc: MakerEquipmentService,
-    private needSvc: NeedService
+    private needSvc: NeedService,
+    private eqpSvc: MakerEquipmentService
   ) {
     this.firstFormGroup = this.fb.group(
       {
@@ -76,6 +80,7 @@ export class InitProfileComponent implements OnInit {
       },
       { validators: this.verifyRoles }
     );
+    this.backend.getProfile().subscribe((x) => this.patchProfile(x));
     this.locationFormGroup = this.fb.group({
       companyName: null,
       firstName: [null, Validators.required],
@@ -107,36 +112,81 @@ export class InitProfileComponent implements OnInit {
           toArray()
         )
         .subscribe((p) => {
-          this.productMap = new Map(p.map((e) => [e.id, e.name] as [number, string]));
+          this.productMap = new Map(p.map((e) => [e.id, e] as [number, IProductEntry]));
+          this.patchInventory();
+          this.patchNeeds();
         });
     });
     equipmentSvc.lookup().subscribe((equipment) => {
       this.equipment = equipment;
+      this.patchEquipment();
     });
   }
 
   ngOnInit() {}
 
-  createInventory(fb: FormBuilder): (value: IProductEntry, key: number) => FormGroup {
-    return (value: IProductEntry, key: number) =>
+  patchInventory() {
+    this.backend.getInventorySummary().subscribe((inv) => {
+      const products: FormArray = <FormArray>this.supplierFormGroup.get('products');
+      const factory = this.createInventory(this.fb);
+      inv
+        .filter((entry) => entry.amount > 0)
+        .forEach((entry) => {
+          const selected = this.productMap.get(entry.productId);
+          products.push(factory(selected, entry.productId, entry.amount));
+          this.selectedProducts.push(selected);
+        });
+    });
+  }
+
+  idComparer(o1, o2) {
+    return (o1 && o1.id) === (o2 && o2.id);
+  }
+
+  patchEquipment() {
+    this.eqpSvc.list().subscribe((eqp) => {
+      const equipment: FormArray = <FormArray>this.supplierFormGroup.get('equipment');
+      eqp.forEach((entry) => {
+        equipment.push(
+          this.fb.group({
+            equipmentId: entry.equipmentId,
+            equipmentName: entry.equipmentName,
+            manufacturer: entry.manufacturer,
+            modelNumber: entry.modelNumber
+          })
+        );
+      });
+    });
+  }
+
+  patchNeeds() {
+    this.needSvc.list().subscribe((needs) => {
+      const products: FormArray = <FormArray>this.requestorFormGroup.get('needs');
+      needs.forEach((entry) => {
+        products.push(this.createNeed(this.fb, this.productMap.get(entry.productId), entry));
+      });
+    });
+  }
+
+  createInventory(fb: FormBuilder): (value: IProductEntry, key: number, amount?: number) => FormGroup {
+    return (value: IProductEntry, key: number, amount: number = null) =>
       this.fb.group({
         product: value,
         productId: value.id,
-        amount: [null, [Validators.required, Validators.min(1)]]
+        amount: [amount, [Validators.required, Validators.min(1)]]
       });
   }
 
-  createNeed(fb: FormBuilder): (value: IProductEntry, key: number) => FormGroup {
-    return (value: IProductEntry, key: number) =>
-      this.fb.group({
-        id: 0,
-        profileId: 0,
-        createdDate: new Date(),
-        productId: value.id,
-        quantity: [null, [Validators.required, Validators.min(1)]],
-        dueDate: [null],
-        specialInstructions: null
-      });
+  createNeed(fb: FormBuilder, value: IProductEntry, need?: Partial<NeedDto>): FormGroup {
+    return this.fb.group({
+      id: (need && need.id) || 0,
+      profileId: (need && need.profileId) || 0,
+      createdDate: (need && need.createdDate) || new Date(),
+      productId: value.id,
+      quantity: [need && need.quantity, [Validators.required, Validators.min(1)]],
+      dueDate: [(need && need.dueDate) || null],
+      specialInstructions: (need && need.specialInstructions) || null
+    });
   }
 
   handleProductChanges(
@@ -159,6 +209,12 @@ export class InitProfileComponent implements OnInit {
       }
     });
     currentValues.updateValueAndValidity();
+  }
+
+  handleNeedChanges(event: MatSelectChange) {
+    (this.requestorFormGroup.get('needs') as FormArray).push(this.createNeed(this.fb, event.value));
+    event.source.writeValue(null);
+    this.requestorFormGroup.get('needs').updateValueAndValidity();
   }
 
   handleEquipmentChanges(event: MatSelectChange) {
@@ -229,7 +285,7 @@ export class InitProfileComponent implements OnInit {
       () => {
         this.isBusy = false;
         this.closeDialog();
-        this.router.navigate(['/dashboard']);
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate(['/dashboard']));
       },
       () => {
         this.isBusy = false;
@@ -242,5 +298,34 @@ export class InitProfileComponent implements OnInit {
 
   saveData(data: any[], saveDelegate: (input: any[]) => Observable<any>, condition: boolean = true) {
     return condition && data && data.length ? saveDelegate(data) : of(null);
+  }
+
+  getProductName(id: number) {
+    const product = this.productMap.get(id);
+    return product && product.name;
+  }
+
+  patchProfile(data: AdminProfileDto) {
+    this.locationFormGroup.patchValue({
+      id: data.id,
+      companyName: data.companyName,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
+      address2: data.address2,
+      city: data.city,
+      state: data.state || 'AR',
+      zipCode: data.zipCode,
+      bio: data.bio,
+      phone: data.phone,
+      email: data.email,
+      hasCadSkills: data.hasCadSkills,
+      isSelfQuarantined: data.isSelfQuarantined,
+      isDropOffPoint: data.isDropOffPoint,
+      isRequestor: data.isRequestor,
+      isSupplier: data.isSupplier
+    });
+    this.isSupplier = data.isSupplier;
+    this.isRequestor = data.isRequestor;
   }
 }

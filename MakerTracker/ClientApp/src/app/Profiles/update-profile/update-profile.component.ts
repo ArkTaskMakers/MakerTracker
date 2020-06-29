@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { ProfileDto } from 'autogen/ProfileDto';
+import { AdminProfileDto } from 'autogen/AdminProfileDto';
 import { UpdateProfileDto } from 'autogen/UpdateProfileDto';
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { IState, StatesService } from 'src/app/services/states.service';
-import { AdminProfileDto } from 'autogen/AdminProfileDto';
 
 @Component({
   selector: 'app-update-profile',

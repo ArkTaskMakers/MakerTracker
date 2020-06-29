@@ -199,10 +199,13 @@
                 return Forbid("User does not have access to create needs for this account");
             }
 
+            var ids = entries.Select(e => e.Id).Where(e => e > 0).ToList();
+            var toDelete = _context.Needs.Where(e => e.ProfileId == profile.Id && !ids.Contains(e.Id) && e.FulfilledDate == null);
+            _context.Needs.RemoveRange(toDelete);
+
             var dbEntries = entries.Select(e => SetUpNeed(e, profile)).ToList();
             await _context.SaveChangesAsync();
-            var ids = dbEntries.Select(e => e.Id).ToList();
-            var results = _mapper.ProjectTo<NeedDto>(_context.Needs.Where(e => ids.Contains(e.Id)));
+            var results = _mapper.ProjectTo<NeedDto>(_context.Needs.Where(e => e.ProfileId == profile.Id));
             return Created("api/Need/bulk", results);
         }
 
@@ -221,7 +224,7 @@
             }
 
             var profile = await GetLoggedInProfile();
-            if(profile.Id != entry.ProfileId)
+            if (profile.Id != entry.ProfileId)
             {
                 return NotFound();
             }
@@ -256,8 +259,16 @@
             {
                 dbEntry.Profile = profile;
             }
-            dbEntry.CreatedDate = System.DateTime.Now;
-            _context.Needs.Add(dbEntry);
+
+            if (dbEntry.Id > 0)
+            {
+                _context.Entry(dbEntry).State = EntityState.Modified;
+            }
+            else
+            {
+                dbEntry.CreatedDate = System.DateTime.Now;
+                _context.Needs.Add(dbEntry);
+            }
             return dbEntry;
         }
     }

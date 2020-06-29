@@ -73,11 +73,18 @@
             }
 
             var profile = await GetLoggedInProfile();
-            var product = _context.Products.Find(model.Product.Id);
-            var currentAmount = _context.Transactions.Where(x => x.To == profile || x.From == profile)
+            await SetProductInventoryValue(model, profile);
+
+            return Ok(true);
+        }
+
+        protected async Task SetProductInventoryValue(InventoryTransactionDto model, Profile profile, bool autoCommit = true)
+        {
+            var product = await _context.Products.FindAsync(model.Product.Id);
+            var currentAmount = await _context.Transactions.Where(x => x.To == profile || x.From == profile)
                 .Where(x => x.Product == product)
                 .Select(t => t.To == profile && t.NeedId == null ? t.Amount : -t.Amount)
-                .Sum();
+                .SumAsync();
 
             //positive amount means they are increasing the amount
             var difference = model.Amount - currentAmount;
@@ -97,10 +104,11 @@
                 };
 
                 _context.Transactions.Add(transaction);
-                await _context.SaveChangesAsync();
+                if (autoCommit)
+                {
+                    await _context.SaveChangesAsync();
+                }
             }
-
-            return Ok(true);
         }
 
         // POST: api/Inventory
@@ -126,10 +134,9 @@
             var profile = await GetLoggedInProfile();
             foreach (var entry in entries)
             {
-                await CreateTransaction(entry, profile);
+                await SetProductInventoryValue(entry, profile, false);
             }
             await _context.SaveChangesAsync();
-
             return Ok(true);
         }
 

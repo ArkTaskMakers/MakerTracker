@@ -39,7 +39,7 @@
         public async Task<IActionResult> GetMakerEquipments()
         {
             var profile = await GetLoggedInProfile();
-            return Ok(_context.MakerEquipment.ProjectTo<MakerEquipmentDto>(_mapper.ConfigurationProvider));
+            return Ok(_context.MakerEquipment.Where(e => e.ProfileId == profile.Id).ProjectTo<MakerEquipmentDto>(_mapper.ConfigurationProvider));
         }
 
         /// <summary>
@@ -125,17 +125,28 @@
         {
             var profile = await GetLoggedInProfile();
             var dbEntries = entries.Select(e => SetUpMakerEquipment(e, profile)).ToList();
+
+            var ids = entries.Select(e => e.Id).Where(e => e > 0).ToList();
+            var toDelete = _context.MakerEquipment.Where(e => e.ProfileId == profile.Id && !ids.Contains(e.Id));
+            _context.MakerEquipment.RemoveRange(toDelete);
+
             await _context.SaveChangesAsync();
-            var ids = dbEntries.Select(e => e.Id).ToList();
-            var results = _mapper.ProjectTo<MakerEquipmentDto>(_context.MakerEquipment.Where(e => ids.Contains(e.Id)));
-            return Created("api/MakerEquipment/bulk", results);
+            var results = _mapper.ProjectTo<MakerEquipmentDto>(_context.MakerEquipment.Where(e => e.ProfileId == profile.Id));
+            return Ok(results);
         }
 
         private MakerEquipment SetUpMakerEquipment(MakerEquipmentDto entry, DBModels.Profile profile)
         {
-            var dbEntry = _mapper.Map<MakerEquipment>(entry);
+            MakerEquipment dbEntry = _mapper.Map<MakerEquipment>(entry);
             dbEntry.Profile = profile;
-            _context.MakerEquipment.Add(dbEntry);
+            if (dbEntry.Id > 0)
+            {
+                _context.Entry(dbEntry).State = EntityState.Modified;
+            }
+            else
+            {
+                _context.MakerEquipment.Add(dbEntry);
+            }
             return dbEntry;
         }
 
@@ -154,7 +165,7 @@
             }
 
             var profile = await GetLoggedInProfile();
-            if(profile.Id != entry.ProfileId)
+            if (profile.Id != entry.ProfileId)
             {
                 return NotFound();
             }

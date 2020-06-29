@@ -61,7 +61,7 @@
             color="primary"
             [disabled]="!(isSupplier || isRequestor || isNeither)"
           >
-            Continue <mat-icon>arrow_forward</mat-icon>
+            Continue
           </button>
         </div>
       </form>
@@ -114,10 +114,10 @@
         </mat-slide-toggle>
         <div class="flex-row flex-between">
           <button mat-button matStepperPrevious mat-raised-button color="primary">
-            <mat-icon>arrow_back</mat-icon> Back
+            Back
           </button>
           <button mat-button matStepperNext mat-raised-button color="primary">
-            Next <mat-icon>arrow_forward</mat-icon>
+            Next
           </button>
         </div>
       </form>
@@ -132,6 +132,8 @@
           <mat-form-field>
             <mat-label>Product/Supplies</mat-label>
             <mat-select
+              [compareWith]="idComparer"
+              [value]="selectedProducts"
               (selectionChange)="handleProductChanges($event, supplierFormGroup.get('products'), createInventory(fb))"
               multiple
             >
@@ -145,7 +147,7 @@
           <div formArrayName="products">
             <ng-container *ngFor="let product of supplierFormGroup.get('products').controls; let i = index">
               <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
-                <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
+                <span class="product-label">{{ getProductName(product.value.productId) }}</span>
                 <mat-form-field>
                   <input
                     matInput
@@ -188,7 +190,7 @@
                   type="button"
                   class="flex-shrink"
                   color="warn"
-                  (click)="supplierFormGroup.controls['equipment'].controls.splice(i, 1)"
+                  (click)="supplierFormGroup.get('equipment').removeAt(i)"
                 >
                   <mat-icon>delete_forever</mat-icon>
                 </button>
@@ -198,13 +200,12 @@
         </div>
         <div class="flex-row flex-between">
           <button mat-button matStepperPrevious mat-raised-button color="primary">
-            <mat-icon>arrow_back</mat-icon> Back
+            Back
           </button>
           <button mat-button matStepperNext mat-raised-button color="primary">
             Next<span *ngIf="!supplierFormGroup.get('products').length && !supplierFormGroup.get('equipment').length">
               (Skip)</span
             >
-            <mat-icon>arrow_forward</mat-icon>
           </button>
         </div>
       </form>
@@ -219,10 +220,7 @@
           </h3>
           <mat-form-field>
             <mat-label>Product/Supplies</mat-label>
-            <mat-select
-              (selectionChange)="handleProductChanges($event, requestorFormGroup.get('needs'), createNeed(fb))"
-              multiple
-            >
+            <mat-select (selectionChange)="handleNeedChanges($event)">
               <mat-optgroup *ngFor="let group of products" [label]="group.name" [hidden]="!group.products.length">
                 <mat-option *ngFor="let product of group.products" [value]="product">
                   {{ product.name }}
@@ -233,7 +231,7 @@
           <div formArrayName="needs">
             <ng-container *ngFor="let product of requestorFormGroup.get('needs').controls; let i = index">
               <div [formGroupName]="i" class="maker-stock flex-row stackable flex-between align-center">
-                <span class="product-label">{{ productMap.get(product.value.productId) }}</span>
+                <span class="product-label">{{ getProductName(product.value.productId) }}</span>
                 <mat-form-field>
                   <input
                     formControlName="quantity"
@@ -257,16 +255,25 @@
                   <textarea matInput formControlName="specialInstructions" rows="4"></textarea>
                   <mat-hint>optional</mat-hint>
                 </mat-form-field>
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="flex-shrink"
+                  color="warn"
+                  (click)="requestorFormGroup.get('needs').removeAt(i)"
+                >
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
               </div>
             </ng-container>
           </div>
         </div>
         <div class="flex-row flex-between">
           <button mat-button matStepperPrevious mat-raised-button color="primary">
-            <mat-icon>arrow_back</mat-icon> Back
+            Back
           </button>
           <button mat-button matStepperNext mat-raised-button color="primary">
-            Next<span *ngIf="!requestorFormGroup.get('needs').length"> (Skip)</span> <mat-icon>arrow_forward</mat-icon>
+            Next<span *ngIf="!requestorFormGroup.get('needs').length"> (Skip)</span>
           </button>
         </div>
       </form>
@@ -278,8 +285,7 @@
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious>Back</button>
         <button mat-raised-button class="continue" color="primary" [disabled]="isBusy" (click)="submit()">
-          Let's go! <mat-icon *ngIf="!isBusy">arrow_forward</mat-icon
-          ><mat-progress-spinner *ngIf="isBusy" [diameter]="20" color="primary" mode="indeterminate">
+          Let's go!<mat-progress-spinner *ngIf="isBusy" [diameter]="20" color="primary" mode="indeterminate">
           </mat-progress-spinner>
         </button>
       </div>
