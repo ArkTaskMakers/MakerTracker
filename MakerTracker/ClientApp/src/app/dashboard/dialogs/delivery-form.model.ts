@@ -3,7 +3,7 @@ import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { NeedLookupDto } from 'autogen/NeedLookupDto';
 import { ProductDto } from 'autogen/ProductDto';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   FormDialogField,
   FormDialogModel,

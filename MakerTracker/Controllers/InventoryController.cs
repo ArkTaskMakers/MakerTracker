@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json;
 
     [Authorize()]
     [Route("api/[controller]")]
@@ -86,16 +87,23 @@
                 .Select(t => t.To == profile && t.NeedId == null ? t.Amount : -t.Amount)
                 .SumAsync();
 
+            var target = model.NeedId == null ? profile : await _context.Needs.Where(e => e.Id == model.NeedId).Select(e => e.Profile).SingleAsync();
+
             //positive amount means they are increasing the amount
             var difference = model.Amount - currentAmount;
+
+            if(difference + currentAmount < 0)
+            {
+                throw new InvalidOperationException($"Unable to transact to negative: {JsonConvert.SerializeObject(model)}");
+            }
 
             if (difference != 0)
             {
                 var transaction = new Transaction()
                 {
                     Amount = difference,
-                    From = null,
-                    To = profile,
+                    From = model.NeedId == null ? null : profile,
+                    To = target,
                     TransactionDate = DateTime.Now,
                     TransactionType = TransactionType.Stock,
                     Status = TransactionStatus.Confirmed,
@@ -145,6 +153,17 @@
             var product = await _context.Products.FindAsync(entry.Product.Id);
             var to = entry.NeedId != null ? (await _context.Needs.FindAsync(entry.NeedId)).Profile : profile;
             var from = entry.NeedId != null ? profile : null;
+
+            var currentAmount = await _context.Transactions.Where(x => x.To == profile || x.From == profile)
+                .Where(x => x.Product == product)
+                .Select(t => t.To == profile && t.NeedId == null ? t.Amount : -t.Amount)
+                .SumAsync();
+
+            if(from != null && currentAmount < entry.Amount)
+            {
+                throw new InvalidOperationException($"Unable to transact to negative: {JsonConvert.SerializeObject(entry)}");
+            }
+
             var transaction = new Transaction()
             {
                 Amount = entry.Amount,
