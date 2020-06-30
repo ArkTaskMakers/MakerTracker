@@ -26,7 +26,7 @@ export class InventoryFormModel extends FormDialogModel<InventoryTransactionDto>
         fieldGroups: this.productSvc
           .getProductHierarchy()
           .pipe(map((data) => data && data.filter((g) => g && g.products && g.products.some((p) => !p.isDeprecated)))),
-        getOptionValue: (product: IProductEntry) => product.id,
+        getOptionValue: (product: IProductEntry) => product,
         getOptionDisplay: (product: IProductEntry) => product.name,
         getOptionGroupOptions: (group: IProductTypeGroup) => group.products.filter((p) => !p.isDeprecated),
         getOptionGroupDisplay: (group: IProductTypeGroup) => group.name

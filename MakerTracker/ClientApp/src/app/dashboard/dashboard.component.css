@@ -23,6 +23,10 @@ iframe {
   flex-shrink: 0;
 }
 
+mat-card-actions {
+  padding: 0 16px;
+}
+
 .dashboard-card {
   margin-bottom: 20px;
 }

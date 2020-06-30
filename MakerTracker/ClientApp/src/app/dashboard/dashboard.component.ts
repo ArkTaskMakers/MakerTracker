@@ -92,6 +92,7 @@ export class DashboardComponent implements OnInit {
     this.openDialog(
       FormDialogComponent,
       new FormDialogConfig({
+        title: data ? 'Edit Inventory' : 'Add Inventory',
         model: new InventoryFormModel(
           data
             ? new InventoryTransactionDto({
@@ -115,6 +116,7 @@ export class DashboardComponent implements OnInit {
     this.openDialog(
       FormDialogComponent,
       new FormDialogConfig({
+        title: data ? 'Edit Existing Need' : 'Create Need Request',
         model: new NeedFormModel(data, this.needSvc, this.products, this.productMap)
       }),
       () => this.refreshNeeds()
@@ -129,6 +131,7 @@ export class DashboardComponent implements OnInit {
     this.openDialog(
       FormDialogComponent,
       new FormDialogConfig({
+        title: 'Deliver Product',
         model: new DeliveryFormModel(data, this.backend, this.productMap, this.needSvc)
       }),
       () => this.refreshDashboard()
