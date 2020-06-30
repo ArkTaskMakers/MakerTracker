@@ -138,6 +138,9 @@ namespace MakerTracker.Controllers
             {
                 // restore from original
                 updatedProfile.AdminNotes = adminNotes;
+
+                // updating self - set as onboarded
+                updatedProfile.HasOnboarded = true;
             }
 
             var googleAddress = await GeoCodeLocation(updatedProfile);

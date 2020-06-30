@@ -39,6 +39,9 @@ export class UpdateProfileDto {
 
     adminNotes: string;
 
+    /** Gets or sets a value indicating whether this user has gone through the new onboarding process. */
+    hasOnboarded: boolean;
+
     /** Initializes a new instance of the UpdateProfileDto class **/
     public constructor(init?: Partial<UpdateProfileDto>) {
         Object.assign(this, init);

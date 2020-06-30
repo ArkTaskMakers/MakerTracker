@@ -117,9 +117,12 @@ export class MenuComponent implements OnInit, OnDestroy {
       }),
       this.auth.userProfile$.subscribe((user) => {
         if (user) {
+          this.email = user.email;
           this.backend.getProfile().subscribe(
-            () => {
-              this.email = user.email;
+            (profile) => {
+              if (!profile.hasOnboarded) {
+                this.openOnboardingWizard();
+              }
             },
             (error) => {
               if (error.status === 404) {

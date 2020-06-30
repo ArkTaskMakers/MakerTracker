@@ -41,6 +41,9 @@ export class ProfileDto {
 
     displayName: string;
 
+    /** Gets or sets a value indicating whether this user has gone through the new onboarding process. */
+    hasOnboarded: boolean;
+
     /** Initializes a new instance of the ProfileDto class **/
     public constructor(init?: Partial<ProfileDto>) {
         Object.assign(this, init);

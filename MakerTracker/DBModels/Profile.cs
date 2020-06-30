@@ -45,6 +45,11 @@ namespace MakerTracker.DBModels
 
         public bool IsVerified { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this user has gone through the new onboarding process.
+        /// </summary>
+        public bool HasOnboarded { get; set; }
+
         public static void ConfigureEntity(ModelBuilder builder)
         {
             builder.Entity<Profile>(entity =>

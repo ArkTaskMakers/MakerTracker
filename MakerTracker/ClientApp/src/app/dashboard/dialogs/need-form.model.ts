@@ -12,7 +12,6 @@ import {
   IFormDialogField
 } from 'src/app/components/form-dialog/form-dialog-config.model';
 import { NeedService } from 'src/app/services/backend/crud/need.service';
-import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
 import { IProductEntry, IProductTypeGroup } from 'src/app/ui-models/productTypeGroup';
 
 export class NeedFormModel extends FormDialogModel<NeedDto> {
@@ -22,20 +21,20 @@ export class NeedFormModel extends FormDialogModel<NeedDto> {
       field: 'productId',
       fieldType: 'select',
       isHidden: () => this.isEditMode,
-      label: 'Product',
+      placeholder: 'Product',
       required: true,
       options: new FormDialogSelectInputOptions({
-        fieldGroups: of(this.products),
-        getOptionValue: (product) => product.id,
-        getOptionDisplay: (product) => product.name,
-        getOptionGroupOptions: (group) => group.products,
-        getOptionGroupDisplay: (group) => group.name
+        fieldGroups: of(this.products.filter((g) => g && g.products && g.products.some((p) => !p.isDeprecated))),
+        getOptionValue: (product: IProductEntry) => product.id,
+        getOptionDisplay: (product: IProductEntry) => product.name,
+        getOptionGroupOptions: (group: IProductTypeGroup) => group.products.filter((p) => !p.isDeprecated),
+        getOptionGroupDisplay: (group: IProductTypeGroup) => group.name
       })
     }),
     new FormDialogField({
       field: 'productId',
       fieldType: 'description',
-      label: () => "What's the new amount for " + this.getProductLabel() + '?',
+      label: () => `What's the new amount for ${this.getProductLabel()}?`,
       isHidden: () => !this.isEditMode
     }),
     new FormDialogField({

@@ -1,6 +1,7 @@
 import { FormBuilder, Validators } from '@angular/forms';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   FormDialogField,
   FormDialogModel,
@@ -10,6 +11,7 @@ import {
 } from 'src/app/components/form-dialog/form-dialog-config.model';
 import { BackendService } from 'src/app/services/backend/backend.service';
 import { ProductTypeService } from 'src/app/services/backend/crud/productType.service';
+import { IProductEntry, IProductTypeGroup } from 'src/app/ui-models/productTypeGroup';
 
 export class InventoryFormModel extends FormDialogModel<InventoryTransactionDto> {
   isEditMode = false;
@@ -18,13 +20,16 @@ export class InventoryFormModel extends FormDialogModel<InventoryTransactionDto>
       field: 'product',
       fieldType: 'select',
       isHidden: () => this.isEditMode,
-      label: 'Product',
+      placeholder: 'Product',
       options: new FormDialogSelectInputOptions({
         compareWith: (o1, o2) => (o1 && o1.id) === (o2 && o2.id),
-        fieldGroups: this.productSvc.getProductHierarchy(),
-        getOptionDisplay: (product) => product.name,
-        getOptionGroupOptions: (group) => group.products,
-        getOptionGroupDisplay: (group) => group.name
+        fieldGroups: this.productSvc
+          .getProductHierarchy()
+          .pipe(map((data) => data && data.filter((g) => g && g.products && g.products.some((p) => !p.isDeprecated)))),
+        getOptionValue: (product: IProductEntry) => product.id,
+        getOptionDisplay: (product: IProductEntry) => product.name,
+        getOptionGroupOptions: (group: IProductTypeGroup) => group.products.filter((p) => !p.isDeprecated),
+        getOptionGroupDisplay: (group: IProductTypeGroup) => group.name
       })
     }),
     new FormDialogField({

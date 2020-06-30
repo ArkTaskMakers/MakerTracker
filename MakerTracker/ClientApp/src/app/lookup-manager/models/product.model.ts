@@ -15,7 +15,6 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
       canAdd: true,
       canExport: true,
       canEdit: true,
-      canDelete: true,
       lookupName: 'products',
       lookupDisplayName: 'Products',
       entryDisplayNameFormatter: (data) => data.name,
@@ -35,6 +34,14 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
         sortable: true,
         filter: true,
         valueFormatter: (valueParams) => this.productMap.get(valueParams.value).name
+      },
+      {
+        headerName: 'Deprecated?',
+        field: 'isDeprecated',
+        sortable: true,
+        filter: true,
+        valueFormatter: (p) => (p.value ? 'Yes' : 'No'),
+        cellStyle: (p) => (p.value ? { color: 'red' } : null)
       }
     ];
 

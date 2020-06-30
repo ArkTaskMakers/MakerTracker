@@ -21,5 +21,10 @@
         public bool IsRequestor { get; set; }
         public bool HasCadSkills { get; set; }
         public string AdminNotes { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this user has gone through the new onboarding process.
+        /// </summary>
+        public bool HasOnboarded { get; set; }
     }
 }

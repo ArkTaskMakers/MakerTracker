@@ -95,6 +95,9 @@
         <mat-slide-toggle formControlName="hasCadSkills">
           Do you have CAD Skills?
         </mat-slide-toggle>
+        <mat-slide-toggle *ngIf="isAdminMode" formControlName="hasOnboarded">
+          Has the user onboarded?
+        </mat-slide-toggle>
       </div>
       <div *ngIf="isAdminMode">
         <hr />

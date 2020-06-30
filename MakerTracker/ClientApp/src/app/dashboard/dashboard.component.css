@@ -10,6 +10,7 @@
 .iframe-card {
   padding: 0 !important;
   min-height: 550px;
+  border-top: 1px solid #eaeaea;
 }
 
 iframe {

@@ -27,5 +27,10 @@ namespace MakerTracker.Models.Profiles
         public bool HasCadSkills { get; set; }
         public string DisplayName => $"{FirstName} {LastName} ({Email})";
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this user has gone through the new onboarding process.
+        /// </summary>
+        public bool HasOnboarded { get; set; }
+
     }
 }
