@@ -8,4 +8,5 @@ export interface IProductEntry {
   id: number;
   name: string;
   imageUrl: string;
+  isDeprecated: boolean;
 }

@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Profile = DBModels.Profile;
 
     /// <summary>
     ///     REST controller for manipulating requestor needs
@@ -199,14 +200,37 @@
                 return Forbid("User does not have access to create needs for this account");
             }
 
+            // Delete the entries not posted.
             var ids = entries.Select(e => e.Id).Where(e => e > 0).ToList();
-            var toDelete = _context.Needs.Where(e => e.ProfileId == profile.Id && !ids.Contains(e.Id) && e.FulfilledDate == null);
-            _context.Needs.RemoveRange(toDelete);
-
+            ProcessDeletions(_context.Needs.Where(e => e.ProfileId == profile.Id && !ids.Contains(e.Id) && e.FulfilledDate == null), profile);
+            
+            // Create/Update the posted records.
             var dbEntries = entries.Select(e => SetUpNeed(e, profile)).ToList();
             await _context.SaveChangesAsync();
             var results = _mapper.ProjectTo<NeedDto>(_context.Needs.Where(e => e.ProfileId == profile.Id));
             return Created("api/Need/bulk", results);
+        }
+
+        /// <summary>
+        ///     Processes the entries that need to be deleted. If there are existing transactions attributed to the Need it
+        ///     modifies the quantity and considers it fulfilled.
+        /// </summary>
+        /// <param name="ids">The ids to delete.</param>
+        /// <param name="profile">The profile.</param>
+        protected void ProcessDeletions(IQueryable<Need> needs, Profile profile)
+        {
+            // No transactions? Simple deletion.
+            var toDelete = needs.Where(e => !e.Transactions.Any());
+            _context.Needs.RemoveRange(toDelete);
+
+            // Transactions? Cap the quantity to the transaction total and mark fulfilled.
+            var toFulfill = needs.Where(e => e.Transactions.Any());
+            foreach (var entry in toFulfill)
+            {
+                entry.Quantity = entry.Transactions.Sum(e => e.Amount);
+                entry.FulfilledDate = DateTime.Now;
+                _context.Entry(entry).State = EntityState.Modified;
+            }
         }
 
         /// <summary>
@@ -252,7 +276,7 @@
             return entry.ProfileId <= 0 || allowedProfiles.Contains(entry.ProfileId);
         }
 
-        private Need SetUpNeed(NeedDto entry, DBModels.Profile profile)
+        private Need SetUpNeed(NeedDto entry, Profile profile)
         {
             var dbEntry = _mapper.Map<Need>(entry);
             if (entry.ProfileId <= 0)

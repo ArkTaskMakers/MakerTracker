@@ -33,7 +33,7 @@ export class ProductTypeService extends GenericCrudService<ProductTypeDto> {
 
   getProductHierarchy(): Observable<IProductTypeGroup[]> {
     return this.query('api/ProductTypes/Query', {
-      $expand: 'Products($filter=IsDeprecated eq false;$select=Id,Name,ImageUrl)',
+      $expand: 'Products($select=Id,Name,ImageUrl,IsDeprecated)',
       $orderBy: 'SortOrder',
       $select: 'Id,Name'
     });

@@ -29,7 +29,8 @@ export class UpdateProfileComponent implements OnInit {
     isRequestor: false,
     isSupplier: false,
     hasCadSkills: false,
-    adminNotes: null
+    adminNotes: null,
+    hasOnboarded: false
   });
 
   states: IState[];
@@ -89,7 +90,8 @@ export class UpdateProfileComponent implements OnInit {
       isDropOffPoint: data.isDropOffPoint,
       isRequestor: data.isRequestor,
       isSupplier: data.isSupplier,
-      adminNotes: data.adminNotes
+      adminNotes: data.adminNotes,
+      hasOnboarded: data.hasOnboarded
     });
   }
 }

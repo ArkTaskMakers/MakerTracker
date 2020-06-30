@@ -18,7 +18,7 @@ export class ProductService extends GenericCrudService<ProductDto> {
 
   list() {
     return this.query(this._baseUrl, {
-      $orderBy: 'name'
+      $orderBy: 'isDeprecated,name'
     });
   }
 }

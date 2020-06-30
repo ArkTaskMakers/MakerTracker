@@ -305,6 +305,10 @@ export class InitProfileComponent implements OnInit {
     return product && product.name;
   }
 
+  hasProducts(group: IProductTypeGroup) {
+    return group && group.products && group.products.some((p) => !p.isDeprecated);
+  }
+
   patchProfile(data: AdminProfileDto) {
     this.locationFormGroup.patchValue({
       id: data.id,

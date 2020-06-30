@@ -4,21 +4,21 @@ using MakerTracker.DBModels;
 using MakerTracker.Models.AdminReports;
 using MakerTracker.Models.Products;
 using MakerTracker.Models.Profiles;
-using Profile = AutoMapper.Profile;
+using Profile = MakerTracker.DBModels.Profile;
 
 namespace MakerTracker.Models
 {
-    public class AutoMappingProfiles : Profile
+    public class AutoMappingProfiles : AutoMapper.Profile
     {
         public AutoMappingProfiles()
         {
             CreateMap<Product, ProductDto>();
             CreateMap<ProductType, ProductTypeDto>();
-            CreateMap<DBModels.Profile, ProfileDto>();
-            CreateMap<DBModels.Profile, AdminProfileDto>();
-            CreateMap<DBModels.Profile, SupplierReportDto>();
-            CreateMap<DBModels.Profile, RequestorReportDto>();
-            CreateMap<UpdateProfileDto, DBModels.Profile>();
+            CreateMap<Profile, ProfileDto>();
+            CreateMap<Profile, AdminProfileDto>();
+            CreateMap<Profile, SupplierReportDto>();
+            CreateMap<Profile, RequestorReportDto>();
+            CreateMap<UpdateProfileDto, Profile>();
             CreateMap<Equipment, EquipmentDto>(MemberList.Destination);
             CreateMap<EquipmentDto, Equipment>(MemberList.Destination)
                 .ForMember(e => e.UsedBy, opts => opts.Ignore());

@@ -3,7 +3,7 @@ import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { NeedLookupDto } from 'autogen/NeedLookupDto';
 import { ProductDto } from 'autogen/ProductDto';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   FormDialogField,
   FormDialogModel,
@@ -22,7 +22,7 @@ export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> 
     new FormDialogField({
       field: 'need',
       fieldType: 'select',
-      label: 'Need',
+      placeholder: 'Select the need to fulfill',
       options: new FormDialogSelectInputOptions({
         compareWith: (o1, o2) => (o1 && o1.needId) === (o2 && o2.needId),
         fieldOptions: this.needSubject,
@@ -38,7 +38,7 @@ export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> 
     new FormDialogField({
       field: 'amount',
       fieldType: 'number',
-      label: 'Amount',
+      label: () => `Amount (out of ${this.product.amount} on-hand)`,
       options: new FormDialogNumberInputOptions({
         step: 1,
         min: 1
@@ -61,7 +61,7 @@ export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> 
   buildForm(fb: FormBuilder) {
     return fb.group({
       need: [null, [Validators.required]],
-      amount: [0, [Validators.required, Validators.min(1)]]
+      amount: [0, [Validators.required, Validators.min(1), Validators.max(this.product.amount)]]
     });
   }
 
