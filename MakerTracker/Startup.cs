@@ -68,6 +68,10 @@ namespace MakerTracker
                     NameClaimType = ClaimTypes.NameIdentifier,
                     RoleClaimType = "https://makertracker.com/roles"
                 };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnTokenValidated = EnsureProfileExists
+                };
             });
         }
 
