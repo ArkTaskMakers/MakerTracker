@@ -5,7 +5,7 @@
     /// <summary>
     ///     Attribute class for decorating classes.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = false, Inherited = true)]
     public class TypeScriptModelAttribute : Attribute
     {
     }

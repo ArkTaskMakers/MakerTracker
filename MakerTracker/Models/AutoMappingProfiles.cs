@@ -33,6 +33,12 @@ namespace MakerTracker.Models
                     opts => opts.MapFrom(e =>
                         e.Transactions.Any() ? e.Quantity - e.Transactions.Sum(t => t.Amount) : e.Quantity));
             CreateMap<NeedDto, Need>(MemberList.Source);
+            CreateMap<Feedback, FeedbackDto>(MemberList.Destination)
+                .ForMember(e => e.SubmittedBy, opts => opts.MapFrom(s => s.Profile.FirstName + " " + s.Profile.LastName));
+            CreateMap<FeedbackDto, Feedback>(MemberList.Source)
+                .ForSourceMember(e => e.SubmittedBy, opts => opts.DoNotValidate())
+                .ForSourceMember(e => e.CreatedDate, opts => opts.DoNotValidate())
+                .ForMember(e => e.CreatedDate, opts => opts.Ignore());
         }
     }
 }

@@ -18,6 +18,8 @@ namespace MakerTracker
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json.Serialization;
+    using SendGrid;
+    using SendGrid.Helpers.Mail;
 
     public class Startup
     {
@@ -39,6 +41,15 @@ namespace MakerTracker
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     x => x.UseNetTopologySuite()));
 
+            var sendGridApiKey = Environment.GetEnvironmentVariable("SendgridKey");
+            services.AddScoped(e => new MailSettings
+            {
+                SandboxMode = new SandboxMode
+                {
+                    Enable = string.IsNullOrWhiteSpace(sendGridApiKey) || Configuration.GetValue<bool>("SendGridSandboxMode")
+                }
+            });
+            services.AddScoped(e => new SendGridClient(sendGridApiKey ?? "SANDBOX"));
             services.AddControllers().AddNewtonsoftJson(opts =>
             {
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

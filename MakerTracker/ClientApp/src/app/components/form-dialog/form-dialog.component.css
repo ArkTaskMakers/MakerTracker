@@ -2,3 +2,7 @@ mat-card-content,
 mat-card-actions {
   padding: 0 16px;
 }
+
+.mat-form-field {
+  width: 100%;
+}

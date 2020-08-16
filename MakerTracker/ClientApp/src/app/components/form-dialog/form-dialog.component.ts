@@ -53,7 +53,7 @@ export class FormDialogComponent implements OnInit {
   ngOnInit() {}
 
   getFieldLabel(field: IFormDialogField) {
-    if (typeof field.label === 'string') {
+    if (typeof field.label === 'string' || !field.label) {
       return field.label;
     }
 

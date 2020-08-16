@@ -18,6 +18,7 @@
         public DbSet<MakerOrder> MakerOrders { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Feedback> Feedback { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
