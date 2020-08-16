@@ -1,7 +1,15 @@
 import { ColDef } from 'ag-grid-community';
 import { GenericCrudService, ReadOnlyService } from '../services/backend/crud/genericCrud.service';
 
-export type LookupInputType = 'number' | 'text' | 'email' | 'select' | 'textarea' | 'bool-toggle' | 'image';
+export type LookupInputType =
+  | 'number'
+  | 'text'
+  | 'email'
+  | 'select'
+  | 'textarea'
+  | 'bool-toggle'
+  | 'image'
+  | 'description';
 
 export class BaseLookupModel<T = any> {
   lookupName = '';
