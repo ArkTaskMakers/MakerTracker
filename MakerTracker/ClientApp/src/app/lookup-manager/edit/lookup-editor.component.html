@@ -11,6 +11,9 @@
       </div>
       <div class="form-group" *ngFor="let field of model.formFields">
         <ng-container [ngSwitch]="field.fieldType">
+          <ng-container *ngSwitchCase="'description'">
+            <p *ngIf="!!field.label">{{ field.label }}</p>
+          </ng-container>
           <mat-form-field *ngSwitchCase="'textarea'">
             <mat-label>{{ field.label }}</mat-label>
             <textarea

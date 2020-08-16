@@ -18,6 +18,14 @@ export class NeedFormModel extends FormDialogModel<NeedDto> {
   isEditMode = false;
   formFields: IFormDialogField[] = [
     new FormDialogField({
+      fieldType: 'description',
+      label: 'Please include both the PPE products and the number you need from suppliers.'
+    }),
+    new FormDialogField({
+      fieldType: 'description',
+      label: "Don't see the PPE you need? Email us an example product at pgordon@arhub.org."
+    }),
+    new FormDialogField({
       field: 'productId',
       fieldType: 'select',
       isHidden: () => this.isEditMode,

@@ -17,6 +17,14 @@ export class InventoryFormModel extends FormDialogModel<InventoryTransactionDto>
   isEditMode = false;
   formFields: IFormDialogField[] = [
     new FormDialogField({
+      fieldType: 'description',
+      label: 'Please include both the PPE products and the number currently can give to the requestor.'
+    }),
+    new FormDialogField({
+      fieldType: 'description',
+      label: "Don't see the PPE you can make? Email us an example product at pgordon@arhub.org."
+    }),
+    new FormDialogField({
       field: 'product',
       fieldType: 'select',
       isHidden: () => this.isEditMode,

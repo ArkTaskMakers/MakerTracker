@@ -1,12 +1,12 @@
-<h2 class="flex-shrink">Welcome to Maker Tracker</h2>
+<h2 class="flex-shrink">Welcome to the Arkansas PPE Maker Tracker!</h2>
 <mat-dialog-content>
   <mat-vertical-stepper [linear]="true" #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup" #firstForm class="flex-column">
         <ng-template matStepLabel>Your Role</ng-template>
         <p>
-          We're happy to have you! Before we get started, we need to know a little bit more about you. Please select the
-          most fitting role(s).
+          Before we get started, we need to know a little bit more about you. Please select the most fitting role(s).
+          <strong>Filling out the onboarding screen is required</strong>.
         </p>
         <mat-button-toggle-group multiple [vertical]="true" class="flex-grow init-group">
           <mat-button-toggle
@@ -47,7 +47,7 @@
             <mat-icon *ngIf="isNeither" class="active">check</mat-icon>
             <div class="init-description flex-grow">
               <div class="mat-headline flex-grow">Neither</div>
-              <p>I'm merely interested in the maker tracker.</p>
+              <p>I'm merely interested in the Maker Tracker.</p>
             </div>
           </mat-button-toggle>
         </mat-button-toggle-group>
@@ -107,8 +107,8 @@
           Do you have CAD Skills?
         </mat-slide-toggle>
         <mat-slide-toggle class="paragraph-toggle" formControlName="isSelfQuarantined">
-          Are you currently in self-quarantine because you are experiencing symptoms or have a close relative who is
-          experiencing symptoms? For maximum safety, we are asking only healthy makers to make parts right now.
+          Are you currently in quarantine because you or your cohabitation are experiencing symptoms of COVID-19? For
+          maximum safety, we are asking only healthy makers to make parts right now.
         </mat-slide-toggle>
         <div class="flex-row flex-between">
           <button mat-button matStepperPrevious mat-raised-button color="primary">
@@ -125,7 +125,8 @@
         <ng-template matStepLabel>Supplying</ng-template>
         <div class="flex-column wizard-section">
           <h3>
-            What do you have ready to go?
+            What products do you have available to offer to the community? (You can come back later and add new products
+            in the Dashboard.)
           </h3>
           <mat-form-field>
             <mat-label>Product/Supplies</mat-label>
@@ -164,7 +165,7 @@
           </div>
         </div>
         <div class="flex-column wizard-section">
-          <h3>What equipment do you have access to?</h3>
+          <h3>What making/manufacturing equipment do you have available?</h3>
           <mat-form-field>
             <mat-label>Equipment</mat-label>
             <mat-select (selectionChange)="handleEquipmentChanges($event)">
@@ -215,8 +216,8 @@
         <ng-template matStepLabel>Needs</ng-template>
         <div class="flex-column wizard-section">
           <h3>
-            Let's get a quick start on any needs you have. These will be attached to your profile. If you're managing
-            multiple drop-off profiles you can skip this for now and you can create the locations from the user menu.
+            What needs do you have? If you're managing multiple drop-off profiles you can skip this for now and create
+            the locations from your profile page.
           </h3>
           <mat-form-field>
             <mat-label>Product/Supplies</mat-label>
@@ -283,7 +284,10 @@
     <mat-step>
       <ng-template matStepLabel>Done!</ng-template>
       <p>That's all we need!</p>
-      <p>You can explore more by proceeding to your dashboard.</p>
+      <p>
+        You can edit your personal information in your Profile. Click the button below to save this information and
+        view, add, or edit your requests in your Dashboard.
+      </p>
       <div class="flex-row flex-between">
         <button mat-button matStepperPrevious>Back</button>
         <button mat-raised-button class="continue" color="primary" [disabled]="isBusy" (click)="submit()">
