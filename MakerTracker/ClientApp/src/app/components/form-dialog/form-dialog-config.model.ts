@@ -90,10 +90,11 @@ export class FormDialogTextInputOptions {
 }
 
 export class FormDialogTextAreaInputOptions extends FormDialogTextInputOptions {
-  rows = 4;
+  rows: number;
 
   constructor(init?: Partial<FormDialogTextAreaInputOptions>) {
     super(init);
+    this.rows = this.rows || 4;
   }
 }
 

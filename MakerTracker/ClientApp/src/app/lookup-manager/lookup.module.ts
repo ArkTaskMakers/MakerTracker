@@ -10,6 +10,7 @@ import { LookupListComponent } from './list/lookup-list.component';
 import { LOOKUP_MODELS } from './lookup-model-provider.service';
 import { LOOKUP_ROUTES } from './lookup.routes';
 import { EquipmentModel } from './models/equipment.model';
+import { FeedbackRecordModel } from './models/feedback-record.model';
 import { ProductTypeModel } from './models/product-type.model';
 import { ProductModel } from './models/product.model';
 import { RequestorListModel } from './models/requestor.model';
@@ -30,7 +31,8 @@ import { SupplierListModel } from './models/supplier.model';
     { provide: LOOKUP_MODELS, useClass: SupplierListModel, multi: true },
     { provide: LOOKUP_MODELS, useClass: ProductTypeModel, multi: true },
     { provide: LOOKUP_MODELS, useClass: ProductModel, multi: true },
-    { provide: LOOKUP_MODELS, useClass: EquipmentModel, multi: true }
+    { provide: LOOKUP_MODELS, useClass: EquipmentModel, multi: true },
+    { provide: LOOKUP_MODELS, useClass: FeedbackRecordModel, multi: true }
   ],
   exports: []
 })
