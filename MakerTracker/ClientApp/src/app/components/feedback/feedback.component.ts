@@ -31,6 +31,10 @@ export class FeedbackComponent implements OnInit {
       })
     });
 
-    dialogRef.afterClosed().subscribe((result) => this.snackbar.open('Thank you for your feedback.'));
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.snackbar.open('Thank you for your feedback.', null, { duration: 4000 });
+      }
+    });
   }
 }

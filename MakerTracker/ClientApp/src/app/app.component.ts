@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  title = 'Maker Tracker';
+  showFeedbackButton = false;
+
+  public constructor(public auth: AuthService) {
+    this.auth.isLoggedIn$.subscribe((isLoggedIn) => {
+      this.showFeedbackButton = isLoggedIn;
+    });
+  }
 }
