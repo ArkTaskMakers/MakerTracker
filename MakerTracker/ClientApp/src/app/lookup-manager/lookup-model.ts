@@ -1,4 +1,5 @@
 import { ColDef } from 'ag-grid-community';
+import { Observable } from 'rxjs';
 import { GenericCrudService, ReadOnlyService } from '../services/backend/crud/genericCrud.service';
 
 export type LookupInputType =
@@ -32,6 +33,8 @@ export class BaseLookupModel<T = any> {
     Object.assign(this, init);
     this.factory = this.factory || (() => <T>{});
   }
+
+  onInit: () => Observable<any>;
 }
 
 export class BaseLookupFormField implements ILookupFormField {

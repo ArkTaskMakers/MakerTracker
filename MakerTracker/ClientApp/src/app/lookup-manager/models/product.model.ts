@@ -10,7 +10,15 @@ import { BaseLookupFormField, BaseLookupModel } from '../lookup-model';
 export class ProductModel extends BaseLookupModel<ProductDto> {
   productMap: Map<number, ProductTypeDto> = new Map<number, ProductTypeDto>();
 
-  constructor(service: ProductService, typeSvc: ProductTypeService) {
+  onInit = () => {
+    const svcCall = this.typeSvc.list();
+    svcCall.subscribe((types) => {
+      this.productMap = new Map(types.map((e) => [e.id, e] as [number, ProductTypeDto]));
+    });
+    return svcCall;
+  };
+
+  constructor(service: ProductService, protected typeSvc: ProductTypeService) {
     super({
       canAdd: true,
       canExport: true,
@@ -21,10 +29,6 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
       service
     });
 
-    typeSvc.list().subscribe((types) => {
-      this.productMap = new Map(types.map((e) => [e.id, e] as [number, ProductTypeDto]));
-    });
-
     this.columns = [
       { headerName: 'Name', field: 'name', sortable: true, filter: true },
       { headerName: 'Description', field: 'description', sortable: true, filter: true },
@@ -33,7 +37,7 @@ export class ProductModel extends BaseLookupModel<ProductDto> {
         field: 'productTypeId',
         sortable: true,
         filter: true,
-        valueFormatter: (valueParams) => this.productMap.get(valueParams.value).name
+        valueFormatter: (valueParams) => this.productMap.get(valueParams.value)?.name
       },
       {
         headerName: 'Deprecated?',

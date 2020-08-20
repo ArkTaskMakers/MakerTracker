@@ -3,6 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { of } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { GenericCrudService } from 'src/app/services/backend/crud/genericCrud.service';
 import { ButtonColumnParams } from '../column-types/button-column/button-column-params';
 import { ButtonColumnComponent } from '../column-types/button-column/button-column.component';
@@ -53,7 +55,7 @@ export class LookupListComponent implements OnInit {
   ) {
     this.route.paramMap.subscribe((routeParams) => {
       this.model = modelProvider.models.get(routeParams.get('model'));
-      this.refresh();
+      (this.model.onInit ? this.model.onInit() : of(null)).pipe(take(1)).subscribe(this.refresh.bind(this));
       this.columns = [...this.model.columns];
       if (this.model.canEdit) {
         this.columns.push(<ColDef>{
