@@ -80,7 +80,15 @@
                     DueDate = e.DueDate,
                     OutstandingQuantity = e.Transactions.Any() ? e.Quantity - e.Transactions.Sum(e => e.Amount) : e.Quantity,
                     ProductId = e.ProductId,
-                    ProfileDisplayName = e.Profile.CompanyName ?? $"{e.Profile.FirstName} {e.Profile.LastName}"
+                    ProfileDisplayName = e.Profile.CompanyName ?? $"{e.Profile.FirstName} {e.Profile.LastName}",
+                    IsDropOffPoint = e.Profile.IsDropOffPoint.GetValueOrDefault(),
+                    Address = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.Address : null,
+                    Address2 = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.Address2 : null,
+                    City = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.City : null,
+                    State = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.State : null,
+                    ZipCode = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.ZipCode : null,
+                    ContactEmail = e.Profile.IsDropOffPoint.GetValueOrDefault() ? e.Profile.Email : null,
+                    SpecialInstructions = e.SpecialInstructions
                 }).Where(e => e.OutstandingQuantity > 0)
                 .ToListAsync();
 

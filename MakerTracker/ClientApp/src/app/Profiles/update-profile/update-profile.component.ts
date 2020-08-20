@@ -18,6 +18,8 @@ export class UpdateProfileComponent implements OnInit {
     companyName: null,
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
+    address: [null],
+    address2: [null],
     city: [null, Validators.required],
     state: ['AR', Validators.required],
     bio: null,
