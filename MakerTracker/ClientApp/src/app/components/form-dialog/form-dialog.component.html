@@ -11,7 +11,9 @@
       </div>
       <div class="form-group" *ngFor="let field of model.formFields">
         <ng-container [ngSwitch]="field.fieldType" *ngIf="!field.isHidden || !field.isHidden(dialogForm)">
-          <div *ngSwitchCase="'description'" class="description" [innerHTML]="getFieldLabel(field)"></div>
+          <ng-container *ngSwitchCase="'description'">
+            <div *ngIf="getFieldLabel(field)" class="description" [innerHTML]="getFieldLabel(field)"></div>
+          </ng-container>
           <mat-form-field *ngSwitchCase="'textarea'">
             <mat-label>{{ getFieldLabel(field) }}</mat-label>
             <textarea

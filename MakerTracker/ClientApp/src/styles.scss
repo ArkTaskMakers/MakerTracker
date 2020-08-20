@@ -194,3 +194,7 @@ mat-toolbar.mat-toolbar {
 .ag-theme-material {
   @include ag-theme-material();
 }
+
+.d-none {
+  display: none !important;
+}

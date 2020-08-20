@@ -43,6 +43,21 @@
         </mat-form-field>
       </div>
       <h2>Location</h2>
+      <mat-form-field [class.d-none]="!profileForm.get('isDropOffPoint').value">
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" [required]="profileForm.get('isDropOffPoint').value" />
+        <mat-hint
+          >The address of drop-off points will be considered public information and disclosed to suppliers and in
+          reporting.</mat-hint
+        >
+        <mat-error *ngIf="profileForm.controls['address'].hasError('required')">
+          Address is <strong>required</strong> if you are a drop-off point.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field [class.d-none]="!profileForm.get('isDropOffPoint').value">
+        <mat-label>Address 2</mat-label>
+        <input matInput formControlName="address2" placeholder="Suite #, etc..." />
+      </mat-form-field>
       <div class="flex-row stackable flex-between">
         <mat-form-field>
           <input matInput placeholder="City" formControlName="city" required />
@@ -74,7 +89,7 @@
       </div>
       <h2>About You</h2>
       <mat-form-field>
-        <textarea matInput placeholder="About Me" formControlName="bio" rows="5"></textarea>
+        <textarea matInput placeholder="Tell us about yourself." formControlName="bio" rows="5"></textarea>
         <mat-hint>Tell us about yourself.</mat-hint>
       </mat-form-field>
       <div class="toggle-section flex-column">
