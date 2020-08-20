@@ -143,12 +143,19 @@ namespace MakerTracker.Controllers
                 updatedProfile.HasOnboarded = true;
             }
 
+            if(!updatedProfile.IsDropOffPoint.GetValueOrDefault())
+            {
+                updatedProfile.Address = null;
+                updatedProfile.Address2 = null;
+            }
+
             var googleAddress = await GeoCodeLocation(updatedProfile);
             updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
             updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
             updatedProfile.Location = new Point(googleAddress?.Coordinates.Longitude ?? 0,
                 googleAddress?.Coordinates.Latitude ?? 0)
             { SRID = 4326 };
+
             if (updatedProfile.Id > 0)
             {
                 _context.Entry(updatedProfile).State = EntityState.Modified;

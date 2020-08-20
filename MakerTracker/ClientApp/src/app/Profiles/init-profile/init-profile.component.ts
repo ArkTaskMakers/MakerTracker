@@ -86,11 +86,14 @@ export class InitProfileComponent implements OnInit {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
+      address: [null],
+      address2: [null],
       city: ['', Validators.required],
       state: ['AR', Validators.required],
       zipCode: ['', Validators.required],
       isSelfQuarantined: [false],
-      hasCadSkills: [false]
+      hasCadSkills: [false],
+      isDropOffPoint: [false]
     });
     authSvc.userProfile$.subscribe((profile) => {
       this.locationFormGroup.get('email').setValue(profile.email);
