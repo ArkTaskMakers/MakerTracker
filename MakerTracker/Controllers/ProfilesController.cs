@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
+using Newtonsoft.Json;
 using Profile = MakerTracker.DBModels.Profile;
 
 namespace MakerTracker.Controllers
@@ -22,11 +24,13 @@ namespace MakerTracker.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private ILogger<ProfilesController> Logger { get; }
 
-        public ProfilesController(MakerTrackerContext context, IConfiguration Configuration, IMapper mapper) : base(context)
+        public ProfilesController(MakerTrackerContext context, IConfiguration Configuration, IMapper mapper, ILogger<ProfilesController> logger) : base(context)
         {
             _configuration = Configuration;
             _mapper = mapper;
+            Logger = logger;
         }
 
         // GET: api/Profiles
@@ -149,12 +153,19 @@ namespace MakerTracker.Controllers
                 updatedProfile.Address2 = null;
             }
 
-            var googleAddress = await GeoCodeLocation(updatedProfile);
-            updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
-            updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
-            updatedProfile.Location = new Point(googleAddress?.Coordinates.Longitude ?? 0,
-                googleAddress?.Coordinates.Latitude ?? 0)
-            { SRID = 4326 };
+            try
+            {
+                var googleAddress = await GeoCodeLocation(updatedProfile);
+                updatedProfile.Latitude = googleAddress?.Coordinates.Latitude ?? 0;
+                updatedProfile.Longitude = googleAddress?.Coordinates.Longitude ?? 0;
+                updatedProfile.Location = new Point(googleAddress?.Coordinates.Longitude ?? 0,
+                    googleAddress?.Coordinates.Latitude ?? 0)
+                { SRID = 4326 };
+            }
+            catch (Exception exc)
+            {
+                Logger.LogError(exc, $"Error encoding location via google api for {JsonConvert.SerializeObject(updatedProfile)}");
+            }
 
             if (updatedProfile.Id > 0)
             {
