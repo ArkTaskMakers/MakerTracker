@@ -147,6 +147,12 @@ namespace MakerTracker.Controllers
                 updatedProfile.HasOnboarded = true;
             }
 
+            if(!updatedProfile.IsDropOffPoint.GetValueOrDefault())
+            {
+                updatedProfile.Address = null;
+                updatedProfile.Address2 = null;
+            }
+
             try
             {
                 var googleAddress = await GeoCodeLocation(updatedProfile);

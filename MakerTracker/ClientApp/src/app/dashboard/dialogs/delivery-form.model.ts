@@ -18,6 +18,7 @@ import { IProductEntry } from 'src/app/ui-models/productTypeGroup';
 export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> {
   needSubject: Subject<NeedLookupDto[]> = new Subject<NeedLookupDto[]>();
   isEditMode = false;
+  formData: FormGroup;
   formFields: IFormDialogField[] = [
     new FormDialogField({
       field: 'need',
@@ -43,6 +44,36 @@ export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> 
         step: 1,
         min: 1
       })
+    }),
+    new FormDialogField({
+      fieldType: 'description',
+      label: () => {
+        const need: NeedLookupDto = this.formData.get('need').value;
+        if (!need) {
+          return null;
+        }
+        if (!need.isDropOffPoint) {
+          return `<p>This requestor is not marked as a public dropoff point, therefore we are not supplying their location information. Pleast contact this user directly via our Slack.</p>`;
+        }
+        const address = `<p><address>${[need.address, need.address2].filter((a) => !!a).join('<br />')}<br />${
+          need.city
+        }, ${need.state} ${need.zipCode}</address></p>`;
+        const due = need.dueDate
+          ? `<p>It needs to be delivered by ${new Date(need.dueDate).toLocaleDateString()} at the latest.</p>`
+          : '';
+        const contact = `<p>If you have any questions, please contact <strong>${need.profileDisplayName}</strong> at <a href="mailto:${need.contactEmail}">${need.contactEmail}</a></p>`;
+        return `<p>Thank you for delivering this PPE! This organization's name is ${need.profileDisplayName}. Their address is as follows:</p>${address}${due}${contact}`;
+      }
+    }),
+    new FormDialogField({
+      fieldType: 'description',
+      label: () => {
+        const need: NeedLookupDto = this.formData.get('need').value;
+        if (!need || !need.specialInstructions) {
+          return null;
+        }
+        return `<p><strong>Special Instructions from requestor:</strong><br />${need.specialInstructions}</p>`;
+      }
     })
   ];
   constructor(
@@ -59,10 +90,11 @@ export class DeliveryFormModel extends FormDialogModel<InventoryTransactionDto> 
   }
 
   buildForm(fb: FormBuilder) {
-    return fb.group({
+    this.formData = fb.group({
       need: [null, [Validators.required]],
       amount: [0, [Validators.required, Validators.min(1), Validators.max(this.product.amount)]]
     });
+    return this.formData;
   }
 
   onBeforeSubmit(form: FormGroup) {

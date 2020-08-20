@@ -3,21 +3,33 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using System.Web;
     using MakerTracker.DBModels;
     using MakerTracker.Models.Inventory;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using SendGrid;
+    using SendGrid.Helpers.Mail;
 
     [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
     public class InventoryController : ApiBaseController
     {
-        public InventoryController(MakerTrackerContext context) : base(context)
+        private SendGridClient SendGridClient { get; }
+        private MailSettings MailSettings { get; }
+        private ILogger<InventoryController> Logger { get; }
+
+        public InventoryController(MakerTrackerContext context, SendGridClient sendGridClient, MailSettings mailSettings, ILogger<InventoryController> logger) : base(context)
         {
+            SendGridClient = sendGridClient;
+            MailSettings = mailSettings;
+            Logger = logger;
         }
 
         // GET: api/Inventory
@@ -92,7 +104,7 @@
             //positive amount means they are increasing the amount
             var difference = model.Amount - currentAmount;
 
-            if(difference + currentAmount < 0)
+            if (difference + currentAmount < 0)
             {
                 throw new InvalidOperationException($"Unable to transact to negative: {JsonConvert.SerializeObject(model)}");
             }
@@ -126,11 +138,51 @@
         public async Task<ActionResult<Transaction>> PostTransaction(InventoryTransactionDto model)
         {
             var profile = await GetLoggedInProfile();
-            await CreateTransaction(model, profile);
+            var transaction = await CreateTransaction(model, profile);
             await _context.SaveChangesAsync();
 
+            if (transaction.NeedId != null)
+            {
+                try
+                {
+                    await NotifyDeliverySender(transaction);
+                }
+                catch (Exception exc)
+                {
+                    Logger.LogError(exc, $"Error sending delivery details to supplier: {JsonConvert.SerializeObject(transaction)}");
+                }
+            }
+
             return Ok(true);
-            //return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
+        }
+
+        protected async Task NotifyDeliverySender(Transaction transaction)
+        {
+            var to = transaction.To;
+            var displayName = string.IsNullOrWhiteSpace(to.CompanyName) ? $"{to.FirstName} {to.FirstName}" : to.CompanyName;
+            var need = transaction.Need;
+            var addressLine = HttpUtility.HtmlEncode(string.Join("<br />", new[] { to.Address, to.Address2 }.Where((a) => !string.IsNullOrWhiteSpace(a))));
+            string address = $"<p><address>{addressLine}<br />{HttpUtility.HtmlEncode(to.City)}, ${HttpUtility.HtmlEncode(to.State)} ${to.ZipCode}</address></p>";
+            string due = need.DueDate.HasValue
+                ? $"<p>It needs to be delivered by {need.DueDate.GetValueOrDefault().ToShortDateString()} at the latest.</p>"
+                : string.Empty;
+            string contact = $"<p>If you have any questions, please contact <strong>{displayName}</strong> at <a href=\"mailto:{to.Email}\">{to.Email}</a></p>";
+            string specialInstructions = string.IsNullOrWhiteSpace(need.SpecialInstructions) ? string.Empty
+                : $"<p><strong>Special Instructions from requestor:</strong><br />${HttpUtility.HtmlEncode(need.SpecialInstructions)}</p>";
+
+            // TODO: Rough draft of this. We should discuss
+            string disclaimer = "<p><em>If you have received this email in error, please notify pgordon@arhub.org</em></p>";
+
+            string body = $"<p>Thank you for delivering this PPE! This organization's name is {displayName}. Their address is as follows:</p>{address}{due}{contact}{specialInstructions}{disclaimer}";
+
+            string plainTextBody = Regex.Replace(body.Replace("</p>", $"{Environment.NewLine}{Environment.NewLine}").Replace("<br />", Environment.NewLine).Replace("<p>", string.Empty), "<[^>]*(>|$)", string.Empty);
+
+            SendGridMessage message = MailHelper.CreateSingleEmail(
+                new EmailAddress("no-reply@arhub.org"),
+                new EmailAddress(transaction.From.Email),
+                $"PPE Delivery Details", plainTextBody, body);
+            message.MailSettings = MailSettings;
+            await SendGridClient.SendEmailAsync(message);
         }
 
         // POST: api/Inventory
@@ -159,7 +211,7 @@
                 .Select(t => t.To == profile && t.NeedId == null ? t.Amount : -t.Amount)
                 .SumAsync();
 
-            if(from != null && currentAmount < entry.Amount)
+            if (from != null && currentAmount < entry.Amount)
             {
                 throw new InvalidOperationException($"Unable to transact to negative: {JsonConvert.SerializeObject(entry)}");
             }

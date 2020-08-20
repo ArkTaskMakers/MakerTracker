@@ -13,6 +13,22 @@ export class NeedLookupDto {
 
     dueDate: Date;
 
+    address: string;
+
+    address2: string;
+
+    city: string;
+
+    state: string;
+
+    zipCode: string;
+
+    isDropOffPoint: boolean;
+
+    contactEmail: string;
+
+    specialInstructions: string;
+
     /** Initializes a new instance of the NeedLookupDto class **/
     public constructor(init?: Partial<NeedLookupDto>) {
         Object.assign(this, init);
