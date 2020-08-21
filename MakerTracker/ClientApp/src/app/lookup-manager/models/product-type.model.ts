@@ -31,7 +31,12 @@ export class ProductTypeModel extends BaseLookupModel<ProductTypeDto> {
           fieldType: 'number',
           label: 'Sort Order',
           placeholder: 'Input the sorting order for the type',
-          required: true
+          required: true,
+          options: {
+            min: -9000,
+            max: 9000,
+            pattern: '^-?\\d{1,4}$'
+          }
         })
       ],
       columns: [
