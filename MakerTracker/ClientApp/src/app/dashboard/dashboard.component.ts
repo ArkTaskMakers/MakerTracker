@@ -1,13 +1,14 @@
 import { ComponentType } from '@angular/cdk/overlay';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { NeedDto } from 'autogen/NeedDto';
 import { ProductDto } from 'autogen/ProductDto';
 import { ProfileDto } from 'autogen/ProfileDto';
-import { of, zip, Observable, forkJoin } from 'rxjs';
-import { flatMap, toArray, catchError } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, flatMap, toArray } from 'rxjs/operators';
 import { FormDialogConfig } from '../components/form-dialog/form-dialog-config.model';
 import { FormDialogComponent } from '../components/form-dialog/form-dialog.component';
 import { BackendService } from '../services/backend/backend.service';
@@ -17,7 +18,6 @@ import { IProductEntry, IProductTypeGroup } from '../ui-models/productTypeGroup'
 import { DeliveryFormModel } from './dialogs/delivery-form.model';
 import { InventoryFormModel } from './dialogs/inventory-form.model';
 import { NeedFormModel } from './dialogs/need-form.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
     this.needSvc.list().subscribe((res) => (this.needs = res));
   }
 
-  private getProductField(need: NeedDto, field: string): string {
+  getProductField(need: NeedDto, field: string): string {
     const product = this.productMap.get(need.productId);
     return product && product[field];
   }
