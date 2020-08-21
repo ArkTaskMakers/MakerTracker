@@ -164,7 +164,7 @@ namespace MakerTracker.Controllers
             }
             catch (Exception exc)
             {
-                Logger.LogError(exc, $"Error encoding location via google api for {JsonConvert.SerializeObject(updatedProfile, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All })} - Exception: {JsonConvert.SerializeObject(exc, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All })}");
+                Logger.LogError(exc, $"Error encoding location via google api for {JsonConvert.SerializeObject(updatedProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })} - Exception: {JsonConvert.SerializeObject(exc, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
             }
 
             if (updatedProfile.Id > 0)
@@ -194,7 +194,7 @@ namespace MakerTracker.Controllers
                 return null;
             }
             var geocoder = new GoogleGeocoder(_configuration["GoogleAPIKey"]);
-            var addresses = await geocoder.GeocodeAsync(string.Join(' ', p.Address, p.Address2, p.City, p.State, p.ZipCode).Trim());
+            var addresses = await geocoder.GeocodeAsync(string.Join(',', p.Address, p.City, p.State).Trim(' ', ','));
             return addresses.First();
         }
 
