@@ -147,7 +147,7 @@ namespace MakerTracker.Controllers
                 updatedProfile.HasOnboarded = true;
             }
 
-            if(!updatedProfile.IsDropOffPoint.GetValueOrDefault())
+            if (!updatedProfile.IsDropOffPoint.GetValueOrDefault())
             {
                 updatedProfile.Address = null;
                 updatedProfile.Address2 = null;
@@ -164,7 +164,7 @@ namespace MakerTracker.Controllers
             }
             catch (Exception exc)
             {
-                Logger.LogError(exc, $"Error encoding location via google api for {JsonConvert.SerializeObject(updatedProfile)}");
+                Logger.LogError(exc, $"Error encoding location via google api for {JsonConvert.SerializeObject(updatedProfile, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All })} - Exception: {JsonConvert.SerializeObject(exc, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All })}");
             }
 
             if (updatedProfile.Id > 0)
@@ -194,7 +194,7 @@ namespace MakerTracker.Controllers
                 return null;
             }
             var geocoder = new GoogleGeocoder(_configuration["GoogleAPIKey"]);
-            var addresses = await geocoder.GeocodeAsync(string.Join(' ', p.Address, p.Address2, p.City, p.State, p.ZipCode));
+            var addresses = await geocoder.GeocodeAsync(string.Join(' ', p.Address, p.Address2, p.City, p.State, p.ZipCode).Trim());
             return addresses.First();
         }
 

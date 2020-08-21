@@ -65,12 +65,20 @@ export class UpdateProfileComponent implements OnInit {
     this.loading = true;
     this.backend
       .saveProfile(this.profileForm.value as UpdateProfileDto, this.route.snapshot.paramMap.get('id'))
-      .subscribe((x) => {
-        this._snackBar.open('Your profile is Updated!', null, {
-          duration: 2000
-        });
-        this.loading = false;
-      });
+      .subscribe(
+        () => {
+          this.loading = false;
+          this._snackBar.open('Your profile is Updated!', null, {
+            duration: 2000
+          });
+        },
+        () => {
+          this.loading = false;
+          this._snackBar.open('Error Saving', null, {
+            duration: 2000
+          });
+        }
+      );
   }
 
   patchValues(data: AdminProfileDto) {

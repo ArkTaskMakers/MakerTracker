@@ -53,6 +53,7 @@ namespace MakerTracker
             services.AddControllers().AddNewtonsoftJson(opts =>
             {
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             services.AddOData();
 

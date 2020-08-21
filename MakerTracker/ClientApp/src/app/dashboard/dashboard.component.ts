@@ -1,13 +1,14 @@
 import { ComponentType } from '@angular/cdk/overlay';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { InventoryProductSummaryDto } from 'autogen/InventoryProductSummaryDto';
 import { InventoryTransactionDto } from 'autogen/InventoryTransactionDto';
 import { NeedDto } from 'autogen/NeedDto';
 import { ProductDto } from 'autogen/ProductDto';
 import { ProfileDto } from 'autogen/ProfileDto';
-import { of } from 'rxjs';
-import { flatMap, toArray } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, flatMap, toArray } from 'rxjs/operators';
 import { FormDialogConfig } from '../components/form-dialog/form-dialog-config.model';
 import { FormDialogComponent } from '../components/form-dialog/form-dialog.component';
 import { BackendService } from '../services/backend/backend.service';
@@ -35,14 +36,32 @@ export class DashboardComponent implements OnInit {
     private backend: BackendService,
     private productTypesSvc: ProductTypeService,
     public dialog: MatDialog,
-    private needSvc: NeedService
+    private needSvc: NeedService,
+    private snackbar: MatSnackBar
   ) {
-    backend.getProfile().subscribe((profile: ProfileDto) => {
+    forkJoin([
+      backend.getProfile().pipe(
+        catchError((err) => {
+          console.error('unable to retrieve profile', err);
+          this.snackbar.open('Unable to retrieve profile.', null, {
+            duration: 5000
+          });
+          return of({});
+        })
+      ),
+      productTypesSvc.getProductHierarchy().pipe(
+        catchError((err) => {
+          console.error('unable to retrieve products', err);
+          this.snackbar.open('Unable to retrieve product information. Please contact support.', null, {
+            duration: 5000
+          });
+          return of([]);
+        })
+      )
+    ]).subscribe(([profile, products]: [ProfileDto, IProductTypeGroup[]]) => {
       this.isRequestor = profile.isRequestor;
       this.isSupplier = profile.isSupplier;
-      this.refreshDashboard();
-    });
-    productTypesSvc.getProductHierarchy().subscribe((products) => {
+
       this.products = products;
       of(products)
         .pipe(
@@ -52,6 +71,9 @@ export class DashboardComponent implements OnInit {
         )
         .subscribe((p) => {
           this.productMap = new Map(p.map((e) => [e.id, e] as [number, IProductEntry]));
+          if (profile.id && products.length) {
+            this.refreshDashboard();
+          }
         });
     });
   }
@@ -75,7 +97,7 @@ export class DashboardComponent implements OnInit {
     this.needSvc.list().subscribe((res) => (this.needs = res));
   }
 
-  private getProductField(need: NeedDto, field: string): string {
+  getProductField(need: NeedDto, field: string): string {
     const product = this.productMap.get(need.productId);
     return product && product[field];
   }

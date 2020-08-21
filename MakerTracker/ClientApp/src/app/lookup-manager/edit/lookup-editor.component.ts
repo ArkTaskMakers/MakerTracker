@@ -29,6 +29,9 @@ export class LookupEditorComponent implements OnInit {
   /** feedback messages for alerting the user. */
   feedback: any = {};
 
+  /** indicates a request is loading. */
+  isLoading = false;
+
   /**
    * Initializes a new instance of the EquipmentListComponent class.
    * @param route The activated route
@@ -76,11 +79,11 @@ export class LookupEditorComponent implements OnInit {
       reader.readAsDataURL(file);
 
       reader.onload = () => {
-        this.compressImage(reader.result, field.options.width || 64, field.options.height || 64).then(
+        this.compressImage(<string>reader.result, field.options.width || 64, field.options.height || 64).then(
           (compressed: string) => {
             this.entry[field.field] = compressed;
           },
-          (err) => {
+          () => {
             this._snackBar.open('Invalid image', null, {
               duration: 2000
             });
@@ -93,7 +96,7 @@ export class LookupEditorComponent implements OnInit {
     }
   }
 
-  compressImage(src, newX, newY) {
+  compressImage(src: string, newX: number, newY: number): Promise<string> {
     return new Promise((res, rej) => {
       const img = new Image();
       img.src = src;
@@ -114,8 +117,10 @@ export class LookupEditorComponent implements OnInit {
   save() {
     const service = <GenericCrudService<any>>this.model.service;
     const request = this.entry.id ? service.update(this.entry.id, this.entry) : service.create(this.entry);
+    this.isLoading = true;
     request.subscribe(
       (entry) => {
+        this.isLoading = false;
         this.entry = entry;
         this._snackBar.open('Save was successful!', null, {
           duration: 2000
@@ -123,6 +128,7 @@ export class LookupEditorComponent implements OnInit {
         this.router.navigate(['admin', this.model.lookupName]);
       },
       () => {
+        this.isLoading = false;
         this._snackBar.open('Error Saving', null, {
           duration: 2000
         });
