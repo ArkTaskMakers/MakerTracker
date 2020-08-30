@@ -35,6 +35,9 @@ namespace MakerTracker.DBModels
 
         public string AdminNotes { get; set; }
 
+        //If the profile is imported you can set this to help track it back in the external source
+        public string ImportId { get; set; }
+
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
 
