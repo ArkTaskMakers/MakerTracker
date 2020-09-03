@@ -4,15 +4,17 @@ using MakerTracker.DBModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace MakerTracker.Migrations
 {
     [DbContext(typeof(MakerTrackerContext))]
-    partial class MakerTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200830150332_ImportId")]
+    partial class ImportId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,8 +349,7 @@ namespace MakerTracker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ImportId")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDropOffPoint")
                         .HasColumnType("bit");

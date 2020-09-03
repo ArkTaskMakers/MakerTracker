@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
 namespace MakerTracker.DBModels
@@ -34,6 +35,10 @@ namespace MakerTracker.DBModels
         public Point Location { get; set; }
 
         public string AdminNotes { get; set; }
+
+        //If the profile is imported you can set this to help track it back in the external source
+        [MaxLength(50)]
+        public string ImportId { get; set; }
 
         public ICollection<Transaction> TransactionFrom { get; set; } = new List<Transaction>();
         public ICollection<Transaction> TransactionTo { get; set; } = new List<Transaction>();
