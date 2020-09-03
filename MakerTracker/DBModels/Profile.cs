@@ -48,6 +48,9 @@ namespace MakerTracker.DBModels
         public ICollection<ProfileHierarchy> Parents { get; set; } = new List<ProfileHierarchy>();
         public ICollection<ProfileHierarchy> Children { get; set; } = new List<ProfileHierarchy>();
 
+        public ICollection<Need> Needs { get; set; } = new List<Need>();
+        public ICollection<MakerEquipment> MakerEquipments { get; set; } = new List<MakerEquipment>();
+
         public bool IsVerified { get; set; }
 
         /// <summary>
